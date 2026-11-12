@@ -14,6 +14,7 @@ import type { UserRole } from '@/types';
 // ─── Lazy-loaded pages ────────────────────────────────────────────────────────
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const TablePage = lazy(() => import('@/pages/client/TablePage'));
+const OrderTracking = lazy(() => import('@/pages/client/OrderTracking'));
 const ServeurDashboard = lazy(() => import('@/pages/serveur/ServeurDashboard'));
 const CuisineDashboard = lazy(() => import('@/pages/cuisine/CuisineDashboard'));
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
@@ -127,6 +128,7 @@ export default function App() {
 
           {/* Client — public, no auth required */}
           <Route path="/table/:tableId" element={<TablePage />} />
+          <Route path="/table/:tableId/tracking" element={<OrderTracking />} />
 
           {/* Serveur */}
           <Route element={<ProtectedRoute role={'serveur' as UserRole} />}>

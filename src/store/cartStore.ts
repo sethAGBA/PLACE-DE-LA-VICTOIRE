@@ -26,6 +26,7 @@ interface CartState {
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantite: number) => void;
   clearCart: () => void;
+  resetSession: () => void;
   total: () => number;
 }
 
@@ -72,6 +73,13 @@ export const useCartStore = create<CartState>()(
       },
 
       clearCart: () => set({ items: [] }),
+
+      resetSession: () => {
+        const key = 'pdv-session-id';
+        const newId = crypto.randomUUID();
+        sessionStorage.setItem(key, newId);
+        set({ items: [], sessionId: newId, clientPrenom: '' });
+      },
 
       total: () =>
         get().items.reduce((sum, i) => sum + i.prix * i.quantite, 0),

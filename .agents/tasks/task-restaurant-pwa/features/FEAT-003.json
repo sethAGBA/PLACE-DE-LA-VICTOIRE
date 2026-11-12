@@ -2,7 +2,7 @@
   "id": "FEAT-003",
   "type": "feat",
   "description": "Client-facing experience: the QR-code table entry flow, menu browsing page, cart, order placement, and the animated countdown order-tracking page. This is the most user-visible part of the app. Depends on FEAT-002 (types, stores, hooks, Firebase, i18n, UI primitives must exist).",
-  "status": "pending",
+  "status": "completed",
   "steps": [
     "Create src/components/client/MenuCard.tsx: product card displaying image (lazy-loaded via loading='lazy', with a colored placeholder div shown until image loads using onError fallback and Tailwind bg-primary/10), name (translated via i18n based on current language), price formatted as 'X F CFA', an add-to-cart button (+/- quantity if already in cart). Uses Framer Motion `whileTap` scale for tactile feedback. Shows a 'Populaire' badge (red) if product.orderCount > 50.",
     "Create src/components/client/CartDrawer.tsx: slide-in drawer (Framer Motion x animation from right, full-height on mobile). Lists cart items with quantity controls and remove button. Shows subtotal. 'Passer la commande' button opens a confirmation modal asking for client first name (clientPrenom). On confirm, calls createOrder() with tableId, sessionId, clientPrenom, items, statut PENDING, createdAt serverTimestamp(). After success, clears cart and navigates to /table/:tableId?tracking=sessionId to show OrderTracking. If cart is empty show empty-state illustration text.",
@@ -24,5 +24,5 @@
     "cd c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE && npm run build"
   ],
   "blocked_reason": null,
-  "findings": ""
+  "findings": "All 8 steps implemented. MenuCard: lazy image with bg-primary/10 placeholder, Populaire badge (orderCount>50), framer-motion whileTap. CartDrawer: Framer Motion slide-in from right, quantity controls, confirmation modal with clientPrenom input, navigates to /table/:tableId/tracking. OrderStatus: compact banner showing Badge + item summary. CountdownTimer: SVG circle strokeDashoffset animated via Framer Motion, turns orange at <60s, pulsing dot. TablePage: table lookup, active order banner with OrderStatus/CountdownTimer, category tabs (horizontal scroll), search, product grid (orderCount DESC), animated floating cart FAB. OrderTracking: status stepper, countdown, celebration for READY, back-to-menu resets sessionId. cartStore: resetSession() added. App.tsx: /table/:tableId/tracking route added. Fixed pre-existing lucide-react broken install (missing .js icon files) via npm cache clean + reinstall."
 }
