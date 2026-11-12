@@ -106,7 +106,17 @@
     },
     "number": "Table n°",
     "capacity": "Capacité",
-    "scan_qr": "Scanner le QR code"
+    "scan_qr": "Scanner le QR code",
+    "form": {
+      "number": "Numéro de table",
+      "zone": "Zone",
+      "capacity": "Capacité"
+    },
+    "zones": {
+      "salle": "Salle",
+      "paillote": "Paillote",
+      "jardin": "Jardin"
+    }
   },
   "admin": {
     "dashboard": {
@@ -114,7 +124,12 @@
       "total_orders": "Commandes totales",
       "revenue_today": "Chiffre du jour",
       "active_tables": "Tables actives",
-      "avg_prep_time": "Temps moyen de préparation"
+      "avg_prep_time": "Temps moyen de préparation",
+      "refresh": "Actualiser",
+      "ordersToday": "Commandes aujourd'hui",
+      "revenueToday": "Chiffre d'affaires",
+      "activeTables": "Tables actives",
+      "totalProducts": "Produits au menu"
     },
     "menu": {
       "title": "Gestion du Menu",
@@ -129,7 +144,14 @@
       "desc_en": "Description (EN)",
       "price": "Prix (FCFA)",
       "available": "Disponible",
-      "image_url": "URL de l'image"
+      "image_url": "URL de l'image",
+      "add": "Ajouter un produit",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "search": "Rechercher un produit…",
+      "importCsv": "Importer CSV",
+      "seed": "Lancer le Seed",
+      "unavailable": "Indisponible"
     },
     "tables": {
       "title": "Gestion des Tables",
@@ -140,7 +162,12 @@
       "zone": "Zone",
       "number": "Numéro",
       "capacity": "Capacité",
-      "status": "Statut"
+      "status": "Statut",
+      "add": "Ajouter une table",
+      "generateQr": "Générer QR",
+      "reset": "Remettre à libre",
+      "download": "Télécharger PNG",
+      "copyLink": "Copier le lien"
     },
     "users": {
       "title": "Gestion des Utilisateurs",
@@ -151,17 +178,22 @@
       "name": "Nom",
       "email": "Email",
       "role": "Rôle",
-      "active": "Actif"
+      "active": "Actif",
+      "add": "Ajouter un utilisateur",
+      "inactive": "Inactif"
     },
     "orders": {
       "title": "Historique des Commandes",
-      "export": "Exporter"
+      "export": "Exporter CSV"
     },
     "reports": {
       "title": "Rapports",
       "top_products": "Plats les plus commandés",
       "orders_by_zone": "Commandes par zone",
-      "revenue_by_day": "Chiffre d'affaires par jour"
+      "revenue_by_day": "Chiffre d'affaires par jour",
+      "export": "Exporter PDF",
+      "last7days": "7 derniers jours",
+      "last30days": "30 derniers jours"
     },
     "sidebar": {
       "dashboard": "Tableau de bord",
@@ -170,6 +202,12 @@
       "users": "Utilisateurs",
       "orders": "Commandes",
       "reports": "Rapports"
+    },
+    "seed": {
+      "menu": "Seed Menu Togolais",
+      "accounts": "Créer comptes démo",
+      "running": "En cours…",
+      "done": "Terminé !"
     }
   },
   "login": {
@@ -244,5 +282,27 @@
     "filter": "Filtrer",
     "all": "Tous",
     "none": "Aucun"
+  },
+  "product": {
+    "form": {
+      "nomFr": "Nom (Français)",
+      "nomEn": "Nom (Anglais)",
+      "descFr": "Description (Français)",
+      "descEn": "Description (Anglais)",
+      "price": "Prix (FCFA)",
+      "category": "Catégorie",
+      "image": "Image (URL ou fichier)",
+      "available": "Disponible",
+      "tags": "Tags"
+    }
+  },
+  "user": {
+    "form": {
+      "name": "Nom complet",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "role": "Rôle",
+      "active": "Actif"
+    }
   }
 }

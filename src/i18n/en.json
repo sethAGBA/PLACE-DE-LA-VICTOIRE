@@ -106,7 +106,17 @@
     },
     "number": "Table No.",
     "capacity": "Capacity",
-    "scan_qr": "Scan QR code"
+    "scan_qr": "Scan QR code",
+    "form": {
+      "number": "Table number",
+      "zone": "Zone",
+      "capacity": "Capacity"
+    },
+    "zones": {
+      "salle": "Indoor",
+      "paillote": "Paillote",
+      "jardin": "Garden"
+    }
   },
   "admin": {
     "dashboard": {
@@ -114,7 +124,12 @@
       "total_orders": "Total Orders",
       "revenue_today": "Today's Revenue",
       "active_tables": "Active Tables",
-      "avg_prep_time": "Avg. Prep Time"
+      "avg_prep_time": "Avg. Prep Time",
+      "refresh": "Refresh",
+      "ordersToday": "Orders Today",
+      "revenueToday": "Revenue Today",
+      "activeTables": "Active Tables",
+      "totalProducts": "Total Products"
     },
     "menu": {
       "title": "Menu Management",
@@ -129,7 +144,14 @@
       "desc_en": "Description (EN)",
       "price": "Price (CFA)",
       "available": "Available",
-      "image_url": "Image URL"
+      "image_url": "Image URL",
+      "add": "Add Product",
+      "edit": "Edit",
+      "delete": "Delete",
+      "search": "Search a product…",
+      "importCsv": "Import CSV",
+      "seed": "Run Seed",
+      "unavailable": "Unavailable"
     },
     "tables": {
       "title": "Table Management",
@@ -140,7 +162,12 @@
       "zone": "Zone",
       "number": "Number",
       "capacity": "Capacity",
-      "status": "Status"
+      "status": "Status",
+      "add": "Add Table",
+      "generateQr": "Generate QR",
+      "reset": "Reset to Available",
+      "download": "Download PNG",
+      "copyLink": "Copy Link"
     },
     "users": {
       "title": "User Management",
@@ -151,17 +178,22 @@
       "name": "Name",
       "email": "Email",
       "role": "Role",
-      "active": "Active"
+      "active": "Active",
+      "add": "Add User",
+      "inactive": "Inactive"
     },
     "orders": {
       "title": "Order History",
-      "export": "Export"
+      "export": "Export CSV"
     },
     "reports": {
       "title": "Reports",
       "top_products": "Top Ordered Dishes",
       "orders_by_zone": "Orders by Zone",
-      "revenue_by_day": "Revenue by Day"
+      "revenue_by_day": "Revenue by Day",
+      "export": "Export PDF",
+      "last7days": "Last 7 days",
+      "last30days": "Last 30 days"
     },
     "sidebar": {
       "dashboard": "Dashboard",
@@ -170,6 +202,12 @@
       "users": "Users",
       "orders": "Orders",
       "reports": "Reports"
+    },
+    "seed": {
+      "menu": "Seed Togolese Menu",
+      "accounts": "Create Demo Accounts",
+      "running": "Running…",
+      "done": "Done!"
     }
   },
   "login": {
@@ -244,5 +282,27 @@
     "filter": "Filter",
     "all": "All",
     "none": "None"
+  },
+  "product": {
+    "form": {
+      "nomFr": "Name (French)",
+      "nomEn": "Name (English)",
+      "descFr": "Description (French)",
+      "descEn": "Description (English)",
+      "price": "Price (CFA)",
+      "category": "Category",
+      "image": "Image (URL or file)",
+      "available": "Available",
+      "tags": "Tags"
+    }
+  },
+  "user": {
+    "form": {
+      "name": "Full name",
+      "email": "Email address",
+      "password": "Password",
+      "role": "Role",
+      "active": "Active"
+    }
   }
 }

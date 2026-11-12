@@ -1,14 +1,16 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useState } from 'react';
 import {
   BrowserRouter,
   Routes,
   Route,
   Navigate,
   Outlet,
+  NavLink,
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/authStore';
 import { Spinner } from '@/components/ui/Spinner';
+import { Menu, X } from 'lucide-react';
 import type { UserRole } from '@/types';
 
 // ─── Lazy-loaded pages ────────────────────────────────────────────────────────
@@ -68,46 +70,92 @@ function ProtectedRoute({ role }: ProtectedRouteProps) {
 function AdminLayout() {
   const { t } = useTranslation();
   const { logout } = useAuthStore();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   const navItems = [
-    { to: '/admin', label: t('admin.sidebar.dashboard') },
-    { to: '/admin/menu', label: t('admin.sidebar.menu') },
-    { to: '/admin/tables', label: t('admin.sidebar.tables') },
-    { to: '/admin/users', label: t('admin.sidebar.users') },
-    { to: '/admin/orders', label: t('admin.sidebar.orders') },
-    { to: '/admin/reports', label: t('admin.sidebar.reports') },
+    { to: '/admin', label: t('admin.sidebar.dashboard'), end: true },
+    { to: '/admin/menu', label: t('admin.sidebar.menu'), end: false },
+    { to: '/admin/tables', label: t('admin.sidebar.tables'), end: false },
+    { to: '/admin/users', label: t('admin.sidebar.users'), end: false },
+    { to: '/admin/orders', label: t('admin.sidebar.orders'), end: false },
+    { to: '/admin/reports', label: t('admin.sidebar.reports'), end: false },
   ];
+
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    [
+      'rounded-lg px-3 py-2 text-sm font-medium transition',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+      isActive
+        ? 'bg-orange-50 text-primary'
+        : 'text-gray-700 hover:bg-orange-50 hover:text-primary',
+    ].join(' ');
+
+  const SidebarContent = () => (
+    <>
+      <div className="border-b px-6 py-4">
+        <span className="font-bold text-primary">{t('app.name')}</span>
+      </div>
+      <nav
+        className="flex flex-1 flex-col gap-1 p-4"
+        aria-label={t('admin.sidebar.dashboard')}
+      >
+        {navItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            end={item.end}
+            className={navLinkClass}
+            onClick={() => setMobileOpen(false)}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
+      <div className="border-t p-4">
+        <button
+          onClick={() => void logout()}
+          className="w-full rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+        >
+          {t('nav.logout')}
+        </button>
+      </div>
+    </>
+  );
 
   return (
     <div className="flex min-h-screen bg-background">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <aside className="hidden w-56 flex-col bg-white shadow-sm md:flex">
-        <div className="border-b px-6 py-4">
-          <span className="font-bold text-primary">{t('app.name')}</span>
-        </div>
-        <nav className="flex flex-1 flex-col gap-1 p-4" aria-label={t('admin.sidebar.dashboard')}>
-          {navItems.map((item) => (
-            <a
-              key={item.to}
-              href={item.to}
-              className="rounded-lg px-3 py-2 text-sm font-medium text-gray-700 transition hover:bg-orange-50 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              {item.label}
-            </a>
-          ))}
-        </nav>
-        <div className="border-t p-4">
-          <button
-            onClick={() => void logout()}
-            className="w-full rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
-          >
-            {t('nav.logout')}
-          </button>
-        </div>
+        <SidebarContent />
       </aside>
 
+      {/* Mobile header */}
+      <div className="fixed inset-x-0 top-0 z-30 flex items-center justify-between bg-white px-4 py-3 shadow-sm md:hidden">
+        <span className="font-bold text-primary">{t('app.name')}</span>
+        <button
+          onClick={() => setMobileOpen((o) => !o)}
+          aria-label="Menu"
+          className="rounded-lg p-1.5 text-gray-600 hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        >
+          {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      {/* Mobile drawer */}
+      {mobileOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            onClick={() => setMobileOpen(false)}
+          />
+          <aside className="fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-white shadow-xl md:hidden">
+            <SidebarContent />
+          </aside>
+        </>
+      )}
+
       {/* Main content */}
-      <main className="flex-1 overflow-y-auto p-4 md:p-6">
+      <main className="flex-1 overflow-y-auto p-4 pt-16 md:p-6 md:pt-6">
         <Outlet />
       </main>
     </div>
