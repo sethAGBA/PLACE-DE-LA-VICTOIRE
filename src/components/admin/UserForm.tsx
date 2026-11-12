@@ -46,9 +46,12 @@ export function UserForm({ initial, onSuccess, onCancel }: UserFormProps) {
       throw new Error('Le mot de passe doit contenir au moins 6 caractères.');
 
     // Create via secondary app to avoid signing out the current admin
+    // Always delete any stale instance first to avoid concurrent-submission races
     const existing = getApps().find((a) => a.name === SECONDARY_APP_NAME);
-    const secondaryApp =
-      existing ?? initializeApp(firebaseConfig, SECONDARY_APP_NAME);
+    if (existing) {
+      await deleteApp(existing);
+    }
+    const secondaryApp = initializeApp(firebaseConfig, SECONDARY_APP_NAME);
     const secondaryAuth = getAuth(secondaryApp);
 
     const credential = await createUserWithEmailAndPassword(
@@ -191,10 +194,10 @@ export function UserForm({ initial, onSuccess, onCancel }: UserFormProps) {
             onClick={() => void handlePasswordReset()}
             className="text-xs text-primary underline hover:text-orange-700"
           >
-            Envoyer un e-mail de réinitialisation du mot de passe
+            {t('user.form.resetPassword')}
           </button>
           {resetSent && (
-            <p className="mt-1 text-xs text-green-600">E-mail envoyé !</p>
+            <p className="mt-1 text-xs text-green-600">{t('user.form.resetSent')}</p>
           )}
         </div>
       )}

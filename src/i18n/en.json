@@ -129,7 +129,12 @@
       "ordersToday": "Orders Today",
       "revenueToday": "Revenue Today",
       "activeTables": "Active Tables",
-      "totalProducts": "Total Products"
+      "totalProducts": "Total Products",
+      "chart_orders_by_hour": "Orders by hour (today)",
+      "chart_orders_by_status": "Orders by status (last 7 days)",
+      "no_orders_period": "No orders in this period.",
+      "click_refresh": "Click Refresh to load data.",
+      "config_zone_title": "Initial configuration zone"
     },
     "menu": {
       "title": "Menu Management",
@@ -193,7 +198,9 @@
       "revenue_by_day": "Revenue by Day",
       "export": "Export PDF",
       "last7days": "Last 7 days",
-      "last30days": "Last 30 days"
+      "last30days": "Last 30 days",
+      "chart_orders_by_hour": "Orders by hour of day ({{range}}d)",
+      "no_data": "No data available."
     },
     "sidebar": {
       "dashboard": "Dashboard",
@@ -302,7 +309,9 @@
       "email": "Email address",
       "password": "Password",
       "role": "Role",
-      "active": "Active"
+      "active": "Active",
+      "resetPassword": "Send password reset email",
+      "resetSent": "Email sent!"
     }
   }
 }

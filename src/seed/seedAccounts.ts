@@ -17,29 +17,47 @@ interface DemoAccount {
   role: UserRole;
 }
 
-const DEMO_ACCOUNTS: DemoAccount[] = [
-  {
-    email: 'admin@placelavictoire.com',
-    password: 'Admin2024!',
-    nom: 'Administrateur',
-    role: UserRole.admin,
-  },
-  {
-    email: 'serveur@placelavictoire.com',
-    password: 'Serveur2024!',
-    nom: 'Serveur Demo',
-    role: UserRole.serveur,
-  },
-  {
-    email: 'cuisine@placelavictoire.com',
-    password: 'Cuisine2024!',
-    nom: 'Cuisine Demo',
-    role: UserRole.cuisine,
-  },
-];
+// Passwords are read from environment variables so they are never embedded in
+// the production bundle as plaintext.  Set these in .env.local for local dev;
+// they are intentionally absent from .env (which is committed to source control).
+const adminPwd = import.meta.env.VITE_SEED_ADMIN_PASSWORD as string | undefined;
+const serveurPwd = import.meta.env.VITE_SEED_SERVEUR_PASSWORD as string | undefined;
+const cuisinePwd = import.meta.env.VITE_SEED_CUISINE_PASSWORD as string | undefined;
+
+function getDemoAccounts(): DemoAccount[] {
+  if (!adminPwd || !serveurPwd || !cuisinePwd) {
+    throw new Error(
+      'Seed passwords are not set. ' +
+        'Add VITE_SEED_ADMIN_PASSWORD, VITE_SEED_SERVEUR_PASSWORD, and ' +
+        'VITE_SEED_CUISINE_PASSWORD to your .env.local file before running the seed.'
+    );
+  }
+  return [
+    {
+      email: 'admin@placelavictoire.com',
+      password: adminPwd,
+      nom: 'Administrateur',
+      role: UserRole.admin,
+    },
+    {
+      email: 'serveur@placelavictoire.com',
+      password: serveurPwd,
+      nom: 'Serveur Demo',
+      role: UserRole.serveur,
+    },
+    {
+      email: 'cuisine@placelavictoire.com',
+      password: cuisinePwd,
+      nom: 'Cuisine Demo',
+      role: UserRole.cuisine,
+    },
+  ];
+}
 
 export async function seedAccounts(): Promise<void> {
-  for (const account of DEMO_ACCOUNTS) {
+  const accounts = getDemoAccounts(); // throws if env vars are missing
+
+  for (const account of accounts) {
     // Always use a fresh secondary app instance
     const existing = getApps().find((a) => a.name === SEED_APP_NAME);
     if (existing) {

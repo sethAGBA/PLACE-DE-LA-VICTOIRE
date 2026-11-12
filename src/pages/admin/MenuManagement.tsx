@@ -349,8 +349,8 @@ export default function MenuManagement() {
                         <td className="px-4 py-2 text-xs text-gray-400">{getCategoryName(p.categorieId)}</td>
                         <td className="px-4 py-2 text-right">
                           <div className="flex justify-end gap-1">
-                            <button onClick={() => setEditProduct(p)} className="rounded-lg p-1.5 text-gray-500 hover:text-primary"><Pencil size={14} /></button>
-                            <button onClick={() => setDeleteTarget(p)} className="rounded-lg p-1.5 text-gray-500 hover:text-red-600"><Trash2 size={14} /></button>
+                            <button onClick={() => setEditProduct(p)} className="rounded-lg p-1.5 text-gray-500 hover:text-primary" aria-label={t('common.edit')}><Pencil size={14} /></button>
+                            <button onClick={() => setDeleteTarget(p)} className="rounded-lg p-1.5 text-gray-500 hover:text-red-600" aria-label={t('common.delete')}><Trash2 size={14} /></button>
                           </div>
                         </td>
                       </tr>

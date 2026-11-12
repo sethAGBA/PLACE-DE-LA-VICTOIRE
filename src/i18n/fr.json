@@ -129,7 +129,12 @@
       "ordersToday": "Commandes aujourd'hui",
       "revenueToday": "Chiffre d'affaires",
       "activeTables": "Tables actives",
-      "totalProducts": "Produits au menu"
+      "totalProducts": "Produits au menu",
+      "chart_orders_by_hour": "Commandes par heure (aujourd'hui)",
+      "chart_orders_by_status": "Commandes par statut (7 derniers jours)",
+      "no_orders_period": "Aucune commande sur cette période.",
+      "click_refresh": "Cliquez sur Actualiser pour charger les données.",
+      "config_zone_title": "Zone de configuration initiale"
     },
     "menu": {
       "title": "Gestion du Menu",
@@ -193,7 +198,9 @@
       "revenue_by_day": "Chiffre d'affaires par jour",
       "export": "Exporter PDF",
       "last7days": "7 derniers jours",
-      "last30days": "30 derniers jours"
+      "last30days": "30 derniers jours",
+      "chart_orders_by_hour": "Commandes par heure de la journée ({{range}}j)",
+      "no_data": "Aucune donnée disponible."
     },
     "sidebar": {
       "dashboard": "Tableau de bord",
@@ -302,7 +309,9 @@
       "email": "Adresse e-mail",
       "password": "Mot de passe",
       "role": "Rôle",
-      "active": "Actif"
+      "active": "Actif",
+      "resetPassword": "Envoyer un e-mail de réinitialisation du mot de passe",
+      "resetSent": "E-mail envoyé !"
     }
   }
 }

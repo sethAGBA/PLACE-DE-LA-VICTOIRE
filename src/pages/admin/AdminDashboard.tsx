@@ -246,7 +246,7 @@ export default function AdminDashboard() {
             {/* Orders per hour */}
             <div className="rounded-xl bg-white p-5 shadow-sm">
               <h2 className="mb-4 text-sm font-semibold text-gray-700">
-                Commandes par heure (aujourd'hui)
+                {t('admin.dashboard.chart_orders_by_hour')}
               </h2>
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={data.ordersByHour} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
@@ -266,11 +266,11 @@ export default function AdminDashboard() {
             {/* Orders by status */}
             <div className="rounded-xl bg-white p-5 shadow-sm">
               <h2 className="mb-4 text-sm font-semibold text-gray-700">
-                Commandes par statut (7 derniers jours)
+                {t('admin.dashboard.chart_orders_by_status')}
               </h2>
               {data.ordersByStatus.length === 0 ? (
                 <p className="py-8 text-center text-sm text-gray-400">
-                  Aucune commande sur cette période.
+                  {t('admin.dashboard.no_orders_period')}
                 </p>
               ) : (
                 <ResponsiveContainer width="100%" height={220}>
@@ -302,13 +302,13 @@ export default function AdminDashboard() {
           </div>
         </>
       ) : (
-        <p className="text-sm text-gray-500">Cliquez sur Actualiser pour charger les données.</p>
+        <p className="text-sm text-gray-500">{t('admin.dashboard.click_refresh')}</p>
       )}
 
       {/* Seed section */}
       <div className="rounded-xl border border-dashed border-orange-300 bg-orange-50 p-5">
         <h2 className="mb-3 text-sm font-semibold text-orange-800">
-          Zone de configuration initiale
+          {t('admin.dashboard.config_zone_title')}
         </h2>
         <div className="flex flex-wrap gap-3">
           <Button

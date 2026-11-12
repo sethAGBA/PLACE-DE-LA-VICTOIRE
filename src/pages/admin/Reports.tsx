@@ -211,7 +211,7 @@ export default function Reports() {
             </h2>
             {topProducts.length === 0 ? (
               <p className="py-4 text-center text-sm text-gray-400">
-                Aucune donnée disponible.
+                {t('admin.reports.no_data')}
               </p>
             ) : (
               <ResponsiveContainer width="100%" height={Math.max(200, topProducts.length * 36)}>
@@ -243,7 +243,7 @@ export default function Reports() {
           {/* Orders by hour */}
           <div className="rounded-xl bg-white p-5 shadow-sm">
             <h2 className="mb-4 text-sm font-semibold text-gray-700">
-              Commandes par heure de la journée ({range}j)
+              {t('admin.reports.chart_orders_by_hour', { range })}
             </h2>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart
