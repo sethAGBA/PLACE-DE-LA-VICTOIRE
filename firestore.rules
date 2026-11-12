@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: get role from /users/{uid}
+    function getUserRole(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.role;
+    }
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function hasRole(role) {
+      return isAuthenticated() && getUserRole(request.auth.uid) == role;
+    }
+
+    function isStaff() {
+      return isAuthenticated() && (
+        getUserRole(request.auth.uid) == 'admin' ||
+        getUserRole(request.auth.uid) == 'serveur' ||
+        getUserRole(request.auth.uid) == 'cuisine'
+      );
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    // Tables: public read, admin write
+    match /tables/{tableId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Categories: public read, admin write
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Products (menu items): public read, admin write
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Orders: clients (unauthenticated) can create; staff can read/write
+    match /orders/{orderId} {
+      allow create: if true;
+      allow read, update, delete: if isStaff();
+    }
+
+    // Users: authenticated users can read own doc; admin can read/write all
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}

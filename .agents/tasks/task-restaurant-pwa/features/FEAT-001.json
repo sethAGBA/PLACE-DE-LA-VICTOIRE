@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-001",
+  "type": "chore",
+  "description": "Project scaffolding: install all npm dependencies with pinned versions, create all config files (Vite, TypeScript, Tailwind, PostCSS, Firebase, PWA manifest, .env.example), and verify the empty project builds with zero TypeScript errors. This is the foundation every other FEAT depends on.",
+  "status": "completed",
+  "steps": [
+    "Create package.json at workspace root with the following exact pinned dependencies: react@18.3.1, react-dom@18.3.1, react-router-dom@6.26.2, firebase@10.14.1, zustand@5.0.0, react-i18next@15.1.0, i18next@23.16.4, framer-motion@11.11.9, lucide-react@0.460.0, recharts@2.13.3, qrcode.react@4.1.0. DevDependencies: typescript@5.6.3, vite@5.4.10, @vitejs/plugin-react@4.3.3, vite-plugin-pwa@0.21.1, workbox-window@7.3.0, tailwindcss@3.4.14, postcss@8.4.47, autoprefixer@10.4.20, @types/react@18.3.12, @types/react-dom@18.3.1. Scripts: dev, build, preview, lint.",
+    "Create tsconfig.json at root: target ES2020, module ESNext, moduleResolution Bundler, strict true, jsx react-jsx, baseUrl '.', paths alias '@/*': ['src/*']. Include src/**/*.",
+    "Create vite.config.ts: import React plugin and VitePWA plugin. Configure VitePWA with registerType 'autoUpdate', workbox.globPatterns ['**/*.{js,css,html,ico,png,svg,webp}'], workbox.runtimeCaching for Firebase Storage images (CacheFirst, max 50 entries, 30 days), manifest object with name 'Place de la Victoire', short_name 'PdV', theme_color '#D4580A', background_color '#FFF8F0', display 'standalone', icons array referencing public/icons/pwa-192x192.png and public/pwa-512x512.png. Also configure resolve.alias '@' → src/.",
+    "Create tailwind.config.js: content ['./index.html','./src/**/*.{ts,tsx}']. Extend theme with colors: primary '#D4580A', secondary '#2D7D32', background '#FFF8F0'. Add Inter font via fontFamily.",
+    "Create postcss.config.js: plugins tailwindcss and autoprefixer.",
+    "Create firebase.json: hosting public 'dist', rewrites all to index.html, ignore ['.git','**/.*','**/node_modules/**']. Add firestore section referencing rules and indexes files.",
+    "Create firestore.rules: allow read of /tables, /categories, /products to any authenticated or unauthenticated user (public menu). Allow write to /orders by any user (clients are unauthenticated). Allow read/write of /orders by authenticated users with role serveur/cuisine/admin (checked via custom claims or Firestore /users doc). Allow full /users, /tables, /categories, /products write only to admin role. NOTE: use request.auth != null and get() pattern to check user role from /users/{uid}.role field.",
+    "Create firestore.indexes.json: composite index on orders collection — fields: tableId ASC, createdAt DESC. And: statut ASC, createdAt DESC.",
+    "Create public/manifest.json with PWA metadata (name, short_name, icons, theme_color, background_color, display standalone, start_url '/', scope '/').",
+    "Create placeholder PWA icons: public/icons/pwa-192x192.png and public/icons/pwa-512x512.png — use a simple 1x1 pixel PNG data URI written as a binary file, OR note in findings that the coder should place real 192×192 and 512×512 PNG icon files there (the build will warn but not fail without them if the manifest references them). Create the public/icons/ directory and add a README.txt noting icons must be replaced.",
+    "Create .env.example listing all required VITE_ env vars: VITE_FIREBASE_API_KEY, VITE_FIREBASE_AUTH_DOMAIN, VITE_FIREBASE_PROJECT_ID, VITE_FIREBASE_STORAGE_BUCKET, VITE_FIREBASE_MESSAGING_SENDER_ID, VITE_FIREBASE_APP_ID.",
+    "Create index.html in root: standard Vite HTML shell referencing /src/main.tsx, with <link rel='manifest' href='/manifest.json'>, <meta name='theme-color' content='#D4580A'>, Google Fonts import for Inter (weights 400, 500, 600, 700), and viewport meta.",
+    "Run `npm install` to install all dependencies.",
+    "Create a minimal src/main.tsx (renders <div>PWA OK</div>) and src/App.tsx (export default () => <></>) solely to allow the build to compile. These will be overwritten in FEAT-002."
+  ],
+  "acceptance_criteria": [
+    "Running `npm install` exits 0 with no peer-dependency errors",
+    "Running `npm run build` exits 0 with no TypeScript compilation errors",
+    "dist/ directory is created containing index.html, assets/, and sw.js (Workbox service worker)",
+    "No TypeScript `any` type errors reported"
+  ],
+  "verification": [
+    "cd c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE && npm install",
+    "cd c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE && npm run build"
+  ],
+  "blocked_reason": null,
+  "findings": "1. Build verified: `npm run build` exits 0 with dist/ containing index.html, assets/, sw.js (Workbox), and manifest.webmanifest. Zero TypeScript errors. 2. IMPORTANT: caniuse-lite v1.0.30001826 from initial `npm install` was corrupted (missing dist/lib/ directory). Fixed by running `npm cache clean --force`, removing node_modules/caniuse-lite manually, and reinstalling. Later FEATs should run `npm install` and if the build fails with 'Cannot find module ../lib/statuses', repeat this fix. 3. PWA icon files in public/icons/ are 1x1 pixel placeholders — must be replaced with real 192x192 and 512x512 PNG icons before production. See public/icons/README.txt. 4. .env file must be created from .env.example with real Firebase credentials before FEAT-002+ can test Firebase connectivity. 5. src/main.tsx and src/App.tsx are minimal stubs to be overwritten in FEAT-002. 6. Node.js v24.14.1 is installed on this machine."
+}

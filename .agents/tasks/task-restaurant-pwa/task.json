@@ -1,0 +1,7 @@
+{
+  "task_id": "task-restaurant-pwa",
+  "task_description": "Build a complete bilingual (FR/EN) PWA for restaurant 'Place de la Victoire' in Kara, Togo — React + TypeScript + Vite + Tailwind + Firebase (Firestore, Auth, Storage, Hosting). Roles: admin, serveur, cuisine, client. QR-code table identification. Real-time order flow with animated countdown. Offline-partial via Vite PWA Plugin (Workbox).",
+  "status": "pending",
+  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003", "FEAT-004", "FEAT-005"],
+  "blocked_reason": null
+}
