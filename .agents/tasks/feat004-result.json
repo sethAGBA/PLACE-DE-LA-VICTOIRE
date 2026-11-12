@@ -1,4 +1,47 @@
 {
-  "status": "done",
-  "errors": []
+  "buildStatus": "success",
+  "commit": "f374934",
+  "findings_resolved": [
+    {
+      "id": 1,
+      "label": "Missing animate-pulse-ring class",
+      "severity": "HIGH",
+      "resolution": "Added @keyframes pulse-ring and .animate-pulse-ring utility class to src/index.css inside @layer utilities."
+    },
+    {
+      "id": 2,
+      "label": "validatedAt overwritten at prep start",
+      "severity": "HIGH",
+      "resolution": "Added prepStartedAt?: Timestamp to Order interface in src/types/index.ts. TicketCard.handleStart now writes prepStartedAt: Timestamp.now() instead of overwriting validatedAt. Countdown useEffect reads order.prepStartedAt ?? order.validatedAt as the anchor."
+    },
+    {
+      "id": 3,
+      "label": "orderCount never incremented",
+      "severity": "HIGH",
+      "resolution": "OrderActions.handleValidate now calls incrementProductOrderCount(item.productId, item.quantite) for each item in order.items after successfully setting status to VALIDATED."
+    },
+    {
+      "id": 4,
+      "label": "Hardcoded Tables heading",
+      "severity": "MEDIUM",
+      "resolution": "Added table.section_title key to both fr.json (\"Tables\") and en.json (\"Tables\"). ServeurDashboard now renders t('table.section_title') instead of the hardcoded literal."
+    },
+    {
+      "id": 5,
+      "label": "Catch-all maps every failure to wrong-credentials message",
+      "severity": "MEDIUM",
+      "resolution": "LoginPage.handleSubmit catch block now checks err.message === 'no_user_doc' and shows t('auth.error_generic') for that case; all other errors (wrong credentials, Firebase auth errors) show t('auth.error_invalid')."
+    },
+    {
+      "id": 6,
+      "label": "Logout buttons missing aria-label",
+      "severity": "LOW",
+      "resolution": "Added aria-label={t('nav.logout')} to the logout <button> in both ServeurDashboard and CuisineDashboard."
+    }
+  ],
+  "buildOutput": {
+    "modules_transformed": 2814,
+    "typescript_errors": 0,
+    "built_in_seconds": 7.38
+  }
 }
