@@ -1,0 +1,28 @@
+{
+  "id": "FEAT-003",
+  "type": "feat",
+  "description": "Client-facing experience: the QR-code table entry flow, menu browsing page, cart, order placement, and the animated countdown order-tracking page. This is the most user-visible part of the app. Depends on FEAT-002 (types, stores, hooks, Firebase, i18n, UI primitives must exist).",
+  "status": "pending",
+  "steps": [
+    "Create src/components/client/MenuCard.tsx: product card displaying image (lazy-loaded via loading='lazy', with a colored placeholder div shown until image loads using onError fallback and Tailwind bg-primary/10), name (translated via i18n based on current language), price formatted as 'X F CFA', an add-to-cart button (+/- quantity if already in cart). Uses Framer Motion `whileTap` scale for tactile feedback. Shows a 'Populaire' badge (red) if product.orderCount > 50.",
+    "Create src/components/client/CartDrawer.tsx: slide-in drawer (Framer Motion x animation from right, full-height on mobile). Lists cart items with quantity controls and remove button. Shows subtotal. 'Passer la commande' button opens a confirmation modal asking for client first name (clientPrenom). On confirm, calls createOrder() with tableId, sessionId, clientPrenom, items, statut PENDING, createdAt serverTimestamp(). After success, clears cart and navigates to /table/:tableId?tracking=sessionId to show OrderTracking. If cart is empty show empty-state illustration text.",
+    "Create src/components/client/OrderStatus.tsx: compact status display component for active orders. Shows order status as a colored Badge, the clientPrenom, and item summary. Used inside TablePage to show currently active order if one exists for this sessionId.",
+    "Create src/components/client/CountdownTimer.tsx: animated countdown component. Props: estimatedMinutes (number), startedAt (Timestamp). Internally computes remaining seconds = estimatedMinutes*60 - elapsed. Renders a circular SVG progress ring (strokeDashoffset animation via Framer Motion `animate` with easing 'linear'). Center text shows MM:SS remaining. When time < 60s the ring color changes to orange (#D4580A). When time hits 0 it shows 'Prêt bientôt !' text. Component also shows a Framer Motion pulsing dot indicator. Passes accessibility label for screen readers.",
+    "Create src/pages/client/TablePage.tsx: main client page at /table/:tableId. On mount: reads tableId from URL params, checks if table exists in Firestore (getTableById), if not found shows error page. Sets tableId in cartStore. If table exists, renders: 1) Top bar with restaurant name, table number/zone badge, language switcher, 2) If this sessionId has an active order (PENDING..SERVED) show <OrderStatus> and optionally <CountdownTimer> (if statut is IN_PREPARATION), 3) Otherwise show menu: category tabs at top (horizontal scroll), product grid below filtered by active category, search bar (filters by product name in current language), 4) Floating cart button showing item count badge (Framer Motion scale on count change), 5) <CartDrawer> (controlled by local state). Menu categories shown in ordre ASC. Within each category products shown by orderCount DESC (popular first). Category tabs auto-scroll to highlight active one. If no products found in search show empty-state message.",
+    "Create src/pages/client/OrderTracking.tsx: order tracking page displayed after order submission. Reads sessionId from query param or cartStore. Subscribes via useOrders (filtered to sessionId) to get the live order. Displays: 1) Order status timeline (vertical stepper showing PENDING → VALIDATED → IN_PREPARATION → READY → SERVED steps, current step highlighted), 2) If status is IN_PREPARATION and estimatedMinutes is set: <CountdownTimer>, 3) If status is READY: animated celebration (Framer Motion confetti-like particles or simple bouncing ✓ icon) + 'Votre commande est prête !' text, 4) If status is SERVED: 'Bon appétit !' text with animated emoji, 5) If status is REJECTED: rejection reason displayed in red, 6) Order items list with prices and total. Page auto-updates in real-time via onSnapshot. User can navigate back to menu (creates a new session).",
+    "Ensure TablePage and OrderTracking handle the 'shared table' constraint: multiple sessionIds can be active on the same tableId simultaneously. TablePage only shows the order for the current sessionId (from cartStore.sessionId). It does NOT show other clients' orders. This is by design — sessionId isolation is the privacy boundary.",
+    "Wire up navigation: CartDrawer on successful order creation navigates to OrderTracking. OrderTracking 'Retour au menu' button navigates to /table/:tableId and calls cartStore.clearCart() plus generates a new sessionId (cartStore has a resetSession() action that calls crypto.randomUUID() and stores in sessionStorage)."
+  ],
+  "acceptance_criteria": [
+    "npm run build exits 0",
+    "Navigating to /table/test-table-1 renders without console errors (table not found error state is acceptable)",
+    "CartDrawer opens and closes with smooth Framer Motion animation",
+    "CountdownTimer renders correctly given props estimatedMinutes=15 and a past Timestamp",
+    "MenuCard shows the placeholder color div before image loads"
+  ],
+  "verification": [
+    "cd c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE && npm run build"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

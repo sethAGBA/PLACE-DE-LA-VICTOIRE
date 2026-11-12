@@ -1,0 +1,34 @@
+{
+  "id": "FEAT-005",
+  "type": "feat",
+  "description": "Admin dashboard: all six admin pages (overview, menu management, table management with QR codes, user management, order history, reports with charts). This FEAT is independent of FEAT-003 and FEAT-004 — admin components do not import client or serveur/cuisine components. Depends on FEAT-002.",
+  "status": "pending",
+  "steps": [
+    "Create src/components/admin/StatsCard.tsx: stat widget card with icon (Lucide), title, value, optional trend indicator (up/down arrow with %). Used on AdminDashboard overview.",
+    "Create src/components/admin/ProductForm.tsx: form to create or edit a product. Fields: nom_fr, nom_en, desc_fr, desc_en, prix (number), categorieId (select from loaded categories), imageUrl (text input + file upload button that uploads to Firebase Storage at products/{id}.jpg and sets the URL), disponible (toggle). Validation: required fields, prix > 0. On submit calls addDoc or updateDoc on /products. Resets form on success.",
+    "Create src/components/admin/TableForm.tsx: form to create a table. Fields: numero (number), zone (select: salle/paillote/jardin), capacite (number, default 4). On submit calls addDoc on /tables. QR code is generated after creation.",
+    "Create src/components/admin/UserForm.tsx: form to create a staff user. Fields: nom, email, password (create only), role (select: serveur/cuisine/admin), actif (toggle). On create calls Firebase Admin REST API — IMPORTANT: creating Firebase Auth users requires the Admin SDK which runs server-side. Since this is a purely client-side app, use the Firebase Auth createUserWithEmailAndPassword on a secondary auth instance (create a secondary `initializeApp` instance named 'admin-creation', then sign in and immediately sign out the secondary instance) to avoid signing out the current admin. After Auth user is created, write the /users/{uid} Firestore doc with nom, email, role, actif. On update (existing user): only update Firestore doc (role, actif, nom) — password reset sends a password reset email via sendPasswordResetEmail.",
+    "Create src/components/admin/QRCodeDisplay.tsx: displays the QR code for a table using qrcode.react <QRCodeCanvas>. The QR code value is the full URL: `${window.location.origin}/table/${tableId}`. Provides a 'Télécharger' button that uses canvas.toDataURL() to trigger a PNG download named `table-${numero}.png`. Also shows a 'Copier le lien' button.",
+    "Create src/pages/admin/AdminDashboard.tsx: overview page at /admin. Shows 4 <StatsCard> widgets: total orders today, revenue today (sum of PAID order items), active tables (with at least one non-PAID order), total products. Uses Recharts <BarChart> for orders per hour today and <PieChart> for orders by status (last 7 days). Data loaded from Firestore via one-time getDocs queries. Refresh button to reload data.",
+    "Create src/pages/admin/MenuManagement.tsx: at /admin/menu. Lists all categories (editable ordre, icon, names). Under each category lists products with name, price, disponible toggle, orderCount. 'Ajouter un produit' button opens <Modal> with <ProductForm>. Each product row has edit (opens Modal with pre-filled form) and delete (confirm dialog, then deleteDoc) actions. Products sortable by orderCount or prix. Search by name. Import CSV button: accepts a CSV file (columns: nom_fr, nom_en, desc_fr, desc_en, prix, categorieId, imageUrl) and batch-writes to Firestore using writeBatch.",
+    "Create src/pages/admin/TableManagement.tsx: at /admin/tables. Shows all 20 tables in a grid (3 columns on desktop, 2 on mobile). Each table card shows numero, zone (color-coded), statut, active order count. 'Générer QR' button per table opens <Modal> with <QRCodeDisplay>. 'Télécharger tous les QR' button iterates all tables and triggers individual downloads. 'Ajouter une table' button opens <Modal> with <TableForm>. Table status can be manually reset to 'libre' by admin (for edge cases).",
+    "Create src/pages/admin/UserManagement.tsx: at /admin/users. Table listing all /users docs. Columns: nom, email, role (badge), actif (toggle that updates Firestore). 'Ajouter un utilisateur' button opens <Modal> with <UserForm>. Each row has edit (role/actif only) and deactivate actions. No hard delete — set actif=false instead.",
+    "Create src/pages/admin/OrderHistory.tsx: at /admin/orders. Paginated table of all orders (25 per page). Columns: id (truncated), table, clientPrenom, statut (<Badge>), items count, total price, createdAt, paidAt. Filters: by date range (date pickers), by statut (multi-select), by table number (text). Clicking a row expands it to show full item list. Export to CSV button that exports currently-filtered orders as a downloadable .csv file (uses a plain JS Blob).",
+    "Create src/pages/admin/Reports.tsx: at /admin/reports. Shows: 1) Revenue chart — Recharts BarChart of daily revenue for last 30 days (from PAID orders, sum of items prices), 2) Top 10 products by orderCount as a Recharts HorizontalBarChart, 3) Orders by time-of-day heatmap (hour × day-of-week) using a simple custom Recharts or CSS grid heatmap, 4) Table occupancy rate. All data loaded from Firestore with getDocs. 'Exporter rapport PDF' button: use browser window.print() with a print-specific CSS that hides nav (simplest approach — no extra PDF library needed).",
+    "Create <AdminLayout> component (can live in src/pages/admin/AdminLayout.tsx): sidebar with links to all admin pages, restaurant logo/name at top, current user display, logout button. Mobile: collapsible sidebar (hamburger menu). Active link highlighted. Uses React Router <NavLink>."
+  ],
+  "acceptance_criteria": [
+    "npm run build exits 0 with no TypeScript errors",
+    "AdminDashboard renders StatsCard placeholders and chart components without errors",
+    "MenuManagement renders product list UI with add/edit/delete controls",
+    "TableManagement renders table grid with QRCodeDisplay modal",
+    "UserManagement renders user table with UserForm modal",
+    "QRCodeDisplay renders a QR code canvas for a given tableId prop",
+    "All admin routes are accessible from AdminLayout sidebar navigation"
+  ],
+  "verification": [
+    "cd c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE && npm run build"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}

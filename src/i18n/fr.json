@@ -1,0 +1,220 @@
+{
+  "app": {
+    "name": "Place de la Victoire",
+    "tagline": "Restaurant Africain – Kara, Togo"
+  },
+  "nav": {
+    "menu": "Menu",
+    "my_orders": "Mes commandes",
+    "dashboard": "Tableau de bord",
+    "admin": "Administration",
+    "logout": "Déconnexion",
+    "login": "Connexion"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "English",
+    "switch": "Changer de langue"
+  },
+  "auth": {
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "login_button": "Se connecter",
+    "login_title": "Connexion",
+    "logout_confirm": "Voulez-vous vraiment vous déconnecter ?",
+    "error_invalid": "Email ou mot de passe incorrect.",
+    "error_generic": "Erreur de connexion. Veuillez réessayer.",
+    "loading": "Connexion en cours…"
+  },
+  "menu": {
+    "title": "Notre Menu",
+    "search_placeholder": "Rechercher un plat…",
+    "all_categories": "Tout",
+    "no_results": "Aucun résultat pour votre recherche.",
+    "unavailable": "Indisponible",
+    "add_to_cart": "Ajouter",
+    "popular": "Populaire",
+    "cfa": "FCFA"
+  },
+  "category": {
+    "plats_africains": "Plats Africains",
+    "grillades": "Grillades",
+    "boissons_locales": "Boissons Locales",
+    "soft_jus": "Soft & Jus",
+    "bieres": "Bières"
+  },
+  "cart": {
+    "title": "Mon Panier",
+    "empty": "Votre panier est vide.",
+    "total": "Total",
+    "order_button": "Commander",
+    "clear": "Vider",
+    "quantity": "Quantité",
+    "confirm_title": "Confirmer la commande",
+    "confirm_message": "Votre commande sera envoyée à la cuisine.",
+    "your_name": "Votre prénom",
+    "name_placeholder": "Ex. Kofi",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "order": {
+    "title": "Commandes",
+    "my_orders": "Mes commandes",
+    "new_order": "Nouvelle commande",
+    "table": "Table",
+    "session": "Session",
+    "placed_at": "Passée à",
+    "estimated": "Prêt dans environ",
+    "minutes": "min",
+    "status": {
+      "PENDING": "En attente",
+      "VALIDATED": "Validée",
+      "IN_PREPARATION": "En préparation",
+      "READY": "Prête",
+      "SERVED": "Servie",
+      "PAID": "Payée",
+      "REJECTED": "Refusée"
+    },
+    "action": {
+      "validate": "Valider",
+      "reject": "Refuser",
+      "start_prep": "Démarrer",
+      "mark_ready": "Prête",
+      "mark_served": "Servie",
+      "mark_paid": "Paiement encaissé",
+      "confirm_reject": "Motif du refus (optionnel)"
+    },
+    "countdown": {
+      "ready_in": "Prête dans",
+      "arriving": "Votre commande arrive dans",
+      "ready": "Votre commande est prête !",
+      "served": "Bon appétit !",
+      "minutes_short": "min"
+    },
+    "empty": "Aucune commande pour le moment."
+  },
+  "table": {
+    "zone": {
+      "salle": "Salle",
+      "paillote": "Paillote",
+      "jardin": "Jardin"
+    },
+    "status": {
+      "libre": "Libre",
+      "occupee": "Occupée"
+    },
+    "number": "Table n°",
+    "capacity": "Capacité",
+    "scan_qr": "Scanner le QR code"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Tableau de bord",
+      "total_orders": "Commandes totales",
+      "revenue_today": "Chiffre du jour",
+      "active_tables": "Tables actives",
+      "avg_prep_time": "Temps moyen de préparation"
+    },
+    "menu": {
+      "title": "Gestion du Menu",
+      "add_product": "Ajouter un plat",
+      "edit_product": "Modifier le plat",
+      "delete_product": "Supprimer",
+      "import_menu": "Importer le menu",
+      "category": "Catégorie",
+      "name_fr": "Nom (FR)",
+      "name_en": "Nom (EN)",
+      "desc_fr": "Description (FR)",
+      "desc_en": "Description (EN)",
+      "price": "Prix (FCFA)",
+      "available": "Disponible",
+      "image_url": "URL de l'image"
+    },
+    "tables": {
+      "title": "Gestion des Tables",
+      "add_table": "Ajouter une table",
+      "edit_table": "Modifier la table",
+      "generate_qr": "Générer QR Code",
+      "download_qr": "Télécharger QR Code",
+      "zone": "Zone",
+      "number": "Numéro",
+      "capacity": "Capacité",
+      "status": "Statut"
+    },
+    "users": {
+      "title": "Gestion des Utilisateurs",
+      "add_user": "Ajouter un utilisateur",
+      "edit_user": "Modifier l'utilisateur",
+      "deactivate": "Désactiver",
+      "activate": "Activer",
+      "name": "Nom",
+      "email": "Email",
+      "role": "Rôle",
+      "active": "Actif"
+    },
+    "orders": {
+      "title": "Historique des Commandes",
+      "export": "Exporter"
+    },
+    "reports": {
+      "title": "Rapports",
+      "top_products": "Plats les plus commandés",
+      "orders_by_zone": "Commandes par zone",
+      "revenue_by_day": "Chiffre d'affaires par jour"
+    },
+    "sidebar": {
+      "dashboard": "Tableau de bord",
+      "menu": "Menu",
+      "tables": "Tables",
+      "users": "Utilisateurs",
+      "orders": "Commandes",
+      "reports": "Rapports"
+    }
+  },
+  "serveur": {
+    "dashboard": "Tableau du Serveur",
+    "pending_orders": "Commandes en attente",
+    "ready_orders": "Commandes prêtes",
+    "validate": "Valider",
+    "serve": "Servir",
+    "payment_received": "Paiement encaissé"
+  },
+  "cuisine": {
+    "dashboard": "Tableau de la Cuisine",
+    "in_preparation": "En préparation",
+    "ticket": "Ticket n°",
+    "set_timer": "Définir le temps",
+    "timer_presets": "Temps rapides",
+    "minutes": "min",
+    "mark_ready": "Prêt"
+  },
+  "roles": {
+    "admin": "Administrateur",
+    "serveur": "Serveur",
+    "cuisine": "Cuisine",
+    "client": "Client"
+  },
+  "errors": {
+    "not_found": "Page non trouvée.",
+    "unauthorized": "Accès non autorisé.",
+    "generic": "Une erreur est survenue. Veuillez réessayer.",
+    "network": "Problème de connexion. Vérifiez votre réseau.",
+    "table_not_found": "Table introuvable. Vérifiez le QR code."
+  },
+  "common": {
+    "loading": "Chargement…",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "yes": "Oui",
+    "no": "Non",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "all": "Tous",
+    "none": "Aucun"
+  }
+}

@@ -1,0 +1,220 @@
+{
+  "app": {
+    "name": "Place de la Victoire",
+    "tagline": "African Restaurant – Kara, Togo"
+  },
+  "nav": {
+    "menu": "Menu",
+    "my_orders": "My Orders",
+    "dashboard": "Dashboard",
+    "admin": "Administration",
+    "logout": "Logout",
+    "login": "Login"
+  },
+  "language": {
+    "fr": "Français",
+    "en": "English",
+    "switch": "Switch language"
+  },
+  "auth": {
+    "email": "Email address",
+    "password": "Password",
+    "login_button": "Sign in",
+    "login_title": "Sign In",
+    "logout_confirm": "Do you really want to sign out?",
+    "error_invalid": "Invalid email or password.",
+    "error_generic": "Sign in failed. Please try again.",
+    "loading": "Signing in…"
+  },
+  "menu": {
+    "title": "Our Menu",
+    "search_placeholder": "Search a dish…",
+    "all_categories": "All",
+    "no_results": "No results for your search.",
+    "unavailable": "Unavailable",
+    "add_to_cart": "Add",
+    "popular": "Popular",
+    "cfa": "CFA"
+  },
+  "category": {
+    "plats_africains": "African Dishes",
+    "grillades": "Grills",
+    "boissons_locales": "Local Drinks",
+    "soft_jus": "Sodas & Juices",
+    "bieres": "Beers"
+  },
+  "cart": {
+    "title": "My Cart",
+    "empty": "Your cart is empty.",
+    "total": "Total",
+    "order_button": "Place Order",
+    "clear": "Clear",
+    "quantity": "Quantity",
+    "confirm_title": "Confirm Order",
+    "confirm_message": "Your order will be sent to the kitchen.",
+    "your_name": "Your first name",
+    "name_placeholder": "e.g. Kofi",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "order": {
+    "title": "Orders",
+    "my_orders": "My Orders",
+    "new_order": "New Order",
+    "table": "Table",
+    "session": "Session",
+    "placed_at": "Placed at",
+    "estimated": "Ready in about",
+    "minutes": "min",
+    "status": {
+      "PENDING": "Pending",
+      "VALIDATED": "Validated",
+      "IN_PREPARATION": "In Preparation",
+      "READY": "Ready",
+      "SERVED": "Served",
+      "PAID": "Paid",
+      "REJECTED": "Rejected"
+    },
+    "action": {
+      "validate": "Validate",
+      "reject": "Reject",
+      "start_prep": "Start",
+      "mark_ready": "Ready",
+      "mark_served": "Served",
+      "mark_paid": "Payment received",
+      "confirm_reject": "Reason for rejection (optional)"
+    },
+    "countdown": {
+      "ready_in": "Ready in",
+      "arriving": "Your order arrives in",
+      "ready": "Your order is ready!",
+      "served": "Enjoy your meal!",
+      "minutes_short": "min"
+    },
+    "empty": "No orders yet."
+  },
+  "table": {
+    "zone": {
+      "salle": "Indoor",
+      "paillote": "Paillote",
+      "jardin": "Garden"
+    },
+    "status": {
+      "libre": "Available",
+      "occupee": "Occupied"
+    },
+    "number": "Table No.",
+    "capacity": "Capacity",
+    "scan_qr": "Scan QR code"
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "total_orders": "Total Orders",
+      "revenue_today": "Today's Revenue",
+      "active_tables": "Active Tables",
+      "avg_prep_time": "Avg. Prep Time"
+    },
+    "menu": {
+      "title": "Menu Management",
+      "add_product": "Add Dish",
+      "edit_product": "Edit Dish",
+      "delete_product": "Delete",
+      "import_menu": "Import Menu",
+      "category": "Category",
+      "name_fr": "Name (FR)",
+      "name_en": "Name (EN)",
+      "desc_fr": "Description (FR)",
+      "desc_en": "Description (EN)",
+      "price": "Price (CFA)",
+      "available": "Available",
+      "image_url": "Image URL"
+    },
+    "tables": {
+      "title": "Table Management",
+      "add_table": "Add Table",
+      "edit_table": "Edit Table",
+      "generate_qr": "Generate QR Code",
+      "download_qr": "Download QR Code",
+      "zone": "Zone",
+      "number": "Number",
+      "capacity": "Capacity",
+      "status": "Status"
+    },
+    "users": {
+      "title": "User Management",
+      "add_user": "Add User",
+      "edit_user": "Edit User",
+      "deactivate": "Deactivate",
+      "activate": "Activate",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "active": "Active"
+    },
+    "orders": {
+      "title": "Order History",
+      "export": "Export"
+    },
+    "reports": {
+      "title": "Reports",
+      "top_products": "Top Ordered Dishes",
+      "orders_by_zone": "Orders by Zone",
+      "revenue_by_day": "Revenue by Day"
+    },
+    "sidebar": {
+      "dashboard": "Dashboard",
+      "menu": "Menu",
+      "tables": "Tables",
+      "users": "Users",
+      "orders": "Orders",
+      "reports": "Reports"
+    }
+  },
+  "serveur": {
+    "dashboard": "Waiter Dashboard",
+    "pending_orders": "Pending Orders",
+    "ready_orders": "Ready Orders",
+    "validate": "Validate",
+    "serve": "Serve",
+    "payment_received": "Payment received"
+  },
+  "cuisine": {
+    "dashboard": "Kitchen Dashboard",
+    "in_preparation": "In Preparation",
+    "ticket": "Ticket No.",
+    "set_timer": "Set time",
+    "timer_presets": "Quick times",
+    "minutes": "min",
+    "mark_ready": "Ready"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "serveur": "Waiter",
+    "cuisine": "Kitchen",
+    "client": "Client"
+  },
+  "errors": {
+    "not_found": "Page not found.",
+    "unauthorized": "Unauthorized access.",
+    "generic": "An error occurred. Please try again.",
+    "network": "Connection problem. Check your network.",
+    "table_not_found": "Table not found. Check the QR code."
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "back": "Back",
+    "yes": "Yes",
+    "no": "No",
+    "search": "Search",
+    "filter": "Filter",
+    "all": "All",
+    "none": "None"
+  }
+}

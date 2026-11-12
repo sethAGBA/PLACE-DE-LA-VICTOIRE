@@ -1,0 +1,29 @@
+{
+  "id": "FEAT-004",
+  "type": "feat",
+  "description": "Staff dashboards: Serveur (waiter), Cuisine (kitchen), and LoginPage. These three views cover the full real-time order-flow from reception to service. Depends on FEAT-002 (infrastructure) and FEAT-003 is independent — these dashboards do not import client components.",
+  "status": "pending",
+  "steps": [
+    "Create src/pages/LoginPage.tsx: login form with email/password fields (FR/EN labels). On submit calls Firebase signInWithEmailAndPassword. On success, reads the user's AppUser doc from /users/{uid} to get role, sets authStore.setUser and authStore.setFirebaseUser, then navigates to the role's dashboard (/serveur, /cuisine, or /admin). Shows error message on wrong credentials. Shows <Spinner> during loading. Bilingual toggle at top-right via <LanguageSwitcher>. Restaurant branding (logo text 'Place de la Victoire', tagline).",
+    "Create src/components/serveur/OrderCard.tsx: card showing one order's details for the waiter — clientPrenom, table number, list of items with quantities, total price, createdAt formatted as relative time ('il y a 2 min'). Shows current <Badge> status. Framer Motion `layout` animation so cards reorder smoothly as statuses change.",
+    "Create src/components/serveur/OrderActions.tsx: action buttons for a given order status — if PENDING: 'Valider' (green) + 'Rejeter' (red, opens modal to enter rejectedReason), if READY: 'Marquer SERVI', if SERVED: 'Paiement encaissé' (marks PAID). Each button calls updateOrderStatus() from firestore.ts. Disable buttons while update is in flight (loading state).",
+    "Create src/components/serveur/TableCard.tsx: table summary card showing table number, zone badge (salle/paillote/jardin with different background colors), current active order count, table status (libre/occupée). Clicking it filters orders displayed below to only that table.",
+    "Create src/pages/serveur/ServeurDashboard.tsx: main waiter view. Subscribes via useOrders({ role: 'serveur' }) to ALL non-PAID, non-REJECTED orders (statuses: PENDING, VALIDATED, IN_PREPARATION, READY, SERVED). Layout: left panel = list of tables (TableCard components, 2-column grid), right panel = orders for selected table (or all orders if no table selected). Orders grouped by statut with count badges on group headers. Each order shows <OrderCard> + <OrderActions>. NEW orders (PENDING) appear with a Framer Motion slide-in animation from top + a brief pulsing border. Sound notification: play a soft beep (new Audio('/notification.mp3').play()) when a new PENDING order arrives — guard with user-gesture check (only play if user has interacted with page). Create public/notification.mp3 as a silent placeholder (note in findings that a real .mp3 must be added). Top bar: staff name, logout button, language switcher, live clock.",
+    "Create src/components/cuisine/TimerSelector.tsx: component for kitchen to set estimated prep time. Shows quick-select buttons: 10, 15, 20, 25, 30 minutes. Plus a free-text input for custom minutes (number, min 1, max 120). On select/confirm calls a callback prop onSelect(minutes: number). Styled prominently for quick tap on a tablet.",
+    "Create src/components/cuisine/TicketCard.tsx: kitchen ticket card styled like a physical receipt — white card with dashed border, table number large at top, clientPrenom, items list in large text for readability, timestamp. If status is IN_PREPARATION shows the remaining time as a simple text countdown (not the animated ring — kitchen display is simpler). Action buttons: if VALIDATED → 'Commencer' (sets IN_PREPARATION + opens TimerSelector to pick minutes), if IN_PREPARATION → 'PRÊT !' (sets READY). Framer Motion `layout` for reorder animation.",
+    "Create src/components/cuisine/KanbanBoard.tsx: two-column layout — 'En attente' column (VALIDATED orders) and 'En préparation' column (IN_PREPARATION orders). Each column shows <TicketCard> components. Count badge on each column header. Accepts orders array as prop. When a ticket moves columns, Framer Motion `AnimatePresence` handles enter/exit.",
+    "Create src/pages/cuisine/CuisineDashboard.tsx: kitchen view. Subscribes via useOrders({ role: 'cuisine' }) to VALIDATED and IN_PREPARATION orders. Renders <KanbanBoard>. Top bar: 'Cuisine' title, logout, language switcher. Sound notification on new VALIDATED order (same pattern as ServeurDashboard). No table filter needed — kitchen sees all tickets. Orders sorted by createdAt ASC (oldest first = highest priority)."
+  ],
+  "acceptance_criteria": [
+    "npm run build exits 0",
+    "LoginPage renders without errors; form submission triggers signInWithEmailAndPassword (verifiable by build — runtime Firebase call acceptable to fail in preview without real credentials)",
+    "ServeurDashboard and CuisineDashboard render without errors when orders array is empty",
+    "KanbanBoard renders correctly with mock order props in two columns",
+    "TimerSelector renders all 5 quick-select buttons plus free-text input"
+  ],
+  "verification": [
+    "cd c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE && npm run build"
+  ],
+  "blocked_reason": null,
+  "findings": ""
+}
