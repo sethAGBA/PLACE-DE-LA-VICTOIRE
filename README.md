@@ -31,11 +31,21 @@ PWA bilingue (FR/EN) de gestion du restaurant Place de la Victoire, Kara, Togo.
 
 ## Comptes de démo
 
-| Email | Mot de passe | Rôle |
-|-------|-------------|------|
-| admin@placelavictoire.com | Admin2024! | Admin |
-| serveur@placelavictoire.com | Serveur2024! | Serveur |
-| cuisine@placelavictoire.com | Cuisine2024! | Cuisine |
+| Email | Rôle |
+|-------|------|
+| admin@placelavictoire.com | Admin |
+| serveur@placelavictoire.com | Serveur |
+| cuisine@placelavictoire.com | Cuisine |
+
+Les mots de passe sont définis par l'opérateur avant le déploiement dans `.env.local` :
+
+```
+VITE_SEED_ADMIN_PASSWORD=<votre_mot_de_passe_admin>
+VITE_SEED_SERVEUR_PASSWORD=<votre_mot_de_passe_serveur>
+VITE_SEED_CUISINE_PASSWORD=<votre_mot_de_passe_cuisine>
+```
+
+Voir `.env.example` pour la liste complète des variables. Ces valeurs ne doivent **jamais** être commitées dans le dépôt.
 
 Créer ces comptes via le bouton **"Créer comptes démo"** dans le dashboard Admin.
 

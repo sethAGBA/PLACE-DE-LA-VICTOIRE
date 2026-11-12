@@ -1,1 +1,14 @@
-{ "status": "done", "buildPassed": true, "readmeCreated": true }
+{
+  "status": "done",
+  "buildPassed": true,
+  "readmeCreated": true,
+  "findingsResolved": [
+    {
+      "id": 1,
+      "label": "README demo-password table is stale",
+      "resolution": "Replaced hardcoded Admin2024!/Serveur2024!/Cuisine2024! password table with a note referencing VITE_SEED_ADMIN_PASSWORD, VITE_SEED_SERVEUR_PASSWORD, VITE_SEED_CUISINE_PASSWORD env vars and directing operators to .env.example"
+    }
+  ],
+  "buildModules": 3417,
+  "buildErrors": 0
+}
