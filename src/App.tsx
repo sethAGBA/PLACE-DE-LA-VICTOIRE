@@ -61,6 +61,9 @@ function ProtectedRoute({ role }: ProtectedRouteProps) {
 
   if (loading) return <PageLoader />;
   if (!user) return <Navigate to="/login" replace />;
+  // Redirect disabled accounts back to login
+  if (user.actif === false)
+    return <Navigate to="/login" state={{ error: 'account_disabled' }} replace />;
   if (user.role !== role) return <Navigate to="/login" replace />;
 
   return <Outlet />;
