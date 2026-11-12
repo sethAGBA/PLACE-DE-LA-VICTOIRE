@@ -9,6 +9,10 @@ dist/
 .env.local
 .env.*.local
 
+# Credentials (ne pas committer)
+COMPTES.md
+scripts/serviceAccountKey.json
+
 # Editor
 .vscode/
 .idea/

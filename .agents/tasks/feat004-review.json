@@ -1,0 +1,48 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": 1,
+      "label": "Missing animate-pulse-ring class",
+      "severity": "HIGH",
+      "description": "The CSS class animate-pulse-ring applied to PENDING order wrappers in ServeurDashboard is defined nowhere (not in index.css, not in tailwind.config.js). The pulsing ring animation for new orders never fires. Add a @keyframes rule and animation utility in index.css or via tailwind.config.js theme.extend.keyframes/animation.",
+      "confirmed": true
+    },
+    {
+      "id": 2,
+      "label": "validatedAt overwritten at prep start",
+      "severity": "HIGH",
+      "description": "TicketCard.handleStart writes validatedAt: Timestamp.now() to anchor the countdown, clobbering the timestamp written by OrderActions.handleValidate (the waiter's approval time). Add a dedicated prepStartedAt?: Timestamp field to the Order type in src/types/index.ts, write prepStartedAt in handleStart, and update the countdown useEffect to read order.prepStartedAt.",
+      "confirmed": true
+    },
+    {
+      "id": 3,
+      "label": "orderCount never incremented",
+      "severity": "HIGH",
+      "description": "OrderActions.handleValidate does not call incrementProductOrderCount. The orderCount field that drives most-popular ranking in the menu never updates through the waiter flow. Call incrementProductOrderCount for each item in order.items after successfully setting status to VALIDATED.",
+      "confirmed": true
+    },
+    {
+      "id": 4,
+      "label": "Hardcoded Tables heading",
+      "severity": "MEDIUM",
+      "description": "ServeurDashboard line 151 renders the string 'Tables' as a hardcoded JSX literal. Add a translation key (e.g. table.section_title) to both fr.json and en.json and replace the literal.",
+      "confirmed": true
+    },
+    {
+      "id": 5,
+      "label": "Catch-all maps every failure to wrong-credentials message",
+      "severity": "MEDIUM",
+      "description": "LoginPage.handleSubmit catches all errors (wrong credentials, network failure, missing Firestore user document) and shows auth.error_invalid. The thrown Error('no_user_doc') is distinguishable; branch on it in the catch block and show auth.error_generic for non-credential errors.",
+      "confirmed": true
+    },
+    {
+      "id": 6,
+      "label": "Logout buttons missing aria-label",
+      "severity": "LOW",
+      "description": "The logout buttons in ServeurDashboard and CuisineDashboard render translated text but have no explicit aria-label attribute. Add aria-label={t('nav.logout')} to both.",
+      "confirmed": "possible"
+    }
+  ],
+  "reviewDoc": "c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE\\.agents\\tasks\\feat004-review.md"
+}

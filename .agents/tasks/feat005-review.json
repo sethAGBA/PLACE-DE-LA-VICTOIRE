@@ -1,0 +1,11 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    "Hardcoded chart headings — 'Commandes par heure (aujourd'hui)', 'Commandes par statut (7 derniers jours)', and 'Commandes par heure de la journée ({range}j)' in AdminDashboard and Reports are not translated. Add i18n keys and replace with t(...) calls.",
+    "Hardcoded password-reset label — UserForm's reset button renders bare French strings with no i18n keys. Add keys under user.form.resetPassword and user.form.resetSent.",
+    "Demo passwords in client bundle — seedAccounts.ts ships Admin2024!, Serveur2024!, Cuisine2024! in the browser bundle. Move to a server-side script or Cloud Function, or strip from production builds.",
+    "Secondary-app leak under concurrent submission — UserForm.handleCreate reuses an existing secondary app instance instead of deleting it first, risking a race on double-click. Mirror the seedAccounts pattern: always deleteApp before initializeApp.",
+    "Missing Firestore composite index — where('createdAt', '>=') + orderBy('createdAt') requires a composite index. Without it queries fail at runtime. Add to firestore.indexes.json or create in the Firebase console."
+  ],
+  "reviewDoc": "c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE\\.agents\\tasks\\feat005-review.md"
+}

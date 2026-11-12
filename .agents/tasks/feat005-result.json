@@ -1,4 +1,49 @@
 {
-  "status": "done",
-  "errors": []
+  "feature": "feat005",
+  "buildResult": "success",
+  "buildExitCode": 0,
+  "commit": "2f51c44",
+  "findingsAddressed": [
+    {
+      "severity": "HIGH",
+      "finding": "Hardcoded chart headings in AdminDashboard and Reports",
+      "fix": "Added i18n keys admin.dashboard.chart_orders_by_hour, admin.dashboard.chart_orders_by_status, admin.dashboard.no_orders_period, admin.dashboard.click_refresh, admin.dashboard.config_zone_title, admin.reports.chart_orders_by_hour, admin.reports.no_data to both fr.json and en.json. Replaced all bare French strings with t(...) calls."
+    },
+    {
+      "severity": "HIGH",
+      "finding": "Hardcoded password-reset label in UserForm",
+      "fix": "Added user.form.resetPassword and user.form.resetSent keys to fr.json and en.json. Replaced bare French strings in UserForm with t('user.form.resetPassword') and t('user.form.resetSent')."
+    },
+    {
+      "severity": "HIGH",
+      "finding": "Demo passwords in client bundle (seedAccounts.ts)",
+      "fix": "Removed hardcoded plaintext passwords (Admin2024!, Serveur2024!, Cuisine2024!). Passwords are now read from VITE_SEED_ADMIN_PASSWORD, VITE_SEED_SERVEUR_PASSWORD, VITE_SEED_CUISINE_PASSWORD environment variables. Function throws with a descriptive error if variables are not set, so the seed button fails clearly rather than silently. Added the three variables to .env.example with empty values and instructions to set them in .env.local."
+    },
+    {
+      "severity": "HIGH",
+      "finding": "Secondary-app leak under concurrent submission in UserForm",
+      "fix": "Changed handleCreate to always deleteApp any existing secondary app instance before calling initializeApp, matching the pattern used in seedAccounts. The race condition where two concurrent submissions both saw no existing app is now prevented."
+    },
+    {
+      "severity": "HIGH",
+      "finding": "Missing Firestore composite index for createdAt range queries",
+      "fix": "Added composite index entry { createdAt ASC, __name__ ASC } on the orders collection to firestore.indexes.json. This covers the where('createdAt', '>=', …) + orderBy('createdAt', 'asc') queries used in AdminDashboard and Reports."
+    },
+    {
+      "severity": "LOW",
+      "finding": "Missing aria-labels on uncategorised product row buttons in MenuManagement",
+      "fix": "Added aria-label={t('common.edit')} and aria-label={t('common.delete')} to the edit and delete buttons in the uncategorised products section, matching the categorised section above."
+    }
+  ],
+  "filesChanged": [
+    "src/pages/admin/AdminDashboard.tsx",
+    "src/pages/admin/Reports.tsx",
+    "src/components/admin/UserForm.tsx",
+    "src/pages/admin/MenuManagement.tsx",
+    "src/seed/seedAccounts.ts",
+    "src/i18n/fr.json",
+    "src/i18n/en.json",
+    "firestore.indexes.json",
+    ".env.example"
+  ]
 }
