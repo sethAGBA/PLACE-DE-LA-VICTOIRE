@@ -74,6 +74,7 @@ export interface Order {
   statut: OrderStatus;
   createdAt: Timestamp;
   validatedAt?: Timestamp;
+  prepStartedAt?: Timestamp;
   estimatedMinutes?: number;
   items: OrderItem[];
   servedAt?: Timestamp;

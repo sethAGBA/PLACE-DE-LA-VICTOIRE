@@ -94,6 +94,7 @@
     "empty": "Aucune commande pour le moment."
   },
   "table": {
+    "section_title": "Tables",
     "zone": {
       "salle": "Salle",
       "paillote": "Paillote",

@@ -94,6 +94,7 @@
     "empty": "No orders yet."
   },
   "table": {
+    "section_title": "Tables",
     "zone": {
       "salle": "Indoor",
       "paillote": "Paillote",
