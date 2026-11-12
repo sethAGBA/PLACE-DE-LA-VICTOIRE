@@ -10,6 +10,7 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
+    "date-fns": "3.6.0",
     "firebase": "10.14.1",
     "framer-motion": "11.11.9",
     "i18next": "23.16.4",

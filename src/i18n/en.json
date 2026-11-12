@@ -171,22 +171,49 @@
       "reports": "Reports"
     }
   },
+  "login": {
+    "title": "Dashboard Login",
+    "email": "Email address",
+    "password": "Password",
+    "submit": "Sign in",
+    "error": "Invalid email or password.",
+    "loading": "Signing in…"
+  },
   "serveur": {
     "dashboard": "Waiter Dashboard",
+    "title": "Waiter Area",
+    "allTables": "All tables",
+    "noOrders": "No active orders.",
     "pending_orders": "Pending Orders",
     "ready_orders": "Ready Orders",
     "validate": "Validate",
+    "reject": "Reject",
     "serve": "Serve",
-    "payment_received": "Payment received"
+    "paid": "Payment received",
+    "payment_received": "Payment received",
+    "rejectReason": "Reason for rejection",
+    "rejectConfirm": "Confirm rejection"
   },
   "cuisine": {
     "dashboard": "Kitchen Dashboard",
+    "title": "Kitchen Area",
+    "pending": "Waiting",
+    "inPrep": "In Preparation",
+    "start": "Start",
+    "ready": "Ready!",
+    "customMinutes": "Custom minutes",
     "in_preparation": "In Preparation",
     "ticket": "Ticket No.",
     "set_timer": "Set time",
     "timer_presets": "Quick times",
     "minutes": "min",
     "mark_ready": "Ready"
+  },
+  "timer": {
+    "select": "Choose preparation time",
+    "minutes": "minutes",
+    "custom": "Other (minutes)",
+    "confirm": "Confirm"
   },
   "roles": {
     "admin": "Administrator",

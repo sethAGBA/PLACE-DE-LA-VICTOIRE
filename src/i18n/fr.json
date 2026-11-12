@@ -171,22 +171,49 @@
       "reports": "Rapports"
     }
   },
+  "login": {
+    "title": "Connexion au tableau de bord",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "submit": "Se connecter",
+    "error": "Email ou mot de passe incorrect.",
+    "loading": "Connexion en cours…"
+  },
   "serveur": {
     "dashboard": "Tableau du Serveur",
+    "title": "Espace Serveur",
+    "allTables": "Toutes les tables",
+    "noOrders": "Aucune commande active.",
     "pending_orders": "Commandes en attente",
     "ready_orders": "Commandes prêtes",
     "validate": "Valider",
+    "reject": "Refuser",
     "serve": "Servir",
-    "payment_received": "Paiement encaissé"
+    "paid": "Paiement encaissé",
+    "payment_received": "Paiement encaissé",
+    "rejectReason": "Motif du refus",
+    "rejectConfirm": "Confirmer le refus"
   },
   "cuisine": {
     "dashboard": "Tableau de la Cuisine",
+    "title": "Espace Cuisine",
+    "pending": "En attente",
+    "inPrep": "En préparation",
+    "start": "Démarrer",
+    "ready": "Prête !",
+    "customMinutes": "Minutes personnalisées",
     "in_preparation": "En préparation",
     "ticket": "Ticket n°",
     "set_timer": "Définir le temps",
     "timer_presets": "Temps rapides",
     "minutes": "min",
     "mark_ready": "Prêt"
+  },
+  "timer": {
+    "select": "Choisir la durée de préparation",
+    "minutes": "minutes",
+    "custom": "Autre (minutes)",
+    "confirm": "Confirmer"
   },
   "roles": {
     "admin": "Administrateur",
