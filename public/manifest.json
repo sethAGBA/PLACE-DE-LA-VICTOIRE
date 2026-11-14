@@ -1,22 +1,41 @@
 {
   "name": "Place de la Victoire",
   "short_name": "PdV",
-  "description": "Restaurant Place de la Victoire Kara — commandez, suivez votre repas",
+  "description": "Restaurant Place de la Victoire Kara — commandez, suivez votre repas en temps réel",
   "theme_color": "#D4580A",
   "background_color": "#FFF8F0",
   "display": "standalone",
+  "orientation": "portrait",
   "start_url": "/",
   "scope": "/",
+  "lang": "fr",
+  "categories": ["food", "lifestyle"],
   "icons": [
     {
       "src": "/icons/pwa-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/icons/pwa-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Menu",
+      "url": "/table/table-01",
+      "description": "Voir le menu du restaurant"
     }
   ]
 }

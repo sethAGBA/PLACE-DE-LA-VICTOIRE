@@ -326,5 +326,11 @@
     "print": "Print",
     "download": "Download",
     "back_to_menu": "Back to menu"
+  },
+  "pwa": {
+    "install_title": "Install the app",
+    "install_android": "Quick access from your home screen, even offline.",
+    "install_ios": "Install the app for quick access from your home screen.",
+    "install_button": "Install"
   }
 }

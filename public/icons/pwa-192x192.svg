@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#E8690F"/>
+      <stop offset="100%" stop-color="#B84500"/>
+    </radialGradient>
+    <radialGradient id="plate" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#FFF8F0"/>
+      <stop offset="100%" stop-color="#F5E6D0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Fond rond -->
+  <circle cx="256" cy="256" r="256" fill="url(#bg)"/>
+
+  <!-- Cercle intérieur décoratif -->
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#F5A860" stroke-width="3" opacity="0.4"/>
+  <circle cx="256" cy="256" r="200" fill="none" stroke="#F5A860" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- Assiette -->
+  <ellipse cx="256" cy="270" rx="145" ry="145" fill="url(#plate)" opacity="0.95"/>
+  <ellipse cx="256" cy="270" rx="145" ry="145" fill="none" stroke="#D4580A" stroke-width="4" opacity="0.6"/>
+  <ellipse cx="256" cy="270" rx="115" ry="115" fill="none" stroke="#D4580A" stroke-width="2" opacity="0.3"/>
+
+  <!-- Fourchette (gauche) -->
+  <g transform="translate(185, 150)" fill="#D4580A">
+    <!-- manche -->
+    <rect x="17" y="80" width="10" height="90" rx="5"/>
+    <!-- dents -->
+    <rect x="12" y="30" width="5" height="50" rx="2.5"/>
+    <rect x="19" y="30" width="5" height="50" rx="2.5"/>
+    <rect x="26" y="30" width="5" height="50" rx="2.5"/>
+    <!-- base dents -->
+    <rect x="12" y="77" width="22" height="8" rx="2"/>
+  </g>
+
+  <!-- Couteau (droite) -->
+  <g transform="translate(300, 150)" fill="#D4580A">
+    <!-- manche -->
+    <rect x="13" y="80" width="10" height="90" rx="5"/>
+    <!-- lame -->
+    <path d="M13,30 L23,30 L26,78 L10,78 Z" rx="2"/>
+  </g>
+
+  <!-- Motif décoratif africain en bas -->
+  <g transform="translate(256, 460)" fill="#F5A860" opacity="0.7">
+    <polygon points="0,-12 10,6 -10,6" transform="translate(-30,0)"/>
+    <polygon points="0,-12 10,6 -10,6" transform="translate(0,0)"/>
+    <polygon points="0,-12 10,6 -10,6" transform="translate(30,0)"/>
+  </g>
+
+  <!-- Texte "PdV" -->
+  <text x="256" y="310" 
+    font-family="Georgia, serif" 
+    font-size="52" 
+    font-weight="bold" 
+    fill="#D4580A" 
+    text-anchor="middle" 
+    opacity="0.85">PdV</text>
+</svg>

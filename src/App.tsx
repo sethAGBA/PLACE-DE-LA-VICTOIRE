@@ -10,6 +10,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/authStore';
 import { Spinner } from '@/components/ui/Spinner';
+import { PWAInstallPrompt } from '@/components/shared/PWAInstallPrompt';
 import { Menu, X, LayoutGrid, UtensilsCrossed, Table2, Users, ClipboardList, BarChart3 } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { UserRole } from '@/types';
@@ -171,6 +172,7 @@ function AdminLayout() {
 export default function App() {
   return (
     <BrowserRouter>
+      <PWAInstallPrompt />
       <Suspense fallback={<PageLoader />}>
         <Routes>
           {/* Root */}

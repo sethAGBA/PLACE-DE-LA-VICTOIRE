@@ -326,5 +326,11 @@
     "print": "Imprimer",
     "download": "Télécharger",
     "back_to_menu": "Retour au menu"
+  },
+  "pwa": {
+    "install_title": "Installer l'application",
+    "install_android": "Accès rapide depuis votre écran d'accueil, même sans réseau.",
+    "install_ios": "Installez l'appli pour un accès rapide depuis votre écran d'accueil.",
+    "install_button": "Installer"
   }
 }
