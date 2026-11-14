@@ -6,23 +6,12 @@ service cloud.firestore {
       return request.auth != null;
     }
 
-    // Lit le document /users/{uid} et retourne la donnée (ou null si absent)
-    function userDoc(uid) {
-      return get(/databases/$(database)/documents/users/$(uid));
-    }
-
-    function getUserRole(uid) {
-      return userDoc(uid).data.role;
-    }
-
     function userExists(uid) {
       return exists(/databases/$(database)/documents/users/$(uid));
     }
 
-    function isStaff() {
-      return isAuthenticated()
-        && userExists(request.auth.uid)
-        && getUserRole(request.auth.uid) in ['admin', 'serveur', 'cuisine'];
+    function getUserRole(uid) {
+      return get(/databases/$(database)/documents/users/$(uid)).data.role;
     }
 
     function isAdmin() {
@@ -43,19 +32,23 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // Products: lecture publique, écriture admin
-    // L'incrément de orderCount (validate commande) est fait par le serveur → isStaff()
+    // Products: lecture publique
+    // update par tout utilisateur authentifié (incrément orderCount par serveur/cuisine)
+    // create/delete réservé admin
     match /products/{productId} {
       allow read: if true;
-      allow update: if isStaff();
+      allow update: if isAuthenticated();
       allow create, delete: if isAdmin();
     }
 
-    // Orders: création libre (client anonyme), lecture/maj par staff
+    // Orders: création libre (clients anonymes)
+    // lecture publique (suivi commande client)
+    // update par tout utilisateur authentifié (serveur valide, cuisine démarre)
+    // delete réservé admin
     match /orders/{orderId} {
       allow create: if true;
       allow read: if true;
-      allow update: if isStaff();
+      allow update: if isAuthenticated();
       allow delete: if isAdmin();
     }
 
