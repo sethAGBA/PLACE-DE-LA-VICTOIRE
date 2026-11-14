@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Timestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
+import { Receipt } from '@/components/shared/Receipt';
 import { updateOrderStatus, incrementProductOrderCount } from '@/lib/firestore';
 import { OrderStatus } from '@/types';
 import type { Order } from '@/types';
@@ -15,13 +16,15 @@ interface OrderActionsProps {
  * Action buttons for a given order status:
  * - PENDING  → Valider (green) + Rejeter (red, modal for reason)
  * - READY    → Marquer SERVI
- * - SERVED   → Paiement encaissé (marks PAID)
+ * - SERVED   → Paiement encaissé
+ * - PAID     → Voir le reçu
  */
 export function OrderActions({ order }: OrderActionsProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [rejectedReason, setRejectedReason] = useState('');
+  const [receiptOpen, setReceiptOpen] = useState(false);
 
   const run = async (patch: Partial<Order>) => {
     setLoading(true);
@@ -39,7 +42,6 @@ export function OrderActions({ order }: OrderActionsProps) {
         statut: OrderStatus.VALIDATED,
         validatedAt: Timestamp.now(),
       });
-      // Increment orderCount for each product to update popularity ranking
       await Promise.all(
         order.items.map((item) =>
           incrementProductOrderCount(item.productId, item.quantite)
@@ -59,71 +61,44 @@ export function OrderActions({ order }: OrderActionsProps) {
     setRejectedReason('');
   };
 
-  const handleServed = () =>
-    run({
-      statut: OrderStatus.SERVED,
-      servedAt: Timestamp.now(),
-    });
-
-  const handlePaid = () =>
-    run({
-      statut: OrderStatus.PAID,
-      paidAt: Timestamp.now(),
-    });
+  const handleServed = () => run({ statut: OrderStatus.SERVED, servedAt: Timestamp.now() });
+  const handlePaid   = () => run({ statut: OrderStatus.PAID,   paidAt:  Timestamp.now() });
 
   return (
     <>
       <div className="mt-3 flex flex-wrap gap-2">
         {order.statut === OrderStatus.PENDING && (
           <>
-            <Button
-              variant="secondary"
-              size="sm"
-              loading={loading}
-              onClick={() => void handleValidate()}
-            >
-              {t('order.action.validate')}
+            <Button variant="secondary" size="sm" loading={loading} onClick={() => void handleValidate()}>
+              ✅ {t('order.action.validate')}
             </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              disabled={loading}
-              onClick={() => setRejectModalOpen(true)}
-            >
-              {t('order.action.reject')}
+            <Button variant="danger" size="sm" disabled={loading} onClick={() => setRejectModalOpen(true)}>
+              ❌ {t('order.action.reject')}
             </Button>
           </>
         )}
 
         {order.statut === OrderStatus.READY && (
-          <Button
-            variant="primary"
-            size="sm"
-            loading={loading}
-            onClick={() => void handleServed()}
-          >
-            {t('order.action.mark_served')}
+          <Button variant="primary" size="sm" loading={loading} onClick={() => void handleServed()}>
+            🍽️ {t('order.action.mark_served')}
           </Button>
         )}
 
         {order.statut === OrderStatus.SERVED && (
-          <Button
-            variant="primary"
-            size="sm"
-            loading={loading}
-            onClick={() => void handlePaid()}
-          >
-            {t('order.action.mark_paid')}
+          <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePaid()}>
+            💰 {t('order.action.mark_paid')}
+          </Button>
+        )}
+
+        {order.statut === OrderStatus.PAID && (
+          <Button variant="ghost" size="sm" onClick={() => setReceiptOpen(true)}>
+            🧾 {t('receipt.view')}
           </Button>
         )}
       </div>
 
-      {/* Reject reason modal */}
-      <Modal
-        open={rejectModalOpen}
-        title={t('order.action.reject')}
-        onClose={() => setRejectModalOpen(false)}
-      >
+      {/* Reject modal */}
+      <Modal open={rejectModalOpen} title={t('order.action.reject')} onClose={() => setRejectModalOpen(false)}>
         <div className="space-y-4">
           <label className="block text-sm text-gray-700">
             {t('order.action.confirm_reject')}
@@ -135,23 +110,19 @@ export function OrderActions({ order }: OrderActionsProps) {
             />
           </label>
           <div className="flex justify-end gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setRejectModalOpen(false)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setRejectModalOpen(false)}>
               {t('common.cancel')}
             </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              loading={loading}
-              onClick={() => void handleReject()}
-            >
+            <Button variant="danger" size="sm" loading={loading} onClick={() => void handleReject()}>
               {t('order.action.reject')}
             </Button>
           </div>
         </div>
+      </Modal>
+
+      {/* Receipt modal */}
+      <Modal open={receiptOpen} title={t('receipt.title')} onClose={() => setReceiptOpen(false)}>
+        <Receipt order={order} showActions />
       </Modal>
     </>
   );

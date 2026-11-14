@@ -313,5 +313,18 @@
       "resetPassword": "Envoyer un e-mail de réinitialisation du mot de passe",
       "resetSent": "E-mail envoyé !"
     }
+  },
+  "receipt": {
+    "title": "Reçu de commande",
+    "table": "Table",
+    "client": "Client",
+    "date": "Commandé le",
+    "paid_at": "Encaissé le",
+    "thanks": "Merci pour votre visite ! À bientôt 🙏",
+    "paid_message": "Votre paiement a bien été encaissé.",
+    "view": "Voir mon reçu",
+    "print": "Imprimer",
+    "download": "Télécharger",
+    "back_to_menu": "Retour au menu"
   }
 }

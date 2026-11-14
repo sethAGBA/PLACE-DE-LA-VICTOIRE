@@ -313,5 +313,18 @@
       "resetPassword": "Send password reset email",
       "resetSent": "Email sent!"
     }
+  },
+  "receipt": {
+    "title": "Order Receipt",
+    "table": "Table",
+    "client": "Client",
+    "date": "Ordered on",
+    "paid_at": "Paid on",
+    "thanks": "Thank you for your visit! See you soon 🙏",
+    "paid_message": "Your payment has been received.",
+    "view": "View my receipt",
+    "print": "Print",
+    "download": "Download",
+    "back_to_menu": "Back to menu"
   }
 }

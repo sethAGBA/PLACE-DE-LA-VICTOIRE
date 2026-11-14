@@ -1,8 +1,5 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import {
-  getFirestore,
-  enableMultiTabIndexedDbPersistence,
-} from 'firebase/firestore';
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
@@ -18,15 +15,13 @@ export const firebaseConfig = {
 // Guard against double-initialisation (e.g. HMR)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 
-export const db = getFirestore(app);
+// initializeFirestore with persistent cache (replaces deprecated enableMultiTabIndexedDbPersistence)
+// This ensures onSnapshot works in real-time across tabs and survives offline
+export const db = initializeFirestore(app, {
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+  }),
+});
+
 export const auth = getAuth(app);
 export const storage = getStorage(app);
-
-// Enable offline persistence for multi-tab support
-try {
-  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-  enableMultiTabIndexedDbPersistence(db);
-} catch (err) {
-  // Persistence may fail if already enabled or in environments that don't support it
-  console.warn('[firebase] persistence not enabled:', err);
-}
