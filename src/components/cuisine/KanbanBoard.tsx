@@ -24,11 +24,11 @@ export function KanbanBoard({ orders }: KanbanBoardProps) {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {/* Column: VALIDATED */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between rounded-xl bg-blue-50 px-4 py-2">
-          <span className="font-semibold text-blue-800">
+        <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-2 shadow-md">
+          <span className="font-semibold text-white">
             {t('order.status.VALIDATED')}
           </span>
-          <span className="rounded-full bg-blue-200 px-2.5 py-0.5 text-xs font-bold text-blue-900">
+          <span className="rounded-full bg-white/25 px-2.5 py-0.5 text-xs font-bold text-white">
             {validated.length}
           </span>
         </div>
@@ -41,7 +41,7 @@ export function KanbanBoard({ orders }: KanbanBoardProps) {
           </AnimatePresence>
 
           {validated.length === 0 && (
-            <p className="rounded-xl border border-dashed border-gray-200 py-8 text-center text-sm text-gray-400">
+            <p className="rounded-2xl border border-dashed border-gray-200 py-8 text-center text-sm text-muted">
               {t('order.empty')}
             </p>
           )}
@@ -50,11 +50,11 @@ export function KanbanBoard({ orders }: KanbanBoardProps) {
 
       {/* Column: IN_PREPARATION */}
       <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between rounded-xl bg-orange-50 px-4 py-2">
-          <span className="font-semibold text-orange-800">
+        <div className="flex items-center justify-between rounded-2xl bg-gradient-to-r from-orange-500 to-primary px-4 py-2 shadow-md">
+          <span className="font-semibold text-white">
             {t('order.status.IN_PREPARATION')}
           </span>
-          <span className="rounded-full bg-orange-200 px-2.5 py-0.5 text-xs font-bold text-orange-900">
+          <span className="rounded-full bg-white/25 px-2.5 py-0.5 text-xs font-bold text-white">
             {inPrep.length}
           </span>
         </div>
@@ -67,7 +67,7 @@ export function KanbanBoard({ orders }: KanbanBoardProps) {
           </AnimatePresence>
 
           {inPrep.length === 0 && (
-            <p className="rounded-xl border border-dashed border-gray-200 py-8 text-center text-sm text-gray-400">
+            <p className="rounded-2xl border border-dashed border-gray-200 py-8 text-center text-sm text-muted">
               {t('order.empty')}
             </p>
           )}

@@ -10,7 +10,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '@/store/authStore';
 import { Spinner } from '@/components/ui/Spinner';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, LayoutGrid, UtensilsCrossed, Table2, Users, ClipboardList, BarChart3 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import type { UserRole } from '@/types';
 
 // ─── Lazy-loaded pages ────────────────────────────────────────────────────────
@@ -75,28 +76,28 @@ function AdminLayout() {
   const { logout } = useAuthStore();
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const navItems = [
-    { to: '/admin', label: t('admin.sidebar.dashboard'), end: true },
-    { to: '/admin/menu', label: t('admin.sidebar.menu'), end: false },
-    { to: '/admin/tables', label: t('admin.sidebar.tables'), end: false },
-    { to: '/admin/users', label: t('admin.sidebar.users'), end: false },
-    { to: '/admin/orders', label: t('admin.sidebar.orders'), end: false },
-    { to: '/admin/reports', label: t('admin.sidebar.reports'), end: false },
+  const navItems: { to: string; label: string; end: boolean; icon: LucideIcon }[] = [
+    { to: '/admin', label: t('admin.sidebar.dashboard'), end: true, icon: LayoutGrid },
+    { to: '/admin/menu', label: t('admin.sidebar.menu'), end: false, icon: UtensilsCrossed },
+    { to: '/admin/tables', label: t('admin.sidebar.tables'), end: false, icon: Table2 },
+    { to: '/admin/users', label: t('admin.sidebar.users'), end: false, icon: Users },
+    { to: '/admin/orders', label: t('admin.sidebar.orders'), end: false, icon: ClipboardList },
+    { to: '/admin/reports', label: t('admin.sidebar.reports'), end: false, icon: BarChart3 },
   ];
 
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
     [
-      'rounded-lg px-3 py-2 text-sm font-medium transition',
+      'flex items-center gap-2.5 rounded-lg border-l-2 px-3 py-2 text-sm font-medium transition',
       'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
       isActive
-        ? 'bg-orange-50 text-primary'
-        : 'text-gray-700 hover:bg-orange-50 hover:text-primary',
+        ? 'border-primary bg-primary/10 text-primary font-semibold'
+        : 'border-transparent text-muted hover:bg-primary/5 hover:text-primary',
     ].join(' ');
 
   const SidebarContent = () => (
     <>
-      <div className="border-b px-6 py-4">
-        <span className="font-bold text-primary">{t('app.name')}</span>
+      <div className="bg-gradient-to-r from-primary to-[#E8690F] px-6 py-4">
+        <span className="font-bold text-white">{t('app.name')}</span>
       </div>
       <nav
         className="flex flex-1 flex-col gap-1 p-4"
@@ -110,6 +111,7 @@ function AdminLayout() {
             className={navLinkClass}
             onClick={() => setMobileOpen(false)}
           >
+            <item.icon size={18} />
             {item.label}
           </NavLink>
         ))}
@@ -128,17 +130,17 @@ function AdminLayout() {
   return (
     <div className="flex min-h-screen bg-background">
       {/* Desktop Sidebar */}
-      <aside className="hidden w-56 flex-col bg-white shadow-sm md:flex">
+      <aside className="hidden w-60 flex-col bg-white shadow-md md:flex">
         <SidebarContent />
       </aside>
 
       {/* Mobile header */}
-      <div className="fixed inset-x-0 top-0 z-30 flex items-center justify-between bg-white px-4 py-3 shadow-sm md:hidden">
-        <span className="font-bold text-primary">{t('app.name')}</span>
+      <div className="fixed inset-x-0 top-0 z-30 flex items-center justify-between bg-gradient-to-r from-primary to-[#E8690F] px-4 py-3 shadow-md md:hidden">
+        <span className="font-bold text-white">{t('app.name')}</span>
         <button
           onClick={() => setMobileOpen((o) => !o)}
           aria-label="Menu"
-          className="rounded-lg p-1.5 text-gray-600 hover:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          className="rounded-lg p-1.5 text-white transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
         >
           {mobileOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -148,7 +150,7 @@ function AdminLayout() {
       {mobileOpen && (
         <>
           <div
-            className="fixed inset-0 z-30 bg-black/40 md:hidden"
+            className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm md:hidden"
             onClick={() => setMobileOpen(false)}
           />
           <aside className="fixed inset-y-0 left-0 z-40 flex w-64 flex-col bg-white shadow-xl md:hidden">

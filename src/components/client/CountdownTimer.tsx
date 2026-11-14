@@ -31,12 +31,17 @@ export function CountdownTimer({ estimatedMinutes, startedAt }: CountdownTimerPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [estimatedMinutes, startedAt]);
 
-  const isAlmostDone = remaining < 60;
+  const isAlmostDone = remaining < 120; // < 2 min → pulse
   const isDone = remaining === 0;
 
-  const progress = remaining / totalSeconds; // 1 = full, 0 = done
+  const progress = totalSeconds > 0 ? remaining / totalSeconds : 0; // 1 = full, 0 = done
   const dashOffset = CIRCUMFERENCE * (1 - progress);
-  const strokeColor = isAlmostDone ? '#D4580A' : '#2D7D32';
+
+  // Phase color by remaining time: >50% green, 20–50% amber, <20% red
+  const textPhase =
+    progress > 0.5 ? 'text-secondary' : progress > 0.2 ? 'text-gold' : 'text-primary';
+  const dotPhase =
+    progress > 0.5 ? 'bg-secondary' : progress > 0.2 ? 'bg-gold' : 'bg-primary';
 
   const minutes = Math.floor(remaining / 60);
   const seconds = remaining % 60;
@@ -50,7 +55,15 @@ export function CountdownTimer({ estimatedMinutes, startedAt }: CountdownTimerPr
       aria-label={`${t('order.countdown.arriving')} ${display}`}
     >
       {/* Circular SVG ring */}
-      <div className="relative">
+      <motion.div
+        className="relative"
+        animate={!isDone && isAlmostDone ? { scale: [1, 1.04, 1] } : { scale: 1 }}
+        transition={
+          !isDone && isAlmostDone
+            ? { repeat: Infinity, duration: 1.2 }
+            : { duration: 0.3 }
+        }
+      >
         <svg
           width={120}
           height={120}
@@ -58,6 +71,13 @@ export function CountdownTimer({ estimatedMinutes, startedAt }: CountdownTimerPr
           aria-hidden="true"
           className="-rotate-90"
         >
+          <defs>
+            <linearGradient id="countdown-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#2D7D32" />
+              <stop offset="50%" stopColor="#F59E0B" />
+              <stop offset="100%" stopColor="#D4580A" />
+            </linearGradient>
+          </defs>
           {/* Background track */}
           <circle
             cx={60}
@@ -73,11 +93,11 @@ export function CountdownTimer({ estimatedMinutes, startedAt }: CountdownTimerPr
             cy={60}
             r={RADIUS}
             fill="none"
-            stroke={strokeColor}
+            stroke="url(#countdown-grad)"
             strokeWidth={8}
             strokeLinecap="round"
             strokeDasharray={CIRCUMFERENCE}
-            animate={{ strokeDashoffset: dashOffset, stroke: strokeColor }}
+            animate={{ strokeDashoffset: dashOffset }}
             transition={{ duration: 1, ease: 'linear' }}
           />
         </svg>
@@ -101,23 +121,23 @@ export function CountdownTimer({ estimatedMinutes, startedAt }: CountdownTimerPr
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className={`text-xl font-bold tabular-nums ${isAlmostDone ? 'text-primary' : 'text-gray-900'}`}
+                className={`text-2xl font-bold tabular-nums ${textPhase}`}
               >
                 {display}
               </motion.span>
             )}
           </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
 
-      {/* Pulsing dot indicator */}
+      {/* Status line */}
       {!isDone && (
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-sm text-muted">
           <motion.span
             aria-hidden="true"
             animate={{ scale: [1, 1.4, 1], opacity: [1, 0.5, 1] }}
             transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
-            className={`inline-block h-2.5 w-2.5 rounded-full ${isAlmostDone ? 'bg-primary' : 'bg-secondary'}`}
+            className={`inline-block h-2.5 w-2.5 rounded-full ${dotPhase}`}
           />
           <span>{t('order.countdown.arriving')}&nbsp;{display}</span>
         </div>

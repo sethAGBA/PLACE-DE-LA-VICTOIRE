@@ -78,7 +78,7 @@ export function Receipt({ order, showActions = true }: ReceiptProps) {
       {/* Receipt card */}
       <div
         id="receipt-print"
-        className="rounded-2xl border border-dashed border-gray-300 bg-white p-5 text-sm"
+        className="rounded-2xl border border-dashed border-gray-300 bg-white p-5 text-sm shadow-md"
       >
         {/* Header */}
         <div className="mb-4 text-center">

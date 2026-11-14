@@ -128,12 +128,12 @@ export default function TablePage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       {/* ── Top bar ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-white px-4 py-3 shadow-sm">
+      <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-gradient-to-r from-primary to-[#E8690F] px-4 py-3 shadow-md">
         <div className="flex flex-col leading-tight min-w-0">
-          <span className="truncate text-base font-bold text-primary">{t('app.name')}</span>
-          <span className="text-xs text-gray-500">
+          <span className="truncate text-base font-bold text-white">{t('app.name')}</span>
+          <span className="text-xs text-white/80">
             {t('table.number')}{table.numero}&nbsp;·&nbsp;
-            <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-primary">
+            <span className="rounded-full bg-white/20 px-2 py-0.5 text-xs font-medium text-white">
               {zoneLabel}
             </span>
           </span>
@@ -175,7 +175,7 @@ export default function TablePage() {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder={t('menu.search_placeholder')}
                 aria-label={t('menu.search_placeholder')}
-                className="w-full rounded-xl border border-gray-200 bg-white py-2 pl-9 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                className="w-full rounded-full border border-gray-200 bg-white py-2 pl-9 pr-4 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
             </div>
           </div>
@@ -198,10 +198,10 @@ export default function TablePage() {
                   aria-selected={isActive}
                   onClick={() => setActiveCategory(cat.id)}
                   className={[
-                    'flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition',
+                    'flex-shrink-0 rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200',
                     isActive
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'bg-white text-gray-600 hover:bg-orange-50 hover:text-primary',
+                      ? 'bg-gradient-to-r from-primary to-[#E8690F] text-white shadow-md'
+                      : 'bg-white text-muted hover:bg-primary/10 hover:text-primary',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                   ].join(' ')}
                 >
@@ -238,10 +238,11 @@ export default function TablePage() {
       {!activeOrder && cartItemCount > 0 && (
         <div className="fixed bottom-6 right-4 z-30">
           <motion.button
+            whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.93 }}
             onClick={() => setCartOpen(true)}
             aria-label={`${t('cart.title')} (${cartItemCount})`}
-            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-primary text-white shadow-lg hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
+            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#E8690F] text-white shadow-xl shadow-primary/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
           >
             <ShoppingCart size={24} />
             <AnimatePresence>

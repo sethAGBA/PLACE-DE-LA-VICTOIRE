@@ -13,6 +13,17 @@ interface TicketCardProps {
   order: Order;
 }
 
+// Thick left border per kitchen status
+const ticketBorder: Record<OrderStatus, string> = {
+  [OrderStatus.VALIDATED]: 'border-l-blue-500',
+  [OrderStatus.IN_PREPARATION]: 'border-l-orange-500',
+  [OrderStatus.READY]: 'border-l-green-500',
+  [OrderStatus.PENDING]: 'border-l-amber-500',
+  [OrderStatus.SERVED]: 'border-l-teal-500',
+  [OrderStatus.PAID]: 'border-l-gray-400',
+  [OrderStatus.REJECTED]: 'border-l-red-500',
+};
+
 /**
  * Kitchen ticket card styled like a physical receipt.
  * VALIDATED → "Commencer" (opens TimerSelector, sets IN_PREPARATION)
@@ -83,17 +94,17 @@ export function TicketCard({ order }: TicketCardProps) {
   return (
     <motion.div
       layout
-      className="rounded-xl border-2 border-dashed border-gray-300 bg-white p-4 shadow-sm"
+      className={`rounded-2xl border-l-4 ${ticketBorder[order.statut]} bg-white p-4 shadow-md`}
     >
       {/* Table number — large */}
       <div className="mb-1 text-center">
-        <span className="text-3xl font-black text-gray-900">
+        <span className="text-3xl font-black text-ink">
           T{order.tableId}
         </span>
       </div>
 
       {/* Client name */}
-      <p className="mb-3 text-center text-sm font-medium text-gray-600">
+      <p className="mb-3 text-center text-sm font-medium text-muted">
         {order.clientPrenom} · {time}
       </p>
 
@@ -104,8 +115,8 @@ export function TicketCard({ order }: TicketCardProps) {
             key={`${item.productId}-${idx}`}
             className="flex items-baseline justify-between text-base"
           >
-            <span className="font-bold text-gray-900">{item.quantite}×</span>
-            <span className="ml-2 flex-1 text-gray-800">
+            <span className="font-bold text-ink">{item.quantite}×</span>
+            <span className="ml-2 flex-1 text-ink">
               {i18n.language.startsWith('fr') ? item.nom_fr : item.nom_en}
             </span>
           </li>
@@ -114,9 +125,11 @@ export function TicketCard({ order }: TicketCardProps) {
 
       {/* Countdown (IN_PREPARATION only) */}
       {order.statut === OrderStatus.IN_PREPARATION && remainingLabel && (
-        <p className="mb-3 rounded-lg bg-orange-50 px-3 py-2 text-center text-sm font-semibold text-orange-700">
-          ⏱ {remainingLabel}
-        </p>
+        <div className="mb-3 flex justify-center">
+          <span className="inline-flex items-center rounded-full bg-orange-100 px-3 py-1.5 text-sm font-semibold text-orange-700">
+            ⏱ {remainingLabel}
+          </span>
+        </div>
       )}
 
       {/* Actions */}
@@ -124,7 +137,8 @@ export function TicketCard({ order }: TicketCardProps) {
         {order.statut === OrderStatus.VALIDATED && (
           <Button
             variant="primary"
-            size="md"
+            size="lg"
+            className="w-full"
             loading={loading}
             onClick={() => setTimerOpen(true)}
           >
@@ -135,7 +149,8 @@ export function TicketCard({ order }: TicketCardProps) {
         {order.statut === OrderStatus.IN_PREPARATION && (
           <Button
             variant="secondary"
-            size="md"
+            size="lg"
+            className="w-full"
             loading={loading}
             onClick={() => void handleReady()}
           >

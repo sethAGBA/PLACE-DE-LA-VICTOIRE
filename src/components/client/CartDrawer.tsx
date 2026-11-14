@@ -64,7 +64,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 bg-black/40"
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
             aria-hidden="true"
             onClick={onClose}
           />
@@ -86,12 +86,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             aria-label={t('cart.title')}
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b px-5 py-4">
-              <h2 className="text-lg font-bold text-gray-900">{t('cart.title')}</h2>
+            <div className="flex items-center justify-between bg-gradient-to-r from-primary to-[#E8690F] px-5 py-4">
+              <h2 className="text-lg font-bold text-white">{t('cart.title')}</h2>
               <button
                 onClick={onClose}
                 aria-label={t('common.close')}
-                className="rounded-lg p-1.5 text-gray-500 hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                className="rounded-lg p-1.5 text-white/80 transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/40"
               >
                 <X size={20} />
               </button>
@@ -111,10 +111,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     return (
                       <li
                         key={item.productId}
-                        className="flex items-center gap-3 rounded-xl border border-gray-100 p-3"
+                        className="flex items-center gap-3 rounded-xl border border-gray-100 border-l-4 border-l-primary/40 p-3"
                       >
                         <div className="flex-1 min-w-0">
-                          <p className="truncate text-sm font-medium text-gray-900">{name}</p>
+                          <p className="truncate text-sm font-medium text-ink">{name}</p>
                           <p className="text-xs text-primary font-semibold">
                             {(item.prix * item.quantite).toLocaleString('fr-FR')}&nbsp;{t('menu.cfa')}
                           </p>
@@ -125,15 +125,15 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                           <button
                             onClick={() => updateQuantity(item.productId, item.quantite - 1)}
                             aria-label={`Réduire ${name}`}
-                            className="flex h-7 w-7 items-center justify-center rounded-full bg-orange-100 text-primary hover:bg-orange-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
                             <Minus size={12} />
                           </button>
-                          <span className="w-5 text-center text-sm font-bold">{item.quantite}</span>
+                          <span className="w-5 text-center text-sm font-bold text-ink">{item.quantite}</span>
                           <button
                             onClick={() => updateQuantity(item.productId, item.quantite + 1)}
                             aria-label={`Augmenter ${name}`}
-                            className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                            className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-white transition hover:bg-[#E8690F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                           >
                             <Plus size={12} />
                           </button>
@@ -142,7 +142,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         <button
                           onClick={() => removeItem(item.productId)}
                           aria-label={`Supprimer ${name}`}
-                          className="rounded-lg p-1 text-gray-400 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
+                          className="rounded-lg p-1 text-gray-400 transition hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
                         >
                           <Trash2 size={16} />
                         </button>
@@ -156,7 +156,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {/* Footer */}
             {items.length > 0 && (
               <div className="border-t px-5 py-4 space-y-3">
-                <div className="flex items-center justify-between text-base font-bold text-gray-900">
+                <div className="flex items-center justify-between text-xl font-bold text-ink">
                   <span>{t('cart.total')}</span>
                   <span className="text-primary">
                     {grandTotal.toLocaleString('fr-FR')}&nbsp;{t('menu.cfa')}
@@ -198,11 +198,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               aria-modal="true"
               aria-labelledby="confirm-order-title"
             >
-              <div className="w-full max-w-sm rounded-2xl bg-white shadow-xl px-6 py-6 space-y-4">
-                <h3 id="confirm-order-title" className="text-lg font-bold text-gray-900">
+              <div className="w-full max-w-sm rounded-3xl bg-white shadow-2xl px-6 py-6 space-y-4">
+                <h3 id="confirm-order-title" className="text-lg font-bold text-ink">
                   {t('cart.confirm_title')}
                 </h3>
-                <p className="text-sm text-gray-600">{t('cart.confirm_message')}</p>
+                <p className="text-sm text-muted">{t('cart.confirm_message')}</p>
 
                 <div className="space-y-1">
                   <label
@@ -218,7 +218,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     onChange={(e) => setPrenom(e.target.value)}
                     placeholder={t('cart.name_placeholder')}
                     maxLength={30}
-                    className="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
 

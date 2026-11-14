@@ -58,10 +58,10 @@ export default function CuisineDashboard() {
 
   // Orders already sorted ASC by Firestore (oldest = highest priority)
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="flex min-h-screen flex-col bg-background">
       {/* Top bar */}
-      <header className="flex items-center justify-between gap-4 border-b bg-white px-4 py-3 shadow-sm">
-        <span className="text-lg font-bold text-primary">
+      <header className="flex items-center justify-between gap-4 border-b bg-gradient-to-r from-[#8a3a06] to-primary px-4 py-3 shadow-md">
+        <span className="text-lg font-bold text-white">
           {t('cuisine.dashboard')}
         </span>
         <div className="flex items-center gap-3">
@@ -69,7 +69,7 @@ export default function CuisineDashboard() {
           <button
             onClick={() => void logout()}
             aria-label={t('nav.logout')}
-            className="rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="rounded-lg px-3 py-1.5 text-sm font-medium text-red-200 transition hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400"
           >
             {t('nav.logout')}
           </button>

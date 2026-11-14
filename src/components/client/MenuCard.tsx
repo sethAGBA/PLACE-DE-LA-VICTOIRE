@@ -48,19 +48,19 @@ export function MenuCard({ product }: MenuCardProps) {
   return (
     <motion.div
       whileTap={{ scale: 0.97 }}
-      className="relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md"
+      className="relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-200 hover:shadow-lg"
     >
       {/* Popular badge */}
       {isPopular && (
-        <span className="absolute left-2 top-2 z-10 rounded-full bg-red-500 px-2 py-0.5 text-xs font-bold text-white">
-          {t('menu.popular')}
+        <span className="absolute left-2 top-2 z-10 rounded-full bg-gold px-2 py-0.5 text-xs font-bold text-white shadow">
+          ⭐ {t('menu.popular')}
         </span>
       )}
 
       {/* Image with placeholder */}
       <div className="relative h-40 w-full overflow-hidden bg-primary/10">
         {!imgLoaded && !imgError && (
-          <div className="absolute inset-0 animate-pulse bg-primary/10" aria-hidden="true" />
+          <div className="absolute inset-0 shimmer" aria-hidden="true" />
         )}
         {!imgError && product.imageUrl ? (
           <img
@@ -82,14 +82,14 @@ export function MenuCard({ product }: MenuCardProps) {
 
       {/* Info */}
       <div className="flex flex-1 flex-col gap-2 p-3">
-        <h3 className="line-clamp-2 text-sm font-semibold text-gray-900">{name}</h3>
+        <h3 className="line-clamp-2 text-sm font-bold text-ink">{name}</h3>
         <p className="mt-auto text-base font-bold text-primary">
           {product.prix.toLocaleString('fr-FR')}&nbsp;{t('menu.cfa')}
         </p>
 
         {/* Availability */}
         {!product.disponible && (
-          <span className="text-xs font-medium text-gray-400">{t('menu.unavailable')}</span>
+          <span className="text-xs font-medium text-muted">{t('menu.unavailable')}</span>
         )}
 
         {/* Add / quantity controls */}
@@ -100,7 +100,7 @@ export function MenuCard({ product }: MenuCardProps) {
                 whileTap={{ scale: 0.93 }}
                 onClick={handleAdd}
                 aria-label={`${t('menu.add_to_cart')} ${name}`}
-                className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-primary px-3 py-2 text-sm font-semibold text-white transition hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
+                className="flex w-full items-center justify-center gap-1.5 rounded-xl bg-gradient-to-r from-primary to-[#E8690F] px-3 py-2 text-sm font-semibold text-white shadow-md shadow-primary/30 transition hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1"
               >
                 <Plus size={16} />
                 {t('menu.add_to_cart')}
@@ -111,16 +111,16 @@ export function MenuCard({ product }: MenuCardProps) {
                   whileTap={{ scale: 0.9 }}
                   onClick={handleDecrement}
                   aria-label={`Retirer un ${name}`}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-100 text-primary hover:bg-orange-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <Minus size={14} />
                 </motion.button>
-                <span className="w-6 text-center text-sm font-bold text-gray-900">{quantity}</span>
+                <span className="w-6 text-center text-sm font-bold text-ink">{quantity}</span>
                 <motion.button
                   whileTap={{ scale: 0.9 }}
                   onClick={handleAdd}
                   aria-label={`Ajouter un ${name}`}
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white hover:bg-orange-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white transition hover:bg-[#E8690F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <Plus size={14} />
                 </motion.button>

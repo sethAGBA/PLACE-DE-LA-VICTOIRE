@@ -28,9 +28,9 @@ export function Card({
           : undefined
       }
       className={[
-        'rounded-xl bg-white p-4',
-        shadow ? 'shadow-sm' : '',
-        hover ? 'transition-shadow hover:shadow-md cursor-pointer' : '',
+        'rounded-2xl bg-white p-4',
+        shadow ? 'shadow-md' : '',
+        hover ? 'transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 cursor-pointer' : '',
         onClick ? 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary' : '',
         className,
       ].join(' ')}

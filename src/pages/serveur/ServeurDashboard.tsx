@@ -21,6 +21,17 @@ const WAITER_STATUSES = [
   OrderStatus.SERVED,
 ];
 
+/** Colored dot per status for group headers (brief status palette) */
+const statusDot: Record<OrderStatus, string> = {
+  [OrderStatus.PENDING]: 'bg-amber-500',
+  [OrderStatus.VALIDATED]: 'bg-blue-500',
+  [OrderStatus.IN_PREPARATION]: 'bg-orange-500',
+  [OrderStatus.READY]: 'bg-green-500',
+  [OrderStatus.SERVED]: 'bg-teal-500',
+  [OrderStatus.PAID]: 'bg-gray-400',
+  [OrderStatus.REJECTED]: 'bg-red-500',
+};
+
 /** Label for each order group header */
 const GROUP_ORDER = [
   OrderStatus.PENDING,
@@ -122,23 +133,23 @@ export default function ServeurDashboard() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
       {/* Top bar */}
-      <header className="flex items-center justify-between gap-4 border-b bg-white px-4 py-3 shadow-sm">
+      <header className="flex items-center justify-between gap-4 border-b bg-gradient-to-r from-white to-[#FFF8F0] px-4 py-3 shadow-sm">
         <div className="flex items-center gap-3">
           <span className="text-lg font-bold text-primary">{t('app.name')}</span>
-          <span className="hidden text-sm text-gray-500 sm:inline">
+          <span className="hidden text-sm text-muted sm:inline">
             — {t('serveur.dashboard')}
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden text-sm font-medium text-gray-700 sm:inline">
+          <span className="hidden text-sm font-medium text-ink sm:inline">
             {user?.nom}
           </span>
-          <span className="font-mono text-sm text-gray-500">{clock}</span>
+          <span className="font-mono text-sm text-muted">{clock}</span>
           <LanguageSwitcher />
           <button
             onClick={() => void logout()}
             aria-label={t('nav.logout')}
-            className="rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
+            className="rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500"
           >
             {t('nav.logout')}
           </button>
@@ -147,8 +158,8 @@ export default function ServeurDashboard() {
 
       <div className="flex flex-1 overflow-hidden">
         {/* Left panel — tables */}
-        <aside className="w-44 flex-shrink-0 overflow-y-auto border-r bg-white p-3 sm:w-56">
-          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+        <aside className="w-44 flex-shrink-0 overflow-y-auto border-r bg-white p-3 shadow-sm sm:w-56">
+          <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted">
             {t('table.section_title')}
           </h2>
           {tables.length === 0 ? (
@@ -170,7 +181,7 @@ export default function ServeurDashboard() {
           {selectedTableId && (
             <button
               onClick={() => setSelectedTableId(null)}
-              className="mt-3 w-full rounded-lg border border-gray-200 py-1.5 text-xs text-gray-500 hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="mt-3 w-full rounded-xl border border-gray-200 py-1.5 text-xs text-muted transition hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
             >
               {t('common.all')}
             </button>
@@ -184,7 +195,7 @@ export default function ServeurDashboard() {
               <Spinner size="lg" />
             </div>
           ) : grouped.length === 0 ? (
-            <p className="mt-10 text-center text-sm text-gray-400">
+            <p className="mt-10 text-center text-sm text-muted">
               {t('order.empty')}
             </p>
           ) : (
@@ -192,7 +203,8 @@ export default function ServeurDashboard() {
               {grouped.map(({ status, items }) => (
                 <section key={status}>
                   <div className="mb-3 flex items-center gap-2">
-                    <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                    <span className={`h-2.5 w-2.5 rounded-full ${statusDot[status]}`} />
+                    <h3 className="text-sm font-semibold uppercase tracking-wide text-ink">
                       {t(`order.status.${status}`)}
                     </h3>
                     <span className="rounded-full bg-gray-200 px-2 py-0.5 text-xs font-bold text-gray-600">

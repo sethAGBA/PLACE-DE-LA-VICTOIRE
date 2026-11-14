@@ -196,7 +196,7 @@ export default function AdminDashboard() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-ink">
           {t('admin.dashboard.title')}
         </h1>
         <Button
@@ -244,13 +244,13 @@ export default function AdminDashboard() {
           {/* Charts */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Orders per hour */}
-            <div className="rounded-xl bg-white p-5 shadow-sm">
-              <h2 className="mb-4 text-sm font-semibold text-gray-700">
+            <div className="rounded-2xl bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-sm font-semibold text-muted">
                 {t('admin.dashboard.chart_orders_by_hour')}
               </h2>
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={data.ordersByHour} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <CartesianGrid stroke="#f1f1f1" strokeDasharray="3 3" vertical={false} />
                   <XAxis
                     dataKey="hour"
                     tick={{ fontSize: 10 }}
@@ -258,14 +258,14 @@ export default function AdminDashboard() {
                   />
                   <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#D4580A" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" fill="#D4580A" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
 
             {/* Orders by status */}
-            <div className="rounded-xl bg-white p-5 shadow-sm">
-              <h2 className="mb-4 text-sm font-semibold text-gray-700">
+            <div className="rounded-2xl bg-white p-6 shadow-md">
+              <h2 className="mb-4 text-sm font-semibold text-muted">
                 {t('admin.dashboard.chart_orders_by_status')}
               </h2>
               {data.ordersByStatus.length === 0 ? (
@@ -306,8 +306,8 @@ export default function AdminDashboard() {
       )}
 
       {/* Seed section */}
-      <div className="rounded-xl border border-dashed border-orange-300 bg-orange-50 p-5">
-        <h2 className="mb-3 text-sm font-semibold text-orange-800">
+      <div className="rounded-2xl border border-dashed border-primary/30 bg-primary/5 p-5">
+        <h2 className="mb-3 text-sm font-semibold text-primary">
           {t('admin.dashboard.config_zone_title')}
         </h2>
         <div className="flex flex-wrap gap-3">

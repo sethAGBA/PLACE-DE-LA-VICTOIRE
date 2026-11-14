@@ -119,9 +119,9 @@ export default function OrderTracking() {
       </AnimatePresence>
 
       {/* Header */}
-      <header className="bg-white px-4 py-4 shadow-sm">
-        <h1 className="text-lg font-bold text-primary">{t('order.my_orders')}</h1>
-        <p className="text-sm text-gray-500">
+      <header className="bg-gradient-to-r from-primary to-[#E8690F] px-4 py-4 shadow-md">
+        <h1 className="text-lg font-bold text-white">{t('order.my_orders')}</h1>
+        <p className="text-sm text-white/80">
           {t('order.table')}&nbsp;{order.tableId}&nbsp;·&nbsp;{order.clientPrenom}
         </p>
       </header>
@@ -135,7 +135,7 @@ export default function OrderTracking() {
               key="paid"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="rounded-2xl bg-green-50 p-6 text-center shadow-sm"
+              className="rounded-3xl bg-green-50 p-6 text-center shadow-md"
             >
               <motion.div
                 animate={{ rotate: [0, -10, 10, -10, 0] }}
@@ -181,7 +181,7 @@ export default function OrderTracking() {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
-              className="rounded-2xl bg-green-50 p-5 text-center"
+              className="rounded-3xl bg-green-50 p-5 text-center shadow-md"
             >
               <motion.div
                 animate={{ y: [0, -8, 0] }}
@@ -204,7 +204,7 @@ export default function OrderTracking() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="rounded-2xl bg-teal-50 p-5 text-center"
+              className="rounded-3xl bg-teal-50 p-5 text-center shadow-md"
             >
               <span className="text-4xl" role="img" aria-label="Bon appétit">🍽️</span>
               <p className="mt-2 text-base font-bold text-teal-700">
@@ -220,7 +220,7 @@ export default function OrderTracking() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="flex items-start gap-3 rounded-2xl bg-red-50 p-5"
+              className="flex items-start gap-3 rounded-3xl bg-red-50 p-5 shadow-md"
             >
               <XCircle size={22} className="mt-0.5 shrink-0 text-red-500" />
               <div>
@@ -237,7 +237,7 @@ export default function OrderTracking() {
         {order.statut === OrderStatus.IN_PREPARATION &&
           order.estimatedMinutes &&
           order.validatedAt && (
-            <div className="flex justify-center rounded-2xl bg-white p-6 shadow-sm">
+            <div className="flex justify-center rounded-3xl bg-gradient-to-br from-white to-[#FFF8F0] p-6 shadow-md">
               <CountdownTimer
                 estimatedMinutes={order.estimatedMinutes}
                 startedAt={order.prepStartedAt ?? order.validatedAt}
@@ -247,19 +247,27 @@ export default function OrderTracking() {
 
         {/* ── Stepper (caché quand PAID) ───────────────────────────────────── */}
         {!isRejected && !isPaid && (
-          <div className="rounded-2xl bg-white p-5 shadow-sm">
-            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-gray-700">
+          <div className="rounded-2xl bg-white p-6 shadow-md">
+            <h2 className="mb-4 text-sm font-semibold uppercase tracking-wide text-muted">
               {t('order.title')}
             </h2>
-            <ol className="relative space-y-5 border-l border-gray-200 pl-5">
+            <ol className="relative">
               {STEPS.map((step, idx) => {
                 const isCompleted = idx < currentStepIdx;
                 const isCurrent   = idx === currentStepIdx;
+                const lineColor = isCompleted
+                  ? 'border-secondary'
+                  : isCurrent
+                  ? 'border-primary'
+                  : 'border-gray-200';
                 return (
-                  <li key={step.status} className="relative">
+                  <li
+                    key={step.status}
+                    className={`relative border-l-2 ${lineColor} pb-5 pl-7 last:pb-0`}
+                  >
                     <span
                       className={[
-                        'absolute -left-[1.65rem] flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors',
+                        'absolute -left-[14px] flex h-7 w-7 items-center justify-center rounded-full border-2 transition-colors',
                         isCompleted ? 'border-secondary bg-secondary text-white'
                           : isCurrent ? 'border-primary bg-primary text-white'
                           : 'border-gray-200 bg-white text-gray-400',
@@ -283,8 +291,8 @@ export default function OrderTracking() {
 
         {/* ── Récapitulatif commande (caché quand PAID, le reçu le remplace) ─ */}
         {!isPaid && (
-          <div className="rounded-2xl bg-white p-5 shadow-sm">
-            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-700">
+          <div className="rounded-2xl bg-white p-6 shadow-md">
+            <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">
               {t('cart.title')}
             </h2>
             <ul className="divide-y divide-gray-100">

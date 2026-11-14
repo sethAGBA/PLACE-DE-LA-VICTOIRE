@@ -53,21 +53,22 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-[#FFF8F0] via-white to-[#FFF3E0] px-4">
       <div className="w-full max-w-sm">
         <div className="mb-6 flex justify-end">
           <LanguageSwitcher />
         </div>
 
-        <div className="rounded-2xl bg-white p-8 shadow-sm">
+        <div className="rounded-3xl bg-white p-8 shadow-xl">
           {/* Branding */}
           <div className="mb-6 text-center">
+            <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-gradient-to-r from-primary to-gold" aria-hidden="true" />
             <h1 className="text-2xl font-black tracking-tight text-primary">
               {t('app.name')}
             </h1>
-            <p className="mt-1 text-sm text-gray-500">{t('app.tagline')}</p>
+            <p className="mt-1 text-sm text-muted">{t('app.tagline')}</p>
             <hr className="my-4 border-gray-100" />
-            <h2 className="text-lg font-bold text-gray-900">
+            <h2 className="text-lg font-bold text-ink">
               {t('auth.login_title')}
             </h2>
           </div>
@@ -87,7 +88,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
             </div>
 
@@ -105,7 +106,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
             </div>
 
@@ -127,7 +128,7 @@ export default function LoginPage() {
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-gray-400">
+        <p className="mt-4 text-center text-xs text-muted">
           {t('app.name')} — {t('app.tagline')}
         </p>
       </div>

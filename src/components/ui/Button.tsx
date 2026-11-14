@@ -13,13 +13,20 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-primary text-white hover:bg-orange-700 focus-visible:ring-primary',
+    'bg-gradient-to-r from-primary to-[#E8690F] text-white shadow-lg shadow-primary/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/40 focus-visible:ring-primary',
   secondary:
-    'bg-secondary text-white hover:bg-green-800 focus-visible:ring-secondary',
+    'bg-gradient-to-r from-secondary to-[#3a9a3f] text-white shadow-lg shadow-secondary/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-secondary/40 focus-visible:ring-secondary',
   danger:
-    'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500',
+    'bg-red-600 text-white shadow-lg shadow-red-500/30 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-red-500/40 focus-visible:ring-red-500',
   ghost:
-    'bg-transparent text-primary border border-primary hover:bg-orange-50 focus-visible:ring-primary',
+    'border border-primary/30 bg-white/60 text-primary hover:bg-primary/10 focus-visible:ring-primary',
+};
+
+const spinnerColor: Record<ButtonVariant, string> = {
+  primary: '!text-white',
+  secondary: '!text-white',
+  danger: '!text-white',
+  ghost: 'text-primary',
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -45,7 +52,7 @@ export function Button({
       disabled={isDisabled}
       aria-busy={loading}
       className={[
-        'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors',
+        'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition-all duration-200',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         'disabled:opacity-50 disabled:cursor-not-allowed',
         variantClasses[variant],
@@ -53,7 +60,7 @@ export function Button({
         className,
       ].join(' ')}
     >
-      {loading && <Spinner size="sm" />}
+      {loading && <Spinner size="sm" className={spinnerColor[variant]} />}
       {children}
     </button>
   );
