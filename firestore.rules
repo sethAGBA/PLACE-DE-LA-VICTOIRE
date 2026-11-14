@@ -2,56 +2,64 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    // Helper: get role from /users/{uid}
-    function getUserRole(uid) {
-      return get(/databases/$(database)/documents/users/$(uid)).data.role;
-    }
-
     function isAuthenticated() {
       return request.auth != null;
     }
 
-    function hasRole(role) {
-      return isAuthenticated() && getUserRole(request.auth.uid) == role;
+    // Lit le document /users/{uid} et retourne la donnée (ou null si absent)
+    function userDoc(uid) {
+      return get(/databases/$(database)/documents/users/$(uid));
+    }
+
+    function getUserRole(uid) {
+      return userDoc(uid).data.role;
+    }
+
+    function userExists(uid) {
+      return exists(/databases/$(database)/documents/users/$(uid));
     }
 
     function isStaff() {
-      return isAuthenticated() && (
-        getUserRole(request.auth.uid) == 'admin' ||
-        getUserRole(request.auth.uid) == 'serveur' ||
-        getUserRole(request.auth.uid) == 'cuisine'
-      );
+      return isAuthenticated()
+        && userExists(request.auth.uid)
+        && getUserRole(request.auth.uid) in ['admin', 'serveur', 'cuisine'];
     }
 
     function isAdmin() {
-      return hasRole('admin');
+      return isAuthenticated()
+        && userExists(request.auth.uid)
+        && getUserRole(request.auth.uid) == 'admin';
     }
 
-    // Tables: public read, admin write
+    // Tables: lecture publique, écriture admin
     match /tables/{tableId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Categories: public read, admin write
+    // Categories: lecture publique, écriture admin
     match /categories/{categoryId} {
       allow read: if true;
       allow write: if isAdmin();
     }
 
-    // Products (menu items): public read, admin write
+    // Products: lecture publique, écriture admin
+    // L'incrément de orderCount (validate commande) est fait par le serveur → isStaff()
     match /products/{productId} {
       allow read: if true;
-      allow write: if isAdmin();
+      allow update: if isStaff();
+      allow create, delete: if isAdmin();
     }
 
-    // Orders: clients (unauthenticated) can create; staff can read/write
+    // Orders: création libre (client anonyme), lecture/maj par staff
     match /orders/{orderId} {
       allow create: if true;
-      allow read, update, delete: if isStaff();
+      allow read: if true;
+      allow update: if isStaff();
+      allow delete: if isAdmin();
     }
 
-    // Users: authenticated users can read own doc; admin can read/write all
+    // Users: chaque utilisateur lit son propre doc, admin gère tout
     match /users/{userId} {
       allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
       allow write: if isAdmin();
