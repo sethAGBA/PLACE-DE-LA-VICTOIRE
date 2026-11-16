@@ -46,7 +46,8 @@ export default function TakeawayPage() {
     }
   };
 
-  // ── Sync form → store ──────────────────────────────────────────────────────  useEffect(() => { setClientPrenom(prenom); }, [prenom, setClientPrenom]);
+  // ── Sync form → store ──────────────────────────────────────────────────────
+  useEffect(() => { setClientPrenom(prenom); }, [prenom, setClientPrenom]);
   useEffect(() => { setClientNom(nom); }, [nom, setClientNom]);
   useEffect(() => { setClientTelephone(telephone); }, [telephone, setClientTelephone]);
 
