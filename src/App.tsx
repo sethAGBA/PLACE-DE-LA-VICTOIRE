@@ -22,6 +22,7 @@ const OrderTracking = lazy(() => import('@/pages/client/OrderTracking'));
 const ServeurDashboard = lazy(() => import('@/pages/serveur/ServeurDashboard'));
 const CuisineDashboard = lazy(() => import('@/pages/cuisine/CuisineDashboard'));
 const AdminDashboard = lazy(() => import('@/pages/admin/AdminDashboard'));
+const CaissierDashboard = lazy(() => import('@/pages/caissier/CaissierDashboard'));
 const MenuManagement = lazy(() => import('@/pages/admin/MenuManagement'));
 const TableManagement = lazy(() => import('@/pages/admin/TableManagement'));
 const UserManagement = lazy(() => import('@/pages/admin/UserManagement'));
@@ -48,6 +49,7 @@ function RootRedirect() {
     admin: '/admin',
     serveur: '/serveur',
     cuisine: '/cuisine',
+    caissier: '/caissier',
     client: '/login',
   };
   return <Navigate to={roleRedirects[user.role]} replace />;
@@ -193,6 +195,11 @@ export default function App() {
           {/* Cuisine */}
           <Route element={<ProtectedRoute role={'cuisine' as UserRole} />}>
             <Route path="/cuisine" element={<CuisineDashboard />} />
+          </Route>
+
+          {/* Caissier */}
+          <Route element={<ProtectedRoute role={'caissier' as UserRole} />}>
+            <Route path="/caissier" element={<CaissierDashboard />} />
           </Route>
 
           {/* Admin */}

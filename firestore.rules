@@ -43,6 +43,7 @@ service cloud.firestore {
 
     // Orders: création libre (clients anonymes)
     // lecture publique (suivi commande client)
+    // Roles that may update orders: caissier (validate/reject PENDING), cuisine (start/ready), serveur (serve/pay), admin (all)
     // update par tout utilisateur authentifié (serveur valide, cuisine démarre)
     // delete réservé admin
     match /orders/{orderId} {

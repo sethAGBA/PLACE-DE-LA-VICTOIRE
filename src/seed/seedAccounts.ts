@@ -23,13 +23,15 @@ interface DemoAccount {
 const adminPwd = import.meta.env.VITE_SEED_ADMIN_PASSWORD as string | undefined;
 const serveurPwd = import.meta.env.VITE_SEED_SERVEUR_PASSWORD as string | undefined;
 const cuisinePwd = import.meta.env.VITE_SEED_CUISINE_PASSWORD as string | undefined;
+const caissierPwd = import.meta.env.VITE_SEED_CAISSIER_PASSWORD as string | undefined;
 
 function getDemoAccounts(): DemoAccount[] {
-  if (!adminPwd || !serveurPwd || !cuisinePwd) {
+  if (!adminPwd || !serveurPwd || !cuisinePwd || !caissierPwd) {
     throw new Error(
       'Seed passwords are not set. ' +
-        'Add VITE_SEED_ADMIN_PASSWORD, VITE_SEED_SERVEUR_PASSWORD, and ' +
-        'VITE_SEED_CUISINE_PASSWORD to your .env.local file before running the seed.'
+        'Add VITE_SEED_ADMIN_PASSWORD, VITE_SEED_SERVEUR_PASSWORD, ' +
+        'VITE_SEED_CUISINE_PASSWORD, and VITE_SEED_CAISSIER_PASSWORD ' +
+        'to your .env.local file before running the seed.'
     );
   }
   return [
@@ -50,6 +52,12 @@ function getDemoAccounts(): DemoAccount[] {
       password: cuisinePwd,
       nom: 'Cuisine Demo',
       role: UserRole.cuisine,
+    },
+    {
+      email: 'caissier@placelavictoire.com',
+      password: caissierPwd,
+      nom: 'Caissier Demo',
+      role: UserRole.caissier,
     },
   ];
 }

@@ -6,6 +6,7 @@ export enum UserRole {
   admin = 'admin',
   serveur = 'serveur',
   cuisine = 'cuisine',
+  caissier = 'caissier',
   client = 'client',
 }
 

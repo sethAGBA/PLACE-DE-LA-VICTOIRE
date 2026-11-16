@@ -21,6 +21,7 @@ const ROLE_STYLES: Record<UserRole, string> = {
   [UserRole.admin]: 'bg-purple-100 text-purple-700',
   [UserRole.serveur]: 'bg-blue-100 text-blue-700',
   [UserRole.cuisine]: 'bg-orange-100 text-orange-700',
+  [UserRole.caissier]: 'bg-teal-100 text-teal-700',
   [UserRole.client]: 'bg-gray-100 text-gray-700',
 };
 

@@ -261,10 +261,17 @@
     "custom": "Autre (minutes)",
     "confirm": "Confirmer"
   },
+  "caissier": {
+    "dashboard": "Tableau du Caissier",
+    "title": "Espace Caissier",
+    "pending_orders": "Commandes à valider",
+    "no_pending": "Aucune commande en attente."
+  },
   "roles": {
     "admin": "Administrateur",
     "serveur": "Serveur",
     "cuisine": "Cuisine",
+    "caissier": "Caissier",
     "client": "Client"
   },
   "errors": {

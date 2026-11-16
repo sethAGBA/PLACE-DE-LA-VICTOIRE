@@ -39,6 +39,7 @@ export default function LoginPage() {
         admin: '/admin',
         serveur: '/serveur',
         cuisine: '/cuisine',
+        caissier: '/caissier',
       };
       navigate(roleRedirects[appUser.role] ?? '/');
     } catch (err) {

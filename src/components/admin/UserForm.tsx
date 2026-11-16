@@ -170,6 +170,7 @@ export function UserForm({ initial, onSuccess, onCancel }: UserFormProps) {
         >
           <option value={UserRole.serveur}>{t('roles.serveur')}</option>
           <option value={UserRole.cuisine}>{t('roles.cuisine')}</option>
+          <option value={UserRole.caissier}>{t('roles.caissier')}</option>
           <option value={UserRole.admin}>{t('roles.admin')}</option>
         </select>
       </div>
