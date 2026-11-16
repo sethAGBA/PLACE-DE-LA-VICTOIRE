@@ -84,7 +84,6 @@
       "mark_served": "Served",
       "mark_paid": "Payment received",
       "confirm_reject": "Reason for rejection (optional)",
-      "mark_pickup": "Ready for pickup",
       "mark_retrieved": "RETRIEVED ✅"
     },
     "countdown": {

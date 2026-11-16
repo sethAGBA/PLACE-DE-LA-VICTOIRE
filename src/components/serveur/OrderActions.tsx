@@ -86,6 +86,11 @@ export function OrderActions({ order, role = 'serveur' }: OrderActionsProps) {
                 </Button>
               </>
             )}
+            {order.statut === OrderStatus.PICKUP && (
+              <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePaid()}>
+                💰 {t('order.action.mark_paid')}
+              </Button>
+            )}
           </>
         ) : (
           <>

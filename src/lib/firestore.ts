@@ -127,3 +127,19 @@ export function getAllOrders(cb: (orders: Order[]) => void): Unsubscribe {
     }
   );
 }
+
+export function getOrdersBySessionId(
+  sessionId: string,
+  cb: (orders: Order[]) => void
+): Unsubscribe {
+  return onSnapshot(
+    query(
+      collection(db, 'orders'),
+      where('sessionId', '==', sessionId),
+      orderBy('createdAt', 'desc')
+    ),
+    (snap) => {
+      cb(snap.docs.map((d) => ({ id: d.id, ...d.data() } as Order)));
+    }
+  );
+}

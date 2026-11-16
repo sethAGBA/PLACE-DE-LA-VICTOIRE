@@ -3,6 +3,7 @@ import {
   getOrdersByTable,
   getOrdersByStatus,
   getAllOrders,
+  getOrdersBySessionId,
 } from '@/lib/firestore';
 import type { Order, OrderStatus, UserRole } from '@/types';
 
@@ -55,6 +56,12 @@ export function useOrders({
       return () => unsub();
     }
 
+    // Takeaway tracking: no tableId but we have a sessionId — query by sessionId directly
+    if (role === 'client' && !tableId && sessionId) {
+      const unsub = getOrdersBySessionId(sessionId, handleOrders);
+      return () => unsub();
+    }
+
     if (['cuisine', 'serveur', 'caissier'].includes(role) && statuses && statuses.length > 0) {
       const unsub = getOrdersByStatus(statuses, handleOrders);
       return () => unsub();
@@ -63,7 +70,7 @@ export function useOrders({
     // admin or serveur without status filter — all orders
     const unsub = getAllOrders(handleOrders);
     return () => unsub();
-  }, [role, tableId, statuses, handleOrders]);
+  }, [role, tableId, sessionId, statuses, handleOrders]);
 
   return { orders, loading };
 }

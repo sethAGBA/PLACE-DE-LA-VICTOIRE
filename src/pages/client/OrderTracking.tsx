@@ -145,7 +145,10 @@ export default function OrderTracking() {
       <header className="bg-gradient-to-r from-primary to-[#E8690F] px-4 py-4 shadow-md">
         <h1 className="text-lg font-bold text-white">{t('order.my_orders')}</h1>
         <p className="text-sm text-white/80">
-          {t('order.table')}&nbsp;{order.tableId}&nbsp;·&nbsp;{order.clientPrenom}
+          {order.isTakeaway
+            ? '📦 Commande à emporter'
+            : `${t('order.table')}\u00a0${order.tableId}`
+          }&nbsp;·&nbsp;{order.clientPrenom}
         </p>
       </header>
 

@@ -30,6 +30,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   async function handlePlaceOrder() {
     if (!tableId || !prenom.trim()) return;
+    if (isTakeaway && !/^\+228\d{8}$/.test(clientTelephone ?? '')) {
+      setError('Numéro de téléphone invalide. Format attendu : +228XXXXXXXX (8 chiffres après +228).');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {

@@ -21,7 +21,7 @@ export default function CaissierDashboard() {
 
   const { orders, loading } = useOrders({
     role: UserRole.caissier,
-    statuses: [OrderStatus.PENDING],
+    statuses: [OrderStatus.PENDING, OrderStatus.PICKUP],
   });
 
   const [clock, setClock] = useState(() => new Date().toLocaleTimeString());
