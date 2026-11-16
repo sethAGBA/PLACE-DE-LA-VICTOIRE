@@ -1,0 +1,26 @@
+{
+  "id": "FEAT-002",
+  "type": "feat",
+  "description": "Implement the caissier UI and update the serveur view. Depends on FEAT-001 (UserRole.caissier must exist). Covers: (1) refactoring OrderActions to be role-aware, (2) removing PENDING from ServeurDashboard, (3) creating the CaissierDashboard page, (4) updating useOrders hook to include caissier in the status-based query path.",
+  "status": "completed",
+  "steps": [
+    "1. src/components/serveur/OrderActions.tsx — Add 'role?: \"serveur\" | \"caissier\"' to OrderActionsProps (default 'serveur'). Restructure the JSX: when role === 'caissier', render VALIDER + REJETER buttons only for PENDING orders (extract the existing PENDING block). When role === 'serveur' (default), render SERVI for READY, PAYÉ for SERVED, receipt view for PAID — do NOT render PENDING buttons. The reject modal and receipt modal remain unchanged and are shared between both roles.",
+    "2. src/pages/serveur/ServeurDashboard.tsx — (a) Remove OrderStatus.PENDING from WAITER_STATUSES (new array: [VALIDATED, IN_PREPARATION, READY, SERVED]). (b) Remove OrderStatus.PENDING from GROUP_ORDER. (c) Pass role='serveur' to <OrderActions> inside PendingAwareOrderRow. (d) Remove the isPending prop from PendingAwareOrderRow and the ring/pulse class (no PENDING cards here anymore). (e) Remove the knownPendingIds sound-notification useEffect block — the caissier dashboard will own this.",
+    "3. src/hooks/useOrders.ts — In the useEffect condition 'if (role === \"cuisine\" || role === \"serveur\") ...', extend it to also match 'caissier': change to 'if ([\"cuisine\", \"serveur\", \"caissier\"].includes(role) && statuses && statuses.length > 0)'. This routes CaissierDashboard's useOrders call to the getOrdersByStatus path (querying only PENDING).",
+    "4. src/pages/caissier/CaissierDashboard.tsx — Create this file from scratch following the ServeurDashboard.tsx pattern: (a) Same header: gradient 'from-white to-[#FFF8F0]', app name, t('caissier.dashboard') label, user name, clock, LanguageSwitcher, logout button. (b) No left-panel table list — the caissier sees all PENDING orders, grouped by tableId for clarity. (c) useOrders called with { role: UserRole.caissier, statuses: [OrderStatus.PENDING] }. (d) Sound notification: same knownPendingIds useRef + hasInteracted useRef pattern from ServeurDashboard — play /notification.mp3 on new PENDING arrivals. (e) Group orders by tableId: build a Map<tableId, Order[]>, display each group under a 'Table N°X' heading. (f) Each order: <OrderCard order={order} /> + <OrderActions order={order} role='caissier' />. (g) Animate with framer-motion: same motion.div with y: -24 → 0 entrance. (h) Empty state: <p>{t('caissier.no_pending')}</p>. (i) Loading state: <Spinner size='lg' />."
+  ],
+  "acceptance_criteria": [
+    "ServeurDashboard no longer shows PENDING orders — only VALIDATED, IN_PREPARATION, READY, SERVED",
+    "OrderActions with role='serveur' renders no buttons for a PENDING order",
+    "OrderActions with role='caissier' renders VALIDER + REJETER for a PENDING order and nothing for other statuses",
+    "CaissierDashboard renders at /caissier, shows only PENDING orders grouped by table, plays a sound on new arrivals",
+    "useOrders hook returns status-filtered orders when called with role='caissier' and a statuses array",
+    "npm run build exits 0 with no TypeScript errors or missing imports"
+  ],
+  "verification": [
+    "npm run lint — must exit 0",
+    "npm run build — must exit 0 and produce dist/ without errors"
+  ],
+  "blocked_reason": null,
+  "findings": "Integration verification (Iteration 1): npm run lint (tsc --noEmit) exits 0 — no TypeScript errors. npm run build exits 0: 3420 modules transformed, dist/ produced with CaissierDashboard-17Hb1sLD.js (3.50 kB), ServeurDashboard-DNu-rR2g.js (5.54 kB), OrderActions-CFPomnyI.js (19.46 kB). Only a non-fatal chunk size advisory (index bundle ~955 kB). No fixes required."
+}
