@@ -30,7 +30,7 @@ export default defineConfig({
         theme_color: '#D4580A',
         background_color: '#FFF8F0',
         display: 'standalone',
-        start_url: '/',
+        start_url: '/commander',
         scope: '/',
         icons: [
           {

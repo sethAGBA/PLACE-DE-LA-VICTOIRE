@@ -10,7 +10,7 @@ import { Spinner } from './components/ui/Spinner';
 
 // Register the PWA service worker (vite-plugin-pwa virtual module)
 import { registerSW } from 'virtual:pwa-register';
-registerSW({ immediate: false });
+registerSW({ immediate: true });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

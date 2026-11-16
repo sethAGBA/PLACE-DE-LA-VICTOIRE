@@ -19,6 +19,7 @@ const statusBar: Record<OrderStatus, string> = {
   [OrderStatus.SERVED]: 'bg-teal-500',
   [OrderStatus.PAID]: 'bg-gray-400',
   [OrderStatus.REJECTED]: 'bg-red-500',
+  [OrderStatus.PICKUP]: 'bg-purple-500',
 };
 
 /**

@@ -6,7 +6,7 @@
   "background_color": "#FFF8F0",
   "display": "standalone",
   "orientation": "portrait",
-  "start_url": "/",
+  "start_url": "/commander",
   "scope": "/",
   "lang": "fr",
   "categories": ["food", "lifestyle"],
@@ -33,8 +33,13 @@
   "screenshots": [],
   "shortcuts": [
     {
+      "name": "Commander en ligne",
+      "url": "/commander",
+      "description": "Commandez en ligne – sur place ou à emporter"
+    },
+    {
       "name": "Menu",
-      "url": "/table/table-01",
+      "url": "/commander",
       "description": "Voir le menu du restaurant"
     }
   ]

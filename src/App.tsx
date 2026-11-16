@@ -18,6 +18,7 @@ import type { UserRole } from '@/types';
 // ─── Lazy-loaded pages ────────────────────────────────────────────────────────
 const LoginPage = lazy(() => import('@/pages/LoginPage'));
 const TablePage = lazy(() => import('@/pages/client/TablePage'));
+const TakeawayPage = lazy(() => import('@/pages/client/TakeawayPage'));
 const OrderTracking = lazy(() => import('@/pages/client/OrderTracking'));
 const ServeurDashboard = lazy(() => import('@/pages/serveur/ServeurDashboard'));
 const CuisineDashboard = lazy(() => import('@/pages/cuisine/CuisineDashboard'));
@@ -43,14 +44,14 @@ function RootRedirect() {
   const { user, loading } = useAuthStore();
 
   if (loading) return <PageLoader />;
-  if (!user) return <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/commander" replace />;
 
   const roleRedirects: Record<UserRole, string> = {
     admin: '/admin',
     serveur: '/serveur',
     cuisine: '/cuisine',
     caissier: '/caissier',
-    client: '/login',
+    client: '/commander',
   };
   return <Navigate to={roleRedirects[user.role]} replace />;
 }
@@ -186,6 +187,10 @@ export default function App() {
           {/* Client — public, no auth required */}
           <Route path="/table/:tableId" element={<TablePage />} />
           <Route path="/table/:tableId/tracking" element={<OrderTracking />} />
+
+          {/* Takeaway — public, no auth required */}
+          <Route path="/commander" element={<TakeawayPage />} />
+          <Route path="/commander/tracking" element={<OrderTracking />} />
 
           {/* Serveur */}
           <Route element={<ProtectedRoute role={'serveur' as UserRole} />}>

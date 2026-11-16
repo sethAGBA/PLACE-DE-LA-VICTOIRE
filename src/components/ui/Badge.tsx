@@ -18,6 +18,7 @@ const statusColorClasses: Record<OrderStatus, StatusStyle> = {
   [OrderStatus.SERVED]:          { bg: 'bg-teal-100',   text: 'text-teal-700',   dot: 'bg-teal-500' },
   [OrderStatus.PAID]:            { bg: 'bg-gray-100',   text: 'text-gray-600',   dot: 'bg-gray-400' },
   [OrderStatus.REJECTED]:        { bg: 'bg-red-100',    text: 'text-red-700',    dot: 'bg-red-500' },
+  [OrderStatus.PICKUP]:          { bg: 'bg-purple-100', text: 'text-purple-700', dot: 'bg-purple-500' },
 };
 
 // Statuses considered "active" get an animated (pulsing) dot.

@@ -18,6 +18,7 @@ const WAITER_STATUSES = [
   OrderStatus.IN_PREPARATION,
   OrderStatus.READY,
   OrderStatus.SERVED,
+  OrderStatus.PICKUP,
 ];
 
 /** Colored dot per status for group headers */
@@ -29,11 +30,13 @@ const statusDot: Record<OrderStatus, string> = {
   [OrderStatus.SERVED]: 'bg-teal-500',
   [OrderStatus.PAID]: 'bg-gray-400',
   [OrderStatus.REJECTED]: 'bg-red-500',
+  [OrderStatus.PICKUP]: 'bg-purple-500',
 };
 
 /** Display order for order groups */
 const GROUP_ORDER = [
   OrderStatus.READY,
+  OrderStatus.PICKUP,
   OrderStatus.VALIDATED,
   OrderStatus.IN_PREPARATION,
   OrderStatus.SERVED,

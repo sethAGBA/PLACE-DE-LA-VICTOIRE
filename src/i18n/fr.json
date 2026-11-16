@@ -73,7 +73,8 @@
       "READY": "Prête",
       "SERVED": "Servie",
       "PAID": "Payée",
-      "REJECTED": "Refusée"
+      "REJECTED": "Refusée",
+      "PICKUP": "Récupérée"
     },
     "action": {
       "validate": "Valider",
@@ -82,7 +83,9 @@
       "mark_ready": "Prête",
       "mark_served": "Servie",
       "mark_paid": "Paiement encaissé",
-      "confirm_reject": "Motif du refus (optionnel)"
+      "confirm_reject": "Motif du refus (optionnel)",
+      "mark_pickup": "Prêt à récupérer",
+      "mark_retrieved": "RÉCUPÉRÉ ✅"
     },
     "countdown": {
       "ready_in": "Prête dans",
@@ -339,5 +342,20 @@
     "install_android": "Accès rapide depuis votre écran d'accueil, même sans réseau.",
     "install_ios": "Installez l'appli pour un accès rapide depuis votre écran d'accueil.",
     "install_button": "Installer"
+  },
+  "takeaway": {
+    "title": "Commander en ligne",
+    "subtitle": "Commandez en ligne",
+    "hero_text": "Bon appétit commence ici 🍽️",
+    "form_title": "Vos coordonnées",
+    "firstname": "Prénom",
+    "lastname": "Nom",
+    "phone": "Téléphone",
+    "phone_placeholder": "+228XXXXXXXX",
+    "mode": "Mode de commande",
+    "on_site": "🪑 Sur place",
+    "to_go": "🛍️ À emporter",
+    "choose_table": "Choisir une table",
+    "order_button": "Passer la commande"
   }
 }

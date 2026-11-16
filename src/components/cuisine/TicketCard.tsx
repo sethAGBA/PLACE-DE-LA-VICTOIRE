@@ -22,6 +22,7 @@ const ticketBorder: Record<OrderStatus, string> = {
   [OrderStatus.SERVED]: 'border-l-teal-500',
   [OrderStatus.PAID]: 'border-l-gray-400',
   [OrderStatus.REJECTED]: 'border-l-red-500',
+  [OrderStatus.PICKUP]: 'border-l-purple-500',
 };
 
 /**

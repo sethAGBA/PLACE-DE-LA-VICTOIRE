@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { CheckCircle, Clock, ChefHat, Bell, Star, XCircle, PartyPopper } from 'lucide-react';
+import { CheckCircle, Clock, ChefHat, Bell, Star, XCircle, PartyPopper, Package } from 'lucide-react';
 
 import { useOrders } from '@/hooks/useOrders';
 import { useCartStore } from '@/store/cartStore';
@@ -23,18 +23,30 @@ const STEPS: { status: OrderStatus; icon: React.ReactNode; labelKey: string }[] 
   { status: OrderStatus.SERVED,         icon: <Star size={18} />,        labelKey: 'order.status.SERVED' },
 ];
 
+const STEPS_TAKEAWAY: { status: OrderStatus; icon: React.ReactNode; labelKey: string }[] = [
+  { status: OrderStatus.PENDING,        icon: <Clock size={18} />,       labelKey: 'order.status.PENDING' },
+  { status: OrderStatus.VALIDATED,      icon: <CheckCircle size={18} />, labelKey: 'order.status.VALIDATED' },
+  { status: OrderStatus.IN_PREPARATION, icon: <ChefHat size={18} />,     labelKey: 'order.status.IN_PREPARATION' },
+  { status: OrderStatus.READY,          icon: <Bell size={18} />,        labelKey: 'order.status.READY' },
+  { status: OrderStatus.PICKUP,         icon: <Package size={18} />,     labelKey: 'order.status.PICKUP' },
+];
+
 const STATUS_ORDER: OrderStatus[] = [
   OrderStatus.PENDING,
   OrderStatus.VALIDATED,
   OrderStatus.IN_PREPARATION,
   OrderStatus.READY,
   OrderStatus.SERVED,
+  OrderStatus.PICKUP,
   OrderStatus.PAID,
 ];
 
-function getStepIndex(status: OrderStatus): number {
-  const idx = STATUS_ORDER.indexOf(status);
-  return idx === -1 ? 0 : Math.min(idx, STEPS.length - 1);
+function getStepIndex(status: OrderStatus, isTakeaway: boolean): number {
+  const steps = isTakeaway ? STEPS_TAKEAWAY : STEPS;
+  const idx = steps.findIndex((s) => s.status === status);
+  if (idx !== -1) return idx;
+  // For PAID we cap at the last step
+  return steps.length - 1;
 }
 
 // ── Celebration particles ──────────────────────────────────────────────────────
@@ -80,11 +92,17 @@ export default function OrderTracking() {
 
   const order: Order | undefined = orders[0];
 
+  const isTakeaway = order?.isTakeaway === true || tableId === 'takeaway' || tableId === '';
+
   // Redirect to menu only if truly no order and not loading
   useEffect(() => {
-    if (!loading && orders.length === 0 && tableId) {
+    if (!loading && orders.length === 0) {
       const timer = setTimeout(() => {
-        navigate(`/table/${tableId}`, { replace: true });
+        if (!tableId || tableId === 'takeaway') {
+          navigate('/commander', { replace: true });
+        } else {
+          navigate(`/table/${tableId}`, { replace: true });
+        }
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -92,7 +110,11 @@ export default function OrderTracking() {
 
   function handleBackToMenu() {
     clearCart();
-    navigate(`/table/${tableId}`, { replace: true });
+    if (!tableId || tableId === 'takeaway') {
+      navigate('/commander', { replace: true });
+    } else {
+      navigate(`/table/${tableId}`, { replace: true });
+    }
   }
 
   if (loading) {
@@ -105,11 +127,13 @@ export default function OrderTracking() {
 
   if (!order) return null;
 
-  const currentStepIdx = getStepIndex(order.statut);
+  const currentStepIdx = getStepIndex(order.statut, isTakeaway);
+  const activeSteps = isTakeaway ? STEPS_TAKEAWAY : STEPS;
   const isRejected = order.statut === OrderStatus.REJECTED;
   const isReady    = order.statut === OrderStatus.READY;
   const isServed   = order.statut === OrderStatus.SERVED;
   const isPaid     = order.statut === OrderStatus.PAID;
+  const isPickup   = order.statut === OrderStatus.PICKUP;
 
   return (
     <div className="relative min-h-screen bg-background pb-10">
@@ -117,7 +141,6 @@ export default function OrderTracking() {
       <AnimatePresence>
         {(isReady || isPaid) && <CelebrationParticles />}
       </AnimatePresence>
-
       {/* Header */}
       <header className="bg-gradient-to-r from-primary to-[#E8690F] px-4 py-4 shadow-md">
         <h1 className="text-lg font-bold text-white">{t('order.my_orders')}</h1>
@@ -213,6 +236,29 @@ export default function OrderTracking() {
             </motion.div>
           )}
 
+          {/* ── PICKUP (takeaway) ───────────────────────────────────────────── */}
+          {isPickup && (
+            <motion.div
+              key="pickup"
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              className="rounded-3xl bg-purple-50 p-5 text-center shadow-md"
+            >
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ repeat: Infinity, duration: 1.2 }}
+                className="text-4xl"
+                aria-hidden="true"
+              >
+                🛍️
+              </motion.div>
+              <p className="mt-2 text-base font-bold text-purple-700">
+                Votre commande est prête ! Venez la récupérer 🛍️
+              </p>
+            </motion.div>
+          )}
+
           {/* ── REJECTED ────────────────────────────────────────────────────── */}
           {isRejected && (
             <motion.div
@@ -252,7 +298,7 @@ export default function OrderTracking() {
               {t('order.title')}
             </h2>
             <ol className="relative">
-              {STEPS.map((step, idx) => {
+              {activeSteps.map((step, idx) => {
                 const isCompleted = idx < currentStepIdx;
                 const isCurrent   = idx === currentStepIdx;
                 const lineColor = isCompleted
@@ -317,8 +363,8 @@ export default function OrderTracking() {
           </div>
         )}
 
-        {/* ── Retour menu (SERVED ou REJECTED) ────────────────────────────── */}
-        {(isServed || isRejected) && (
+        {/* ── Retour menu (SERVED, PICKUP ou REJECTED) ────────────────────── */}
+        {(isServed || isPickup || isRejected) && (
           <Button variant="ghost" className="w-full" onClick={handleBackToMenu}>
             {t('common.back')} — {t('menu.title')}
           </Button>
@@ -341,6 +387,3 @@ export default function OrderTracking() {
     </div>
   );
 }
-
-// Need i18n in JSX above — re-export hook usage inline
-// The variable `i18n` is destructured from useTranslation above

@@ -45,8 +45,10 @@ export function Receipt({ order, showActions = true }: ReceiptProps) {
       '    Restaurant – Kara, Togo ',
       '============================',
       '',
-      `${t('receipt.table')} : ${order.tableId}`,
+      `${t('receipt.table')} : ${order.isTakeaway ? '📦 Commande à emporter' : order.tableId}`,
       `${t('receipt.client')} : ${order.clientPrenom || '—'}`,
+      ...(order.clientNom ? [`Nom : ${order.clientNom}`] : []),
+      ...(order.clientTelephone ? [`Téléphone : ${order.clientTelephone}`] : []),
       `${t('receipt.date')} : ${dateStr}`,
       `${t('receipt.paid_at')} : ${paidStr}`,
       '',
@@ -95,12 +97,26 @@ export function Receipt({ order, showActions = true }: ReceiptProps) {
         <div className="mb-3 space-y-1 text-xs text-gray-600">
           <div className="flex justify-between">
             <span className="font-semibold">{t('receipt.table')}</span>
-            <span>{order.tableId}</span>
+            <span>
+              {order.isTakeaway ? '📦 Commande à emporter' : order.tableId}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="font-semibold">{t('receipt.client')}</span>
             <span>{order.clientPrenom || '—'}</span>
           </div>
+          {order.clientNom && (
+            <div className="flex justify-between">
+              <span className="font-semibold">Nom</span>
+              <span>{order.clientNom}</span>
+            </div>
+          )}
+          {order.clientTelephone && (
+            <div className="flex justify-between">
+              <span className="font-semibold">Téléphone</span>
+              <span>{order.clientTelephone}</span>
+            </div>
+          )}
           <div className="flex justify-between">
             <span className="font-semibold">{t('receipt.date')}</span>
             <span>{dateStr}</span>

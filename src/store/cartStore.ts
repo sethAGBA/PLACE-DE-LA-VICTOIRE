@@ -20,8 +20,14 @@ interface CartState {
   tableId: string | null;
   sessionId: string;
   clientPrenom: string;
+  clientNom: string;
+  clientTelephone: string;
+  isTakeaway: boolean;
   setTableId: (tableId: string) => void;
   setClientPrenom: (prenom: string) => void;
+  setClientNom: (nom: string) => void;
+  setClientTelephone: (telephone: string) => void;
+  setIsTakeaway: (isTakeaway: boolean) => void;
   addItem: (item: CartItem) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantite: number) => void;
@@ -37,10 +43,19 @@ export const useCartStore = create<CartState>()(
       tableId: null,
       sessionId: getOrCreateSessionId(),
       clientPrenom: '',
+      clientNom: '',
+      clientTelephone: '',
+      isTakeaway: false,
 
       setTableId: (tableId) => set({ tableId }),
 
       setClientPrenom: (clientPrenom) => set({ clientPrenom }),
+
+      setClientNom: (clientNom) => set({ clientNom }),
+
+      setClientTelephone: (clientTelephone) => set({ clientTelephone }),
+
+      setIsTakeaway: (isTakeaway) => set({ isTakeaway }),
 
       addItem: (item) => {
         const existing = get().items.find((i) => i.productId === item.productId);
@@ -78,7 +93,7 @@ export const useCartStore = create<CartState>()(
         const key = 'pdv-session-id';
         const newId = crypto.randomUUID();
         sessionStorage.setItem(key, newId);
-        set({ items: [], sessionId: newId, clientPrenom: '' });
+        set({ items: [], sessionId: newId, clientPrenom: '', clientNom: '', clientTelephone: '', isTakeaway: false });
       },
 
       total: () =>
@@ -93,6 +108,9 @@ export const useCartStore = create<CartState>()(
         tableId: state.tableId,
         sessionId: state.sessionId,
         clientPrenom: state.clientPrenom,
+        clientNom: state.clientNom,
+        clientTelephone: state.clientTelephone,
+        isTakeaway: state.isTakeaway,
       }),
     }
   )

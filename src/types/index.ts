@@ -18,6 +18,7 @@ export enum OrderStatus {
   SERVED = 'SERVED',
   PAID = 'PAID',
   REJECTED = 'REJECTED',
+  PICKUP = 'PICKUP',
 }
 
 export enum TableZone {
@@ -81,6 +82,9 @@ export interface Order {
   servedAt?: Timestamp;
   paidAt?: Timestamp;
   rejectedReason?: string;
+  clientNom?: string;
+  clientTelephone?: string;
+  isTakeaway?: boolean;
 }
 
 export interface AppUser {

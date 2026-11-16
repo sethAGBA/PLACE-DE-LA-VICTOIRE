@@ -117,11 +117,18 @@ export default function CaissierDashboard() {
                 <div className="mb-3 flex items-center gap-2">
                   <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
                   <h3 className="text-sm font-semibold uppercase tracking-wide text-ink">
-                    {t('table.number', { number: tableOrders[0]?.tableId ?? tableId })}
+                    {tableId === 'takeaway'
+                      ? 'Commandes à emporter'
+                      : t('table.number', { number: tableOrders[0]?.tableId ?? tableId })}
                   </h3>
                   <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">
                     {tableOrders.length}
                   </span>
+                  {tableId === 'takeaway' && (
+                    <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-bold text-purple-700">
+                      🛍️ À emporter
+                    </span>
+                  )}
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

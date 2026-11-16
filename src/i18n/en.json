@@ -73,7 +73,8 @@
       "READY": "Ready",
       "SERVED": "Served",
       "PAID": "Paid",
-      "REJECTED": "Rejected"
+      "REJECTED": "Rejected",
+      "PICKUP": "Picked Up"
     },
     "action": {
       "validate": "Validate",
@@ -82,7 +83,9 @@
       "mark_ready": "Ready",
       "mark_served": "Served",
       "mark_paid": "Payment received",
-      "confirm_reject": "Reason for rejection (optional)"
+      "confirm_reject": "Reason for rejection (optional)",
+      "mark_pickup": "Ready for pickup",
+      "mark_retrieved": "RETRIEVED ✅"
     },
     "countdown": {
       "ready_in": "Ready in",
@@ -339,5 +342,20 @@
     "install_android": "Quick access from your home screen, even offline.",
     "install_ios": "Install the app for quick access from your home screen.",
     "install_button": "Install"
+  },
+  "takeaway": {
+    "title": "Order Online",
+    "subtitle": "Order Online",
+    "hero_text": "Great food starts here 🍽️",
+    "form_title": "Your details",
+    "firstname": "First name",
+    "lastname": "Last name",
+    "phone": "Phone",
+    "phone_placeholder": "+228XXXXXXXX",
+    "mode": "Order mode",
+    "on_site": "🪑 Dine in",
+    "to_go": "🛍️ Take away",
+    "choose_table": "Choose a table",
+    "order_button": "Place order"
   }
 }

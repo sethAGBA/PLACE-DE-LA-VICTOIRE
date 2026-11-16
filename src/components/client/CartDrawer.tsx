@@ -19,7 +19,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const lang = i18n.language.startsWith('en') ? 'en' : 'fr';
   const navigate = useNavigate();
 
-  const { items, tableId, sessionId, updateQuantity, removeItem, clearCart, total } =
+  const { items, tableId, sessionId, updateQuantity, removeItem, clearCart, total,
+    clientNom, clientTelephone, isTakeaway } =
     useCartStore();
 
   const [confirmOpen, setConfirmOpen] = useState(false);
@@ -36,6 +37,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         tableId,
         sessionId,
         clientPrenom: prenom.trim(),
+        clientNom: clientNom || undefined,
+        clientTelephone: clientTelephone || undefined,
+        isTakeaway: isTakeaway || undefined,
         statut: OrderStatus.PENDING,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         createdAt: serverTimestamp() as any,
@@ -44,7 +48,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
       clearCart();
       setConfirmOpen(false);
       onClose();
-      navigate(`/table/${tableId}/tracking?tracking=${sessionId}`);
+      if (tableId === 'takeaway') {
+        navigate(`/commander/tracking?tracking=${sessionId}`);
+      } else {
+        navigate(`/table/${tableId}/tracking?tracking=${sessionId}`);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t('errors.generic'));
     } finally {

@@ -64,12 +64,18 @@ export function OrderActions({ order, role = 'serveur' }: OrderActionsProps) {
 
   const handleServed = () => run({ statut: OrderStatus.SERVED, servedAt: Timestamp.now() });
   const handlePaid   = () => run({ statut: OrderStatus.PAID,   paidAt:  Timestamp.now() });
+  const handlePickup = () => run({ statut: OrderStatus.PICKUP });
 
   return (
     <>
       <div className="mt-3 flex flex-wrap gap-2">
         {role === 'caissier' ? (
           <>
+            {order.isTakeaway && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700">
+                🛍️ À emporter
+              </span>
+            )}
             {order.statut === OrderStatus.PENDING && (
               <>
                 <Button variant="secondary" size="sm" loading={loading} onClick={() => void handleValidate()}>
@@ -83,13 +89,30 @@ export function OrderActions({ order, role = 'serveur' }: OrderActionsProps) {
           </>
         ) : (
           <>
+            {order.isTakeaway && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-semibold text-purple-700">
+                🛍️ À emporter
+              </span>
+            )}
             {order.statut === OrderStatus.READY && (
-              <Button variant="primary" size="sm" loading={loading} onClick={() => void handleServed()}>
-                🍽️ {t('order.action.mark_served')}
-              </Button>
+              order.isTakeaway ? (
+                <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePickup()}>
+                  🛍️ {t('order.action.mark_retrieved')}
+                </Button>
+              ) : (
+                <Button variant="primary" size="sm" loading={loading} onClick={() => void handleServed()}>
+                  🍽️ {t('order.action.mark_served')}
+                </Button>
+              )
             )}
 
             {order.statut === OrderStatus.SERVED && (
+              <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePaid()}>
+                💰 {t('order.action.mark_paid')}
+              </Button>
+            )}
+
+            {order.statut === OrderStatus.PICKUP && (
               <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePaid()}>
                 💰 {t('order.action.mark_paid')}
               </Button>
