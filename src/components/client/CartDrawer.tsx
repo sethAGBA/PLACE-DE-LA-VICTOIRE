@@ -31,7 +31,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
   const [error, setError] = useState<string | null>(null);
 
   async function handlePlaceOrder() {
-    if (!tableId || !prenom.trim()) return;
+    // Sur takeaway : utiliser le prénom du store (saisi dans le formulaire TakeawayPage)
+    const effectivePrenom = isTakeaway ? (storePrenom ?? '') : prenom;
+    if (!tableId || !effectivePrenom.trim()) return;
     // Validation téléphone uniquement pour les commandes takeaway
     if (isTakeaway && clientTelephone && !/^\+228\d{8}$/.test(clientTelephone)) {
       setError('Numéro de téléphone invalide. Format attendu : +228XXXXXXXX (8 chiffres après +228).');
@@ -44,7 +46,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     const orderData: Parameters<typeof createOrder>[0] = {
       tableId,
       sessionId,
-      clientPrenom: prenom.trim(),
+      clientPrenom: effectivePrenom.trim(),
       statut: OrderStatus.PENDING,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       createdAt: serverTimestamp() as any,
@@ -223,51 +225,53 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <h3 id="confirm-order-title" className="text-lg font-bold text-ink">
                   {t('cart.confirm_title')}
                 </h3>
-                <p className="text-sm text-muted">{t('cart.confirm_message')}</p>
 
-                {/* Sur table : afficher le numéro de table + prénom optionnel */}
-                {!isTakeaway && tableId && (
-                  <div className="rounded-xl bg-primary/5 px-4 py-3 flex items-center gap-3">
-                    <span className="text-2xl font-black text-primary">
-                      {tableId.replace('table-', 'T')}
-                    </span>
-                    <div>
-                      <p className="text-xs text-muted">{t('order.table')}</p>
-                      <p className="text-sm font-semibold text-ink">{tableId.replace('table-0', 'Table ').replace('table-', 'Table ')}</p>
+                {/* Takeaway : récapitulatif des coordonnées déjà saisies, pas de re-saisie */}
+                {isTakeaway ? (
+                  <div className="rounded-xl bg-primary/5 p-4 space-y-2">
+                    <p className="text-sm font-semibold text-ink">📦 {t('takeaway.to_go')}</p>
+                    {storePrenom && (
+                      <p className="text-sm text-muted">👤 {storePrenom} {clientNom}</p>
+                    )}
+                    {clientTelephone && (
+                      <p className="text-sm text-muted">📞 {clientTelephone}</p>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-sm text-muted">{t('cart.confirm_message')}</p>
+
+                    {/* Sur table : afficher le numéro de table */}
+                    {tableId && tableId !== 'takeaway' && (
+                      <div className="rounded-xl bg-primary/5 px-4 py-3 flex items-center gap-3">
+                        <span className="text-2xl font-black text-primary">
+                          {tableId.replace('table-0', '').replace('table-', '')}
+                        </span>
+                        <div>
+                          <p className="text-xs text-muted">{t('order.table')}</p>
+                          <p className="text-sm font-semibold text-ink">
+                            {tableId.replace('table-0', 'Table ').replace('table-', 'Table ')}
+                          </p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Prénom */}
+                    <div className="space-y-1">
+                      <label htmlFor="client-prenom" className="block text-sm font-medium text-gray-700">
+                        {t('cart.your_name')}
+                      </label>
+                      <input
+                        id="client-prenom"
+                        type="text"
+                        value={prenom}
+                        onChange={(e) => setPrenom(e.target.value)}
+                        placeholder={t('cart.name_placeholder')}
+                        maxLength={30}
+                        className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+                      />
                     </div>
-                  </div>
-                )}
-
-                {/* Prénom */}
-                <div className="space-y-1">
-                  <label htmlFor="client-prenom" className="block text-sm font-medium text-gray-700">
-                    {t('cart.your_name')}
-                  </label>
-                  <input
-                    id="client-prenom"
-                    type="text"
-                    value={prenom}
-                    onChange={(e) => setPrenom(e.target.value)}
-                    placeholder={t('cart.name_placeholder')}
-                    maxLength={30}
-                    className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
-                  />
-                </div>
-
-                {/* Téléphone uniquement sur takeaway */}
-                {isTakeaway && (
-                  <div className="space-y-1">
-                    <label htmlFor="confirm-phone" className="block text-sm font-medium text-gray-700">
-                      {t('takeaway.phone')}
-                    </label>
-                    <input
-                      id="confirm-phone"
-                      type="tel"
-                      value={clientTelephone ?? ''}
-                      readOnly
-                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-muted"
-                    />
-                  </div>
+                  </>
                 )}
 
                 {error && (
@@ -286,7 +290,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <Button
                     className="flex-1"
                     loading={loading}
-                    disabled={!prenom.trim()}
+                    disabled={isTakeaway ? !storePrenom?.trim() : !prenom.trim()}
                     onClick={() => void handlePlaceOrder()}
                   >
                     {t('cart.confirm')}
