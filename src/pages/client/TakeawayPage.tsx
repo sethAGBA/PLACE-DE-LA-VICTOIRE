@@ -35,9 +35,18 @@ export default function TakeawayPage() {
   const [selectedTableId, setSelectedTableId] = useState('');
   const [tables, setTables] = useState<Table[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [phoneError, setPhoneError] = useState('');
 
-  // ── Sync form → store ──────────────────────────────────────────────────────
-  useEffect(() => { setClientPrenom(prenom); }, [prenom, setClientPrenom]);
+  // ── Phone validation ───────────────────────────────────────────────────────
+  const validatePhone = (val: string) => {
+    if (val && !/^\+228\d{8}$/.test(val)) {
+      setPhoneError(t('takeaway.phone_error'));
+    } else {
+      setPhoneError('');
+    }
+  };
+
+  // ── Sync form → store ──────────────────────────────────────────────────────  useEffect(() => { setClientPrenom(prenom); }, [prenom, setClientPrenom]);
   useEffect(() => { setClientNom(nom); }, [nom, setClientNom]);
   useEffect(() => { setClientTelephone(telephone); }, [telephone, setClientTelephone]);
 
@@ -194,11 +203,15 @@ export default function TakeawayPage() {
               type="tel"
               value={telephone}
               onChange={(e) => setTelephone(e.target.value)}
+              onBlur={(e) => validatePhone(e.target.value)}
               placeholder={t('takeaway.phone_placeholder')}
               pattern="^\+228\d{8}$"
               maxLength={12}
               className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
+            {phoneError && (
+              <p className="text-xs text-red-600">{phoneError}</p>
+            )}
           </div>
 
           {/* Mode */}
@@ -341,8 +354,9 @@ export default function TakeawayPage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.93 }}
             onClick={() => setCartOpen(true)}
+            disabled={!!(phoneError && mode === 'a_emporter' && telephone)}
             aria-label={`${t('cart.title')} (${cartItemCount})`}
-            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#E8690F] text-white shadow-xl shadow-primary/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40"
+            className="relative flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-primary to-[#E8690F] text-white shadow-xl shadow-primary/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/40 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <ShoppingCart size={24} />
             <AnimatePresence>

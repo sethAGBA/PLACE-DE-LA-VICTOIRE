@@ -51,7 +51,9 @@ export default function CaissierDashboard() {
 
   // Detect new PENDING orders → play notification sound
   useEffect(() => {
-    const currentPending = orders.filter((o) => o.statut === OrderStatus.PENDING);
+    const currentPending = orders.filter((o) =>
+      o.statut === OrderStatus.PENDING || o.statut === OrderStatus.PICKUP
+    );
     const newOnes = currentPending.filter((o) => !knownPendingIds.current.has(o.id));
 
     if (newOnes.length > 0 && hasInteracted.current) {

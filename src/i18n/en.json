@@ -91,7 +91,8 @@
       "arriving": "Your order arrives in",
       "ready": "Your order is ready!",
       "served": "Enjoy your meal!",
-      "minutes_short": "min"
+      "minutes_short": "min",
+      "pickup": "Your order is ready! Come pick it up 🛍️"
     },
     "empty": "No orders yet."
   },
@@ -351,6 +352,7 @@
     "lastname": "Last name",
     "phone": "Phone",
     "phone_placeholder": "+228XXXXXXXX",
+    "phone_error": "Invalid number. Format: +228XXXXXXXX",
     "mode": "Order mode",
     "on_site": "🪑 Dine in",
     "to_go": "🛍️ Take away",

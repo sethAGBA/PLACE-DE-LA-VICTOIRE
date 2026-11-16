@@ -92,7 +92,7 @@ export default function OrderTracking() {
 
   const order: Order | undefined = orders[0];
 
-  const isTakeaway = order?.isTakeaway === true || tableId === 'takeaway' || tableId === '';
+  const isTakeaway = order?.isTakeaway === true;
 
   // Redirect to menu only if truly no order and not loading
   useEffect(() => {
@@ -257,7 +257,7 @@ export default function OrderTracking() {
                 🛍️
               </motion.div>
               <p className="mt-2 text-base font-bold text-purple-700">
-                Votre commande est prête ! Venez la récupérer 🛍️
+                {t('order.countdown.pickup')}
               </p>
             </motion.div>
           )}

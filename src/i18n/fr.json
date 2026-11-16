@@ -91,7 +91,8 @@
       "arriving": "Votre commande arrive dans",
       "ready": "Votre commande est prête !",
       "served": "Bon appétit !",
-      "minutes_short": "min"
+      "minutes_short": "min",
+      "pickup": "Votre commande est prête ! Venez la récupérer 🛍️"
     },
     "empty": "Aucune commande pour le moment."
   },
@@ -351,6 +352,7 @@
     "lastname": "Nom",
     "phone": "Téléphone",
     "phone_placeholder": "+228XXXXXXXX",
+    "phone_error": "Numéro invalide. Format : +228XXXXXXXX",
     "mode": "Mode de commande",
     "on_site": "🪑 Sur place",
     "to_go": "🛍️ À emporter",

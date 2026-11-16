@@ -23,8 +23,10 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     clientNom, clientTelephone, isTakeaway } =
     useCartStore();
 
+  const storePrenom = useCartStore((s) => s.clientPrenom);
+
   const [confirmOpen, setConfirmOpen] = useState(false);
-  const [prenom, setPrenom] = useState('');
+  const [prenom, setPrenom] = useState(storePrenom ?? '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 

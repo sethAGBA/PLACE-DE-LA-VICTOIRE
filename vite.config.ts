@@ -24,27 +24,6 @@ export default defineConfig({
           },
         ],
       },
-      manifest: {
-        name: 'Place de la Victoire',
-        short_name: 'PdV',
-        theme_color: '#D4580A',
-        background_color: '#FFF8F0',
-        display: 'standalone',
-        start_url: '/commander',
-        scope: '/',
-        icons: [
-          {
-            src: '/icons/pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
-          },
-          {
-            src: '/icons/pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
-          },
-        ],
-      },
     }),
   ],
   resolve: {
