@@ -38,19 +38,25 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
     }
     setLoading(true);
     setError(null);
+
+    // Construire l'objet commande sans champs undefined (Firestore les rejette)
+    const orderData: Parameters<typeof createOrder>[0] = {
+      tableId,
+      sessionId,
+      clientPrenom: prenom.trim(),
+      statut: OrderStatus.PENDING,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      createdAt: serverTimestamp() as any,
+      items,
+    };
+
+    // N'ajouter les champs optionnels que s'ils ont une valeur réelle
+    if (clientNom)       orderData.clientNom       = clientNom;
+    if (clientTelephone) orderData.clientTelephone  = clientTelephone;
+    if (isTakeaway)      orderData.isTakeaway       = true;
+
     try {
-      await createOrder({
-        tableId,
-        sessionId,
-        clientPrenom: prenom.trim(),
-        clientNom: clientNom || undefined,
-        clientTelephone: clientTelephone || undefined,
-        isTakeaway: isTakeaway || undefined,
-        statut: OrderStatus.PENDING,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        createdAt: serverTimestamp() as any,
-        items,
-      });
+      await createOrder(orderData);
       clearCart();
       setConfirmOpen(false);
       onClose();
