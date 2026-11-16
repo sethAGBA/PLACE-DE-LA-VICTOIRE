@@ -68,8 +68,17 @@ export default function CaissierDashboard() {
     knownPendingIds.current = new Set(currentPending.map((o) => o.id));
   }, [orders]);
 
-  // Group orders by tableId
-  const groupedByTable = orders.reduce<Map<string, Order[]>>((map, order) => {
+  // Separate table orders from takeaway orders
+  const tableOrders = orders.filter((o) => o.tableId !== 'takeaway');
+  const takeawayOrders = orders.filter((o) => o.tableId === 'takeaway');
+
+  // Takeaway orders are only visible when at least one dine-in order exists
+  const visibleOrders = tableOrders.length > 0
+    ? [...tableOrders, ...takeawayOrders]
+    : tableOrders;
+
+  // Group visible orders by tableId
+  const groupedByTable = visibleOrders.reduce<Map<string, Order[]>>((map, order) => {
     const list = map.get(order.tableId) ?? [];
     list.push(order);
     map.set(order.tableId, list);
@@ -108,51 +117,61 @@ export default function CaissierDashboard() {
           <div className="flex h-40 items-center justify-center">
             <Spinner size="lg" />
           </div>
-        ) : groupedByTable.size === 0 ? (
-          <p className="mt-10 text-center text-sm text-muted">
-            {t('caissier.no_pending')}
-          </p>
         ) : (
-          <div className="space-y-8">
-            {Array.from(groupedByTable.entries()).map(([tableId, tableOrders]) => (
-              <section key={tableId}>
-                <div className="mb-3 flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-ink">
-                    {tableId === 'takeaway'
-                      ? 'Commandes à emporter'
-                      : t('table.number', { number: tableOrders[0]?.tableId ?? tableId })}
-                  </h3>
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">
-                    {tableOrders.length}
-                  </span>
-                  {tableId === 'takeaway' && (
-                    <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-bold text-purple-700">
-                      🛍️ À emporter
-                    </span>
-                  )}
-                </div>
+          <>
+            {groupedByTable.size === 0 ? (
+              <p className="mt-10 text-center text-sm text-muted">
+                {t('caissier.no_pending')}
+              </p>
+            ) : (
+              <div className="space-y-8">
+                {Array.from(groupedByTable.entries()).map(([tableId, ordersForTable]) => (
+                  <section key={tableId}>
+                    <div className="mb-3 flex items-center gap-2">
+                      <span className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                      <h3 className="text-sm font-semibold uppercase tracking-wide text-ink">
+                        {tableId === 'takeaway'
+                          ? 'Commandes à emporter'
+                          : t('table.number', { number: ordersForTable[0]?.tableId ?? tableId })}
+                      </h3>
+                      <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">
+                        {ordersForTable.length}
+                      </span>
+                      {tableId === 'takeaway' && (
+                        <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-bold text-purple-700">
+                          🛍️ À emporter
+                        </span>
+                      )}
+                    </div>
 
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  <AnimatePresence>
-                    {tableOrders.map((order) => (
-                      <motion.div
-                        key={order.id}
-                        initial={{ y: -24, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.3, ease: 'easeOut' }}
-                        className="rounded-xl ring-2 ring-amber-400 ring-offset-1"
-                      >
-                        <OrderCard order={order} />
-                        <OrderActions order={order} role="caissier" />
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-              </section>
-            ))}
-          </div>
+                    <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                      <AnimatePresence>
+                        {ordersForTable.map((order) => (
+                          <motion.div
+                            key={order.id}
+                            initial={{ y: -24, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            transition={{ duration: 0.3, ease: 'easeOut' }}
+                            className="rounded-xl ring-2 ring-amber-400 ring-offset-1"
+                          >
+                            <OrderCard order={order} />
+                            <OrderActions order={order} role="caissier" />
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  </section>
+                ))}
+              </div>
+            )}
+
+            {tableOrders.length === 0 && takeawayOrders.length > 0 && (
+              <p className="mt-6 text-center text-xs text-muted">
+                {t('caissier.takeaway_waiting')}
+              </p>
+            )}
+          </>
         )}
       </main>
     </div>

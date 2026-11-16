@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Search, ChevronDown } from 'lucide-react';
+import { ShoppingCart, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { getTables } from '@/lib/firestore';
@@ -12,6 +12,15 @@ import { Spinner } from '@/components/ui/Spinner';
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher';
 import { MenuCard } from '@/components/client/MenuCard';
 import { CartDrawer } from '@/components/client/CartDrawer';
+
+const CAROUSEL_IMAGES = [
+  { src: '/MENU/Soupe%20au%20poulet.jpg', alt: 'Soupe au poulet' },
+  { src: '/MENU/Petit%20d%C3%A9jeuner%20complet.jpg', alt: 'Petit déjeuner complet' },
+  { src: '/MENU/Soupe%20de%20poisson.webp', alt: 'Soupe de poisson' },
+  { src: '/MENU/Atti%C3%A9k%C3%A9.webp', alt: 'Attiéké' },
+  { src: '/MENU/Foufou.jpg', alt: 'Foufou' },
+  { src: '/MENU/Salade%20verte.webp', alt: 'Salade verte' },
+];
 
 export default function TakeawayPage() {
   const { t, i18n } = useTranslation();
@@ -30,7 +39,7 @@ export default function TakeawayPage() {
   // ── Local form state ───────────────────────────────────────────────────────
   const [prenom, setPrenom] = useState('');
   const [nom, setNom] = useState('');
-  const [telephone, setTelephone] = useState('');
+  const [telephone, setTelephone] = useState('+228');
   const [mode, setMode] = useState<'sur_place' | 'a_emporter'>('sur_place');
   const [selectedTableId, setSelectedTableId] = useState('');
   const [tables, setTables] = useState<Table[]>([]);
@@ -39,7 +48,7 @@ export default function TakeawayPage() {
 
   // ── Phone validation ───────────────────────────────────────────────────────
   const validatePhone = (val: string) => {
-    if (val && !/^\+228\d{8}$/.test(val)) {
+    if (val && val !== '+228' && !/^\+228\d{8}$/.test(val)) {
       setPhoneError(t('takeaway.phone_error'));
     } else {
       setPhoneError('');
@@ -83,6 +92,10 @@ export default function TakeawayPage() {
 
   const categoryTabsRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLElement>(null);
+
+  // ── Carousel state ─────────────────────────────────────────────────────────
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (categories.length > 0 && activeCategory === null) {
@@ -98,20 +111,30 @@ export default function TakeawayPage() {
     btn?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
   }, [activeCategory]);
 
+  // Auto-advance carousel every 4 seconds
+  useEffect(() => {
+    const id = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Fix 2: search bypasses category filter
   const filteredProducts = products.filter((p) => {
-    const inCategory = activeCategory === null || p.categorieId === activeCategory;
-    const matchesSearch =
-      search.trim() === '' ||
-      (lang === 'en' ? p.nom_en : p.nom_fr)
+    if (!p.disponible) return false;
+    const query = search.trim();
+    if (query !== '') {
+      return (lang === 'en' ? p.nom_en : p.nom_fr)
         .toLowerCase()
-        .includes(search.toLowerCase());
-    return inCategory && matchesSearch && p.disponible;
+        .includes(query.toLowerCase());
+    }
+    return activeCategory === null || p.categorieId === activeCategory;
   });
 
   const cartItemCount = items.reduce((sum, i) => sum + i.quantite, 0);
 
-  const scrollToMenu = () => {
-    menuRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const scrollToForm = () => {
+    formRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -125,38 +148,67 @@ export default function TakeawayPage() {
         <LanguageSwitcher />
       </header>
 
-      {/* ── Hero banner ─────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#C0714F] via-[#D4580A] to-[#E8690F] px-6 py-14 text-center text-white">
-        {/* Decorative circles */}
-        <div className="pointer-events-none absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/5" aria-hidden="true" />
-        <div className="pointer-events-none absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/5" aria-hidden="true" />
+      {/* ── Hero carrousel ──────────────────────────────────────────────────── */}
+      <section className="relative h-56 md:h-72 w-full overflow-hidden">
+        <AnimatePresence mode="sync">
+          <motion.img
+            key={currentIndex}
+            src={CAROUSEL_IMAGES[currentIndex].src}
+            alt={CAROUSEL_IMAGES[currentIndex].alt}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8 }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </AnimatePresence>
 
-        <motion.div
-          animate={{ y: [0, -6, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="mb-3 text-5xl"
+        {/* Overlay gradient */}
+        <div
+          className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"
           aria-hidden="true"
-        >
-          🍽️
-        </motion.div>
-        <h1 className="text-2xl font-black tracking-tight drop-shadow-sm">
-          {t('takeaway.hero_text')}
-        </h1>
-        <p className="mt-2 text-sm text-white/80">{t('app.name')} · Kara, Togo</p>
+        />
 
-        <motion.button
-          whileHover={{ scale: 1.03 }}
-          whileTap={{ scale: 0.97 }}
-          onClick={scrollToMenu}
-          className="mt-6 inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-primary shadow-lg transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+        {/* Centered text */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-4 text-center text-white">
+          <p className="text-2xl font-black tracking-tight drop-shadow">
+            🍽️ Place de la Victoire
+          </p>
+          <p className="text-sm text-white/80">Restaurant – Kara, Togo</p>
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={scrollToForm}
+            className="mt-3 inline-flex items-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-bold text-primary shadow-lg transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+          >
+            Commander maintenant →
+          </motion.button>
+        </div>
+
+        {/* Navigation dots */}
+        <div
+          className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5"
+          role="tablist"
+          aria-label="Carrousel navigation"
         >
-          {t('menu.title')}
-          <ChevronDown size={16} />
-        </motion.button>
+          {CAROUSEL_IMAGES.map((_, i) => (
+            <button
+              key={i}
+              role="tab"
+              aria-selected={i === currentIndex}
+              aria-label={`Image ${i + 1}`}
+              onClick={() => setCurrentIndex(i)}
+              className={[
+                'h-1.5 rounded-full transition-all duration-300',
+                i === currentIndex ? 'w-5 bg-white' : 'w-1.5 bg-white/50',
+              ].join(' ')}
+            />
+          ))}
+        </div>
       </section>
 
       {/* ── Coordonnées form ────────────────────────────────────────────────── */}
-      <section className="mx-auto w-full max-w-lg px-4 py-6">
+      <section ref={formRef} className="mx-auto w-full max-w-lg px-4 py-6">
         <div className="rounded-2xl bg-white p-5 shadow-md">
           <h2 className="mb-4 text-base font-bold text-ink">{t('takeaway.form_title')}</h2>
 
@@ -205,6 +257,10 @@ export default function TakeawayPage() {
               value={telephone}
               onChange={(e) => setTelephone(e.target.value)}
               onBlur={(e) => validatePhone(e.target.value)}
+              onFocus={(e) => {
+                const len = e.target.value.length;
+                e.target.setSelectionRange(len, len);
+              }}
               placeholder={t('takeaway.phone_placeholder')}
               pattern="^\+228\d{8}$"
               maxLength={12}

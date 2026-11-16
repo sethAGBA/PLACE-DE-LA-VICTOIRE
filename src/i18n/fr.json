@@ -268,7 +268,8 @@
     "dashboard": "Tableau du Caissier",
     "title": "Espace Caissier",
     "pending_orders": "Commandes à valider",
-    "no_pending": "Aucune commande en attente."
+    "no_pending": "Aucune commande en attente.",
+    "takeaway_waiting": "Des commandes à emporter sont en attente — elles s'afficheront dès qu'une commande sur table sera active."
   },
   "roles": {
     "admin": "Administrateur",

@@ -97,15 +97,16 @@ export default function TablePage() {
     btn?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
   }, [activeCategory]);
 
-  // Filter products
+  // Filter products — search bypasses category filter
   const filteredProducts = products.filter((p) => {
-    const inCategory = activeCategory === null || p.categorieId === activeCategory;
-    const matchesSearch =
-      search.trim() === '' ||
-      (lang === 'en' ? p.nom_en : p.nom_fr)
+    if (!p.disponible) return false;
+    const query = search.trim();
+    if (query !== '') {
+      return (lang === 'en' ? p.nom_en : p.nom_fr)
         .toLowerCase()
-        .includes(search.toLowerCase());
-    return inCategory && matchesSearch && p.disponible;
+        .includes(query.toLowerCase());
+    }
+    return activeCategory === null || p.categorieId === activeCategory;
   });
 
   const cartItemCount = items.reduce((sum, i) => sum + i.quantite, 0);

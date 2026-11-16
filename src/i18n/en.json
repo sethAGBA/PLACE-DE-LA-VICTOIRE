@@ -268,7 +268,8 @@
     "dashboard": "Cashier Dashboard",
     "title": "Cashier Area",
     "pending_orders": "Orders to Validate",
-    "no_pending": "No pending orders."
+    "no_pending": "No pending orders.",
+    "takeaway_waiting": "Takeaway orders are waiting — they will appear once a dine-in order is active."
   },
   "roles": {
     "admin": "Administrator",
