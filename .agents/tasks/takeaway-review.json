@@ -1,0 +1,13 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    "`isTakeaway` false-positive on empty tableId — OrderTracking sets isTakeaway=true when tableId==='' which will flip the stepper to the takeaway track for any route that renders OrderTracking without a :tableId param. Drop the || tableId==='' guard and rely solely on order.isTakeaway from Firestore.",
+    "Double name entry on takeaway — CartDrawer initialises its own prenom state to '' and writes it to createOrder, ignoring the store's clientPrenom already set by TakeawayPage. Pre-fill the modal's prenom from useCartStore((s) => s.clientPrenom).",
+    "Phone validation not surfaced inline — the pattern attribute on TakeawayPage's phone input has no effect without a wrapping <form>; the only gate is CartDrawer's handlePlaceOrder. Add an onBlur regex check in TakeawayPage or disable the cart button while the phone is invalid.",
+    "Duplicate manifest definition — start_url and manifest fields are defined in both vite.config.ts (vite-plugin-pwa) and public/manifest.json (Firebase Hosting static). They are in sync now but will silently diverge on the next edit. Consolidate to a single source of truth.",
+    "Firestore index not yet deployed — the new (sessionId, createdAt) composite index in firestore.indexes.json must be deployed before the feature goes live (firebase deploy --only firestore:indexes); without it getOrdersBySessionId fails in production.",
+    "PICKUP caissier audio alert missing — CaissierDashboard's notification-sound logic filters only PENDING orders; PICKUP arrivals (customer walking in to collect) produce no audio alert. Include PICKUP in the alert filter if the sound is intended for that event.",
+    "PICKUP card message is hardcoded French — OrderTracking renders 'Votre commande est prête ! Venez la récupérer 🛍️' as a literal string with no i18n key; English-language clients see French text. Add order.countdown.pickup to both locale files."
+  ],
+  "reviewDoc": "c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE\\.agents\\tasks\\takeaway-review.md"
+}

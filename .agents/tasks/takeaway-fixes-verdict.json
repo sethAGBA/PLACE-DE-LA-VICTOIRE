@@ -1,0 +1,15 @@
+{
+  "verdict": "CHANGES_REQUESTED",
+  "findings": [
+    {
+      "id": "setClientPrenom-commented-out",
+      "severity": "blocking",
+      "file": "src/pages/client/TakeawayPage.tsx",
+      "line": 49,
+      "summary": "setClientPrenom sync useEffect is dead code — placed on the same line as a // comment",
+      "detail": "The useEffect that pushes the local prenom state into cartStore.clientPrenom has been accidentally appended to a // comment line. JavaScript treats everything after // to end-of-line as a comment, so the effect never runs. cartStore.clientPrenom stays '' for takeaway orders, causing CartDrawer to initialise prenom as '' and submit orders with no client first name.",
+      "fix": "Move `useEffect(() => { setClientPrenom(prenom); }, [prenom, setClientPrenom]);` to its own line, below the comment."
+    }
+  ],
+  "reviewDoc": "c:\\Users\\LEGION\\Desktop\\Project\\PLACE-DE-LA-VICTOIRE\\.agents\\tasks\\takeaway-fixes-review.md"
+}
