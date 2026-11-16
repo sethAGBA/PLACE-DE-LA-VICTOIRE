@@ -51,11 +51,17 @@ export default function TablePage() {
   }, [tableId]);
 
   // ── Cart store ─────────────────────────────────────────────────────────────
-  const { setTableId, items, sessionId } = useCartStore();
+  const { setTableId, setIsTakeaway, setClientNom, setClientTelephone, items, sessionId } = useCartStore();
 
   useEffect(() => {
-    if (tableId) setTableId(tableId);
-  }, [tableId, setTableId]);
+    if (tableId) {
+      setTableId(tableId);
+      // Réinitialiser les champs takeaway — on est sur une table normale
+      setIsTakeaway(false);
+      setClientNom('');
+      setClientTelephone('');
+    }
+  }, [tableId, setTableId, setIsTakeaway, setClientNom, setClientTelephone]);
 
   // ── Orders for this session ────────────────────────────────────────────────
   const { orders } = useOrders({
