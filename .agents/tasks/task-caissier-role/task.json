@@ -1,0 +1,7 @@
+{
+  "task_id": "task-caissier-role",
+  "task_description": "Add a 'caissier' (cashier) role to the Place de la Victoire PWA. Cashier validates/rejects PENDING orders so waitresses never see them. New flow: PENDING → Caissier validates/rejects → Kitchen sees VALIDATED → READY → Serveur marks SERVI → PAYÉ.",
+  "status": "completed",
+  "feature_order": ["FEAT-001", "FEAT-002"],
+  "blocked_reason": null
+}

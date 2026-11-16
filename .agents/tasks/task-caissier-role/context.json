@@ -1,0 +1,31 @@
+{
+  "project_type": "Vite + React 18 SPA (TypeScript), Firebase (Auth + Firestore), PWA via vite-plugin-pwa, Tailwind CSS, framer-motion, react-i18next, zustand, react-router-dom v6",
+  "language": "TypeScript",
+  "build_system": "Vite 5 + tsc. 'npm run build' = tsc && vite build. 'npm run lint' = tsc --noEmit (no ESLint configured). Path alias '@/' maps to 'src/'.",
+  "test_framework": "None — no test runner configured. Verification is build-time type checking via 'npm run lint' (tsc --noEmit) and 'npm run build'.",
+  "build_command": "npm run build",
+  "test_command": "npm run lint",
+  "verification_instructions": "1. Run 'npm run lint' (tsc --noEmit) — must exit 0 with no errors. 2. Run 'npm run build' — must exit 0 and produce dist/ without errors. These are the only automated checks in this project.",
+  "snapshot_or_generated_files": null,
+  "environment_constraints": "Windows/PowerShell workspace. Do NOT run 'npm run dev' or touch the dev server. The .env file exists locally (not committed). .env.example IS committed.",
+  "contribution_requirements": "No AGENTS.md or CONTRIBUTING.md found. Follow existing code conventions: functional React components, TypeScript enums for roles/statuses, useTranslation for all user-visible strings, framer-motion for card animations, Tailwind utility classes only (no custom CSS files).",
+  "key_patterns": "1. UserRole enum in src/types/index.ts — add new roles here first. 2. useOrders hook (src/hooks/useOrders.ts) branches on role string to pick Firestore query strategy. 3. ServeurDashboard.tsx is the canonical dashboard pattern to replicate: header gradient, left panel with table list, right panel with grouped orders, sound notification on new orders. 4. OrderActions.tsx currently owns all order status transitions; it will be split by role prop. 5. seedAccounts.ts reads passwords from import.meta.env VITE_SEED_*_PASSWORD env vars. 6. i18n keys live in src/i18n/fr.json and en.json — both must be updated together. 7. Firestore rules: orders already allow update by any authenticated user, so no security rule change is strictly required.",
+  "relevant_files": [
+    "src/types/index.ts",
+    "src/hooks/useOrders.ts",
+    "src/pages/serveur/ServeurDashboard.tsx",
+    "src/components/serveur/OrderActions.tsx",
+    "src/components/serveur/OrderCard.tsx",
+    "src/App.tsx",
+    "src/pages/LoginPage.tsx",
+    "src/pages/admin/UserManagement.tsx",
+    "src/components/admin/UserForm.tsx",
+    "src/seed/seedAccounts.ts",
+    "src/i18n/fr.json",
+    "src/i18n/en.json",
+    "firestore.rules",
+    ".env.example",
+    "COMPTES.md"
+  ],
+  "directory_structure": "src/pages/{serveur,cuisine,admin,client}/ — one folder per role. src/components/{serveur,admin,shared,ui}/ — components by domain. src/hooks/ — custom hooks. src/store/ — zustand stores. src/lib/ — firebase init + firestore helpers. src/seed/ — browser-side demo account seeder. src/i18n/ — translation JSON files. scripts/ — Node admin SDK seed script. .agents/tasks/ — planning artifacts (never committed)."
+}

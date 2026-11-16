@@ -1,0 +1,31 @@
+{
+  "id": "FEAT-001",
+  "type": "feat",
+  "description": "Add the caissier role to all data, type, routing, auth, and configuration layers: UserRole enum, i18n keys, Firestore rules comment, LoginPage redirect, App.tsx route, UserManagement/UserForm role option, seedAccounts demo account, .env.example, and COMPTES.md. This feature has no dependency on FEAT-002 and must be done first because FEAT-002 imports UserRole.caissier.",
+  "status": "completed",
+  "steps": [
+    "1. src/types/index.ts — Add 'caissier = \"caissier\"' to the UserRole enum after 'cuisine = \"cuisine\"'. This is the single source of truth that all other files import.",
+    "2. src/i18n/fr.json — Add a top-level 'caissier' key: { 'dashboard': 'Tableau du Caissier', 'title': 'Espace Caissier', 'pending_orders': 'Commandes à valider', 'no_pending': 'Aucune commande en attente.' }. Add 'caissier': 'Caissier' inside the existing 'roles' block.",
+    "3. src/i18n/en.json — Add the same structure in English: { 'dashboard': 'Cashier Dashboard', 'title': 'Cashier Area', 'pending_orders': 'Orders to Validate', 'no_pending': 'No pending orders.' }. Add 'caissier': 'Cashier' to 'roles'.",
+    "4. src/pages/admin/UserManagement.tsx — Add '[UserRole.caissier]: \"bg-teal-100 text-teal-700\"' to the ROLE_STYLES record (currently has admin, serveur, cuisine, client).",
+    "5. src/components/admin/UserForm.tsx — Add '<option value={UserRole.caissier}>{t(\"roles.caissier\")}</option>' inside the role <select>, after the cuisine option and before the admin option.",
+    "6. src/App.tsx — (a) Add lazy import: 'const CaissierDashboard = lazy(() => import(\"@/pages/caissier/CaissierDashboard\"))'. (b) Add 'caissier: \"/caissier\"' to the roleRedirects Record in RootRedirect. (c) Add protected route block after the serveur route: '<Route element={<ProtectedRoute role={\"caissier\" as UserRole} />}><Route path=\"/caissier\" element={<CaissierDashboard />} /></Route>'.",
+    "7. src/pages/LoginPage.tsx — Add 'caissier: \"/caissier\"' to the roleRedirects object inside handleSubmit.",
+    "8. firestore.rules — Add a comment block above the orders match rule: '// Roles that may update orders: caissier (validate/reject PENDING), cuisine (start/ready), serveur (serve/pay), admin (all)'. No rule logic changes are needed since 'allow update: if isAuthenticated()' already covers all staff roles.",
+    "9. src/seed/seedAccounts.ts — (a) Read 'const caissierPwd = import.meta.env.VITE_SEED_CAISSIER_PASSWORD as string | undefined'. (b) Add caissierPwd to the guard: 'if (!adminPwd || !serveurPwd || !cuisinePwd || !caissierPwd)'. (c) Update the error message to mention VITE_SEED_CAISSIER_PASSWORD. (d) Add a fourth DemoAccount: { email: 'caissier@placelavictoire.com', password: caissierPwd, nom: 'Caissier Demo', role: UserRole.caissier }.",
+    "10. .env.example — Add 'VITE_SEED_CAISSIER_PASSWORD=' after the VITE_SEED_CUISINE_PASSWORD line.",
+    "11. COMPTES.md — Add caissier row to the staff table: '| Caissier | caissier@placelavictoire.com | Caissier2024! | /caissier — validation commandes |'. Add Firestore JSON doc example for caissier at the bottom of the Option B section."
+  ],
+  "acceptance_criteria": [
+    "UserRole.caissier resolves without TypeScript error wherever it is imported",
+    "'npm run lint' exits 0 with no type errors after all changes in this feature",
+    "Both fr.json and en.json are valid JSON with all caissier keys present",
+    "The role select in UserForm shows Caissier as an option",
+    "COMPTES.md and .env.example document the caissier account and seed password"
+  ],
+  "verification": [
+    "npm run lint — must exit 0"
+  ],
+  "blocked_reason": null,
+  "findings": "Stub file was needed: src/pages/caissier/CaissierDashboard.tsx was created with 'export default function CaissierDashboard() { return null; }' because tsc --noEmit errors on a lazy() import whose target module does not exist on disk. FEAT-002 must replace this stub with the real implementation."
+}
