@@ -55,7 +55,7 @@ export function useOrders({
       return () => unsub();
     }
 
-    if ((role === 'cuisine' || role === 'serveur') && statuses && statuses.length > 0) {
+    if (['cuisine', 'serveur', 'caissier'].includes(role) && statuses && statuses.length > 0) {
       const unsub = getOrdersByStatus(statuses, handleOrders);
       return () => unsub();
     }

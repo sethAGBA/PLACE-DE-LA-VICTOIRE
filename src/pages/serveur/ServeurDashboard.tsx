@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { getTables } from '@/lib/firestore';
@@ -12,16 +12,15 @@ import { Spinner } from '@/components/ui/Spinner';
 import { OrderStatus, UserRole } from '@/types';
 import type { Order, Table } from '@/types';
 
-// Statuses the waiter cares about (excludes PAID and REJECTED)
+// PENDING is now handled by the caissier; serveur only sees post-validation statuses
 const WAITER_STATUSES = [
-  OrderStatus.PENDING,
   OrderStatus.VALIDATED,
   OrderStatus.IN_PREPARATION,
   OrderStatus.READY,
   OrderStatus.SERVED,
 ];
 
-/** Colored dot per status for group headers (brief status palette) */
+/** Colored dot per status for group headers */
 const statusDot: Record<OrderStatus, string> = {
   [OrderStatus.PENDING]: 'bg-amber-500',
   [OrderStatus.VALIDATED]: 'bg-blue-500',
@@ -32,9 +31,8 @@ const statusDot: Record<OrderStatus, string> = {
   [OrderStatus.REJECTED]: 'bg-red-500',
 };
 
-/** Label for each order group header */
+/** Display order for order groups */
 const GROUP_ORDER = [
-  OrderStatus.PENDING,
   OrderStatus.READY,
   OrderStatus.VALIDATED,
   OrderStatus.IN_PREPARATION,
@@ -44,9 +42,8 @@ const GROUP_ORDER = [
 /**
  * Main waiter view.
  * Left panel: table list (TableCard grid)
- * Right panel: orders for selected table (or all orders)
- * Orders grouped by status; PENDING orders slide in from top with pulsing border.
- * Plays notification.mp3 when a new PENDING order arrives.
+ * Right panel: orders for the selected table (or all orders), grouped by status.
+ * PENDING orders are owned by the caissier dashboard and do not appear here.
  */
 export default function ServeurDashboard() {
   const { t } = useTranslation();
@@ -61,10 +58,6 @@ export default function ServeurDashboard() {
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
   const [clock, setClock] = useState(() => new Date().toLocaleTimeString());
 
-  // Track known PENDING ids to detect new arrivals
-  const knownPendingIds = useRef<Set<string>>(new Set());
-  const hasInteracted = useRef(false);
-
   // Live clock
   useEffect(() => {
     const id = setInterval(() => {
@@ -73,40 +66,11 @@ export default function ServeurDashboard() {
     return () => clearInterval(id);
   }, []);
 
-  // Track user interaction for audio autoplay policy
-  useEffect(() => {
-    const mark = () => { hasInteracted.current = true; };
-    window.addEventListener('click', mark, { once: true });
-    window.addEventListener('keydown', mark, { once: true });
-    return () => {
-      window.removeEventListener('click', mark);
-      window.removeEventListener('keydown', mark);
-    };
-  }, []);
-
   // Subscribe to tables
   useEffect(() => {
     const unsub = getTables(setTables);
     return () => unsub();
   }, []);
-
-  // Detect new PENDING orders → play sound
-  useEffect(() => {
-    const currentPending = orders.filter((o) => o.statut === OrderStatus.PENDING);
-    const newOnes = currentPending.filter((o) => !knownPendingIds.current.has(o.id));
-
-    if (newOnes.length > 0 && hasInteracted.current) {
-      try {
-        const audio = new Audio('/notification.mp3');
-        void audio.play();
-      } catch {
-        // Audio blocked or file missing — silent failure
-      }
-    }
-
-    // Update the known set
-    knownPendingIds.current = new Set(currentPending.map((o) => o.id));
-  }, [orders]);
 
   const handleTableClick = useCallback(
     (tableId: string) => {
@@ -215,11 +179,7 @@ export default function ServeurDashboard() {
                   <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     <AnimatePresence>
                       {items.map((order) => (
-                        <PendingAwareOrderRow
-                          key={order.id}
-                          order={order}
-                          isPending={order.statut === OrderStatus.PENDING}
-                        />
+                        <OrderRow key={order.id} order={order} />
                       ))}
                     </AnimatePresence>
                   </div>
@@ -233,28 +193,22 @@ export default function ServeurDashboard() {
   );
 }
 
-// ─── Helper: order row with PENDING animation ─────────────────────────────────
+// ─── Helper: animated order row ───────────────────────────────────────────────
 
-interface PendingAwareOrderRowProps {
+interface OrderRowProps {
   order: Order;
-  isPending: boolean;
 }
 
-function PendingAwareOrderRow({ order, isPending }: PendingAwareOrderRowProps) {
+function OrderRow({ order }: OrderRowProps) {
   return (
     <motion.div
-      initial={isPending ? { y: -24, opacity: 0 } : false}
+      initial={{ y: -24, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.3, ease: 'easeOut' }}
-      className={
-        isPending
-          ? 'rounded-xl ring-2 ring-yellow-400 ring-offset-1 animate-pulse-ring'
-          : ''
-      }
     >
       <OrderCard order={order} />
-      <OrderActions order={order} />
+      <OrderActions order={order} role="serveur" />
     </motion.div>
   );
 }

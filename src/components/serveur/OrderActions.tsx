@@ -10,6 +10,7 @@ import type { Order } from '@/types';
 
 interface OrderActionsProps {
   order: Order;
+  role?: 'serveur' | 'caissier';
 }
 
 /**
@@ -19,7 +20,7 @@ interface OrderActionsProps {
  * - SERVED   → Paiement encaissé
  * - PAID     → Voir le reçu
  */
-export function OrderActions({ order }: OrderActionsProps) {
+export function OrderActions({ order, role = 'serveur' }: OrderActionsProps) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
@@ -67,33 +68,39 @@ export function OrderActions({ order }: OrderActionsProps) {
   return (
     <>
       <div className="mt-3 flex flex-wrap gap-2">
-        {order.statut === OrderStatus.PENDING && (
+        {role === 'caissier' ? (
           <>
-            <Button variant="secondary" size="sm" loading={loading} onClick={() => void handleValidate()}>
-              ✅ {t('order.action.validate')}
-            </Button>
-            <Button variant="danger" size="sm" disabled={loading} onClick={() => setRejectModalOpen(true)}>
-              ❌ {t('order.action.reject')}
-            </Button>
+            {order.statut === OrderStatus.PENDING && (
+              <>
+                <Button variant="secondary" size="sm" loading={loading} onClick={() => void handleValidate()}>
+                  ✅ {t('order.action.validate')}
+                </Button>
+                <Button variant="danger" size="sm" disabled={loading} onClick={() => setRejectModalOpen(true)}>
+                  ❌ {t('order.action.reject')}
+                </Button>
+              </>
+            )}
           </>
-        )}
+        ) : (
+          <>
+            {order.statut === OrderStatus.READY && (
+              <Button variant="primary" size="sm" loading={loading} onClick={() => void handleServed()}>
+                🍽️ {t('order.action.mark_served')}
+              </Button>
+            )}
 
-        {order.statut === OrderStatus.READY && (
-          <Button variant="primary" size="sm" loading={loading} onClick={() => void handleServed()}>
-            🍽️ {t('order.action.mark_served')}
-          </Button>
-        )}
+            {order.statut === OrderStatus.SERVED && (
+              <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePaid()}>
+                💰 {t('order.action.mark_paid')}
+              </Button>
+            )}
 
-        {order.statut === OrderStatus.SERVED && (
-          <Button variant="primary" size="sm" loading={loading} onClick={() => void handlePaid()}>
-            💰 {t('order.action.mark_paid')}
-          </Button>
-        )}
-
-        {order.statut === OrderStatus.PAID && (
-          <Button variant="ghost" size="sm" onClick={() => setReceiptOpen(true)}>
-            🧾 {t('receipt.view')}
-          </Button>
+            {order.statut === OrderStatus.PAID && (
+              <Button variant="ghost" size="sm" onClick={() => setReceiptOpen(true)}>
+                🧾 {t('receipt.view')}
+              </Button>
+            )}
+          </>
         )}
       </div>
 
