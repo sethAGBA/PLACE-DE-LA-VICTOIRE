@@ -32,7 +32,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   async function handlePlaceOrder() {
     if (!tableId || !prenom.trim()) return;
-    if (isTakeaway && !/^\+228\d{8}$/.test(clientTelephone ?? '')) {
+    // Validation téléphone uniquement pour les commandes takeaway
+    if (isTakeaway && clientTelephone && !/^\+228\d{8}$/.test(clientTelephone)) {
       setError('Numéro de téléphone invalide. Format attendu : +228XXXXXXXX (8 chiffres après +228).');
       return;
     }
@@ -224,11 +225,22 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 </h3>
                 <p className="text-sm text-muted">{t('cart.confirm_message')}</p>
 
+                {/* Sur table : afficher le numéro de table + prénom optionnel */}
+                {!isTakeaway && tableId && (
+                  <div className="rounded-xl bg-primary/5 px-4 py-3 flex items-center gap-3">
+                    <span className="text-2xl font-black text-primary">
+                      {tableId.replace('table-', 'T')}
+                    </span>
+                    <div>
+                      <p className="text-xs text-muted">{t('order.table')}</p>
+                      <p className="text-sm font-semibold text-ink">{tableId.replace('table-0', 'Table ').replace('table-', 'Table ')}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Prénom */}
                 <div className="space-y-1">
-                  <label
-                    htmlFor="client-prenom"
-                    className="block text-sm font-medium text-gray-700"
-                  >
+                  <label htmlFor="client-prenom" className="block text-sm font-medium text-gray-700">
                     {t('cart.your_name')}
                   </label>
                   <input
@@ -241,6 +253,22 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     className="w-full rounded-xl border border-gray-200 px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
                   />
                 </div>
+
+                {/* Téléphone uniquement sur takeaway */}
+                {isTakeaway && (
+                  <div className="space-y-1">
+                    <label htmlFor="confirm-phone" className="block text-sm font-medium text-gray-700">
+                      {t('takeaway.phone')}
+                    </label>
+                    <input
+                      id="confirm-phone"
+                      type="tel"
+                      value={clientTelephone ?? ''}
+                      readOnly
+                      className="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-sm text-muted"
+                    />
+                  </div>
+                )}
 
                 {error && (
                   <p className="text-xs text-red-600">{error}</p>
